@@ -16,9 +16,9 @@ def myconverter(o):
 def home():
     sys.path.insert(0, '..')
 
-    url = 'https://p43-caldav.icloud.com/634616534/calendars'
-    username = 'mika.ahopelto@icloud.com'
-    password = 'emwy-byrq-orqg-dtdl'
+    url = '<urltocalendar>'
+    username = '<usernametocalendar>'
+    password = '<userspassword>'
     client = caldav.DAVClient(url=url, username=username, password=password)
     my_principal = client.principal()
     calendars = my_principal.calendars()
