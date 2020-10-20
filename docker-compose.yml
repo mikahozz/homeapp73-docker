@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+    homeapp73:
+        image: homeapp73
+        build:
+            context: .
+            dockerfile: ./homeclient/Dockerfile
+        ports:
+        - 3000:3000
+    calendarapi:
+        image: calendarapi
+        build:
+            context: .
+            dockerfile: ./calendarapi/Dockerfile
+        ports:
+        - 5010:5010
+    homeappnetapi:
+        image: homeappnetapi
+        env_file:
+            - ./weatherapi/docker-env
+        build:
+            context: .
+            dockerfile: ./weatherapi/Dockerfile
+        ports:
+            - 5000:5000
+        

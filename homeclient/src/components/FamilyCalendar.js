@@ -49,11 +49,11 @@ export class FamilyCalendar extends Component {
 
   static renderDots(value) {
     var classes = [];
-    if(value.includes('Elise')) { classes.push(<span class="elise dot"></span>)}
-    if(value.includes('Elias') || value.includes('Eliaksen')) { classes.push(<span class="elias dot"></span>)}
-    if(value.includes('Ella')) { classes.push(<span class="ella dot"></span>)}
-    if(value.includes('Äiti')) { classes.push(<span class="aiti dot"></span>)}
-    if(value.includes('Iskä')) { classes.push(<span class="iska dot"></span>)}
+    if(value.includes('Elise')) { classes.push(<span className="elise dot"></span>)}
+    if(value.includes('Elias') || value.includes('Eliaksen')) { classes.push(<span className="elias dot"></span>)}
+    if(value.includes('Ella')) { classes.push(<span className="ella dot"></span>)}
+    if(value.includes('Äiti')) { classes.push(<span className="aiti dot"></span>)}
+    if(value.includes('Iskä')) { classes.push(<span className="iska dot"></span>)}
     return classes;
   }
 

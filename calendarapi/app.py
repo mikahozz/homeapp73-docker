@@ -16,9 +16,9 @@ def myconverter(o):
 def home():
     sys.path.insert(0, '..')
 
-    url = '<urltocalendar>'
-    username = '<usernametocalendar>'
-    password = '<userspassword>'
+	url = '<url to the calendar>'
+	username = '<calendar user name>'
+	password = '<password for the user>'
     client = caldav.DAVClient(url=url, username=username, password=password)
     my_principal = client.principal()
     calendars = my_principal.calendars()
