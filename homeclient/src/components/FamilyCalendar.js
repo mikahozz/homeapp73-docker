@@ -47,13 +47,14 @@ export class FamilyCalendar extends Component {
     ));
   }
 
-  static renderDots(value) {
+  static renderDots(valueObject) {
+    var value = (String(valueObject)).toLowerCase();
     var classes = [];
-    if(value.includes('Elise')) { classes.push(<span className="elise dot"></span>)}
-    if(value.includes('Elias') || value.includes('Eliaksen')) { classes.push(<span className="elias dot"></span>)}
-    if(value.includes('Ella')) { classes.push(<span className="ella dot"></span>)}
-    if(value.includes('Äiti')) { classes.push(<span className="aiti dot"></span>)}
-    if(value.includes('Iskä')) { classes.push(<span className="iska dot"></span>)}
+    if(value.includes('elise')) { classes.push(<span className="elise dot"></span>)}
+    if(value.includes('elias') || value.toLowerCase().includes('eliaksen')) { classes.push(<span className="elias dot"></span>)}
+    if(value.includes('ella')) { classes.push(<span className="ella dot"></span>)}
+    if(String(value).toLowerCase().includes('äiti')) { classes.push(<span className="aiti dot"></span>)}
+    if(value.includes('iskä')) { classes.push(<span className="iska dot"></span>)}
     return classes;
   }
 
@@ -64,16 +65,20 @@ export class FamilyCalendar extends Component {
   static renderDate(dateNumber) {
     var weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     var eventDate = new Date(Number(dateNumber)).setHours(0,0,0,0);
-    var today = new Date().setHours(0,0,0,0);
-    var tomorrow = new Date().setHours(0,0,0,0) + 1 * 24 * 60 * 60 * 1000;
+    var todayDate = new Date();
+    var tomorrowDate = new Date();
+    tomorrowDate.setDate(todayDate.getDate()+1);
+    var today = todayDate.setHours(0,0,0,0);
+    var tomorrow = tomorrowDate.setHours(0,0,0,0);
 
     switch(eventDate){
       case today:
-          return "Today";
+        return "Today";
       case tomorrow:
         return "Tomorrow";
-    }
-    return weekDays[new Date(eventDate).getDay()];
+      default:
+        return weekDays[new Date(eventDate).getDay()];
+      }
   }
 
 
@@ -84,7 +89,7 @@ export class FamilyCalendar extends Component {
 
     return (
       <div id="calendardata" className="box">
-        <h2>Events</h2>
+        <h2>Upcoming family events</h2>
          {contents}
       </div>
     );

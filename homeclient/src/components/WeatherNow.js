@@ -34,8 +34,7 @@ export class WeatherNow extends Component {
         </div>
 
     return (
-      <div id="weatherNow" className="box">
-        <h2>Weather now</h2>
+      <div id="weatherNow">
          {contents}
       </div>
     );

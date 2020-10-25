@@ -3,12 +3,11 @@ body {
   background-size: 100% auto;
   background-repeat: no-repeat;
   background-image: url('/img/trees_night_starry_sky_146805_3840x2400.jpg');
-  font-size: 0.8em;
   color: white;
-  font-family: Ubuntu;
+  font: 300 1em Ubuntu;
 }
-h2 { font-size: 120%; margin-bottom: 0;}
-h3 { color: rgb(151,151,151); font-size: 0.9em; margin-top: 0; }
+h2 { font-size: 120%; font-weight: normal; margin-bottom: 0;}
+h3 { color: rgb(151,151,151); font-size: 0.9em; font-weight: normal; margin-top: 0; }
 
 .header {
   line-height: 2em;
@@ -26,7 +25,8 @@ h3 { color: rgb(151,151,151); font-size: 0.9em; margin-top: 0; }
   width: 15%;
 }
 .forecastTable .time-col { padding-right: 10%; color: rgb(151,151,151); width: 15%; }
-.forecastTable .temperature-col { font-weight: bold; font-size: 1.2em;}
+.forecastTable .temperature-col {  font-size: 1.5em;}
+.rainBox { height: 20px; background-color: rgba(0, 182, 255, 0.5); display: inline-block; overflow: hidden;}
 
 
 .recharts-text { color: rgb(151,151,151); }
@@ -34,14 +34,20 @@ h3 { color: rgb(151,151,151); font-size: 0.9em; margin-top: 0; }
 .temperatureNow { font-size: 400%; line-height: 1.5em;}
 
 .wind-container {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   position: relative;
   text-align: center;
   color: black;
   vertical-align: center;
 }
 .wind-text { 
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 1em;
   position: absolute;   
   top: 45%;
   left: 45%;
@@ -53,7 +59,7 @@ h3 { color: rgb(151,151,151); font-size: 0.9em; margin-top: 0; }
 #calendardata h3 { font-size: 110%; color: #999999; text-transform: uppercase; margin-top: 20px; }
 .calendarBox { background-color: rgba(120, 120, 120, 0.1); border-left: solid 5px yellow; padding: 8px 8px 8px 8px; margin-bottom: 10px;}
 .lowPrio { border-color: rgba(255,255,0, 0.4); background-color: rgba(120, 120, 120, 0.05) }
-.eventTime { font-size: 110%; font-weight: bold;}
+.eventTime { font-size: 110%; font-weight: 400;}
 .eventTitle { font-size: 95%; color: #adadad; }
 .dot {
   margin-left: 15px;
@@ -68,3 +74,10 @@ h3 { color: rgb(151,151,151); font-size: 0.9em; margin-top: 0; }
 .ella { background-color: pink;}
 .aiti { background-color: red;}
 .iska { background-color: deepskyblue;}
+
+.timeBox {   width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;}
+.time { font-size: 4em; line-height: 1em;}
+.date {padding-left: 5px; opacity: 0.7;}
