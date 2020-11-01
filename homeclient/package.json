@@ -32,6 +32,7 @@
     "extends": "react-app"
   },
   "scripts": {
+    "rimraf": "../node_modules/rimraf/bin.js",
     "start": "rimraf ./build && react-scripts start",
     "build": "react-scripts build",
     "test": "cross-env CI=true react-scripts test --env=jsdom",

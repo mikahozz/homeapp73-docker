@@ -1,24 +1,17 @@
-# For more information, please refer to https://aka.ms/vscode-docker-python
-FROM python:3.8-slim-buster
-
+FROM python:3.7-alpine
 EXPOSE 5010
 
-# Keeps Python from generating .pyc files in the container
-ENV PYTHONDONTWRITEBYTECODE 1
-
-# Turns off buffering for easier container logging
-ENV PYTHONUNBUFFERED 1
-
-# Install pip requirements
-ADD requirements.txt .
-RUN python -m pip install -r requirements.txt
-
 WORKDIR /app
-ADD . /app
+COPY . .
 
-# Switching to a non-root user, please refer to https://aka.ms/vscode-docker-python-user-rights
-RUN useradd appuser && chown -R appuser /app
-USER appuser
+RUN apk add --update --no-cache --virtual .build-deps \
+        g++ \
+        python3-dev \
+        libxml2 \
+        libxml2-dev && \
+    apk add libxslt-dev
+RUN pip install --no-cache-dir -r requirements.txt
+RUN apk del .build-deps
 
-# During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
 CMD ["gunicorn", "--bind", "0.0.0.0:5010", "app:app"]
+#CMD ["gunicorn", "-c", "gunicorn_config.py", "src.app:application"]

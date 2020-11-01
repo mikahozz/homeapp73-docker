@@ -20,7 +20,7 @@ export class WeatherNow extends Component {
   }
 
   async populateWeatherData() {
-    const response = await fetch('http://localhost:5000/weathernow');
+    const response = await fetch('http://raspberrypi.local:5000/weathernow');
     const data = await response.json();
     this.setState({ weatherdata: data, loading: false });
   }
