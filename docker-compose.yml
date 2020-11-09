@@ -26,4 +26,14 @@ services:
             dockerfile: ./Dockerfile
         ports:
         - 3000:3000
+    airflow:
+        image: airflow
+        ports:
+        - "8080:8080"
+        volumes:
+        - ./airflow/dags:/usr/local/airflow/dags
+        build:
+            context: ./airflow
+            dockerfile: ./Dockerfile
+        
             
