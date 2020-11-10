@@ -3,6 +3,8 @@ version: '3.4'
 services:
   homeapp73:
     image: homeapp73
+    volumes:
+      - $(pwd):/usr/src/app
     build:
       context: .
       dockerfile: ./Dockerfile

@@ -26,14 +26,38 @@ services:
             dockerfile: ./Dockerfile
         ports:
         - 3000:3000
-    airflow:
-        image: airflow
-        ports:
-        - "8080:8080"
+#    airflow:
+#        image: airflow
+#        ports:
+#        - "8080:8080"
+#        volumes:
+#        - ./airflow/dags:/usr/local/airflow/dags
+#        build:
+#            context: ./airflow
+#            dockerfile: ./Dockerfile
+
+    mosquitto:
+        image: eclipse-mosquitto
         volumes:
-        - ./airflow/dags:/usr/local/airflow/dags
+            - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+        ports: 
+            - "1883:1883"
+
+    mqttclient:
+        image: mqttclient
+        volumes:
+            - ./mqttclient:/usr/src/app
         build:
-            context: ./airflow
+            context: ./mqttclient
             dockerfile: ./Dockerfile
+    influxdb:
+        image: influxdb
+        container_name: influxdb
+        restart: always
+        ports:
+            - 8086:8086
+        volumes:
+            - $PWD/influxdb:/var/lib/influxdb  
+            
         
             

@@ -1,7 +1,5 @@
 FROM python:3
 
-EXPOSE 1883
-
 WORKDIR /usr/src/app
 
 COPY requirements.txt ./

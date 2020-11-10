@@ -8,5 +8,3 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
-    ports:
-      - 1883:1883

@@ -8,7 +8,7 @@ mqttmessages = {}
 def write(messages):
     data = f"indoorclimate,location=Shelly temperature={messages['temperature']},humidity={messages['humidity']},battery={messages['battery']}"
     print("Writing to database: " + data)
-    client = InfluxDBClient(host='raspberrypi.local', port=8086)
+    client = InfluxDBClient(host='influxdb', port=8086)
     client.switch_database('homedb')
     client.write_points(data, time_precision='ms', protocol='line')
 
@@ -44,7 +44,7 @@ def on_message(client, userdata, message):
  
 Connected = False   #global variable for the state of the connection
  
-broker_address= "raspberrypi.local"  #Broker address
+broker_address= "homeapp73-docker_mosquitto_1"  #Broker address
 port = 1883                         #Broker port
 user = "yourUser"                    #Connection username
 password = "yourPassword"            #Connection password
