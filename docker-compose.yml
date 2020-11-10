@@ -19,6 +19,13 @@ services:
             dockerfile: ./Dockerfile
         ports:
         - 5010:5010
+    climateapi:
+        image: climateapi
+        build:
+            context: ./climateapi
+            dockerfile: ./Dockerfile
+        ports:
+        - 5011:5011
     homeapp73:
         image: homeapp73
         build:

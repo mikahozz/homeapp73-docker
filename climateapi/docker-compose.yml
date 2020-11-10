@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  climateapi:
+    image: climateapi
+    build:
+      context: .
+      dockerfile: ./Dockerfile.alpine
+    ports:
+      - 5011:5011

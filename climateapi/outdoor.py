@@ -1,11 +1,11 @@
+from app import app
 from fmiopendata.wfs import download_stored_query
 import datetime as dt
 import pandas as pd
 from flask import Flask, request, jsonify, Response
-app = Flask(__name__)
 
-@app.route("/")
-def home():
+@app.route("/outdoor")
+def outdoor():
     if('location' in request.args):
         location = request.args['location']
     else:
@@ -59,7 +59,5 @@ def home():
     weather = obs.data[location]['wawa']['values']
 
     df = pd.DataFrame({'dt': keys, 't2m': temperature, 'ws_10min': wind, 'wg_10min': windHigh, 'wd_10min': windDirection, 'rh': humidity, 'td': moistPoint, 'r_1h': precipitation, 'ri_10min': precIntensity, 'snow_aws': snowDept, 'p_sea': pressure, 'vis': visibility, 'n_man': clouds, 'wawa': weather })
-    print(df)
-    return Response(df.to_json(orient="records"), mimetype='application/json')
-    #return jsonify(obs.data[list(obs.data.keys())[0]])
+    return Response(df.to_json(orient='records'), mimetype='application/json')
 

@@ -30,7 +30,7 @@ def home():
     calendars = my_principal.calendars()
     if calendars:
         events_fetched = calendars[0].date_search(
-            start=dt.datetime.today(), end=dt.datetime.today() + dt.timedelta(days=7), expand=True)
+            start=dt.datetime.utcnow(), end=dt.datetime.utcnow() + dt.timedelta(days=7), expand=True)
 
         events = []
         for x in events_fetched:
@@ -40,4 +40,5 @@ def home():
                     'start': x.vobject_instance.vevent.dtstart.value,
                     'end': x.vobject_instance.vevent.dtend.value,
                     'summary': x.vobject_instance.vevent.summary.value})
+
         return jsonify(events)
