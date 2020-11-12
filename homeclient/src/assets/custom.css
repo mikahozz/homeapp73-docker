@@ -58,9 +58,9 @@ h3 { color: rgb(151,151,151); font-size: 0.9em; font-weight: normal; margin-top:
 
 #calendardata h3 { font-size: 110%; color: #999999; text-transform: uppercase; margin-top: 20px; }
 .calendarBox { background-color: rgba(120, 120, 120, 0.1); border-left: solid 5px yellow; padding: 8px 8px 8px 8px; margin-bottom: 10px;}
-.lowPrio { border-color: rgba(255,255,0, 0.4); background-color: rgba(120, 120, 120, 0.05) }
-.eventTime { font-size: 110%; font-weight: 400;}
-.eventTitle { font-size: 95%; color: #adadad; }
+.lowPrio { border-color: rgba(255,255,0, 0.4); background-color: rgba(120, 120, 120, 0.05); color: rgba(255,255,255,0.7);}
+.eventTitle { font-size: 110%; font-weight: 400; margin-bottom: 5px; padding-top: 10px; padding-bottom: 10px;}
+.eventTime { font-size: 95%; color: #adadad; float: right;}
 .dot {
   margin-left: 15px;
   height: 8px;
@@ -75,9 +75,23 @@ h3 { color: rgb(151,151,151); font-size: 0.9em; font-weight: normal; margin-top:
 .aiti { background-color: red;}
 .iska { background-color: deepskyblue;}
 
-.timeBox {   width: 100px;
+.timeBox {   width: 200px;
   height: 100px;
   display: flex;
   align-items: center;}
 .time { font-size: 4em; line-height: 1em;}
 .date {padding-left: 5px; opacity: 0.7;}
+
+#indoor {position: relative; height: 150px; }
+#indoor:before {
+  position: absolute;
+  font-family: 'FontAwesome';
+  font-size:130px;
+  top: 35px;
+  left: 20px;
+  color:#fff;
+  opacity:.1;
+  }
+#indoor:before { content: "\f015"; }
+.indoorTemp {position: absolute; top: 30px; left: 70px; font-size: 150%; line-height: 2.5em;}
+.indoorUpdated {position: absolute; top: 100px; left: 0; color: rgba(151,151,151, 0.5); font-size: 0.7em;}

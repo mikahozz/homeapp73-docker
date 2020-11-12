@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { LabelList, Tooltip, Legend, ComposedChart, Bar, Line, CartesianGrid, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import moment from 'moment';
-import _ from 'lodash'
+import _ from 'lodash';
 
 export class WeatherData extends Component {
   static displayName = WeatherData.name;

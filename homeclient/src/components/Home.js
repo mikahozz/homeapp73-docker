@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Forecast } from './Forecast';
 import { WeatherData } from './WeatherData';
 import { WeatherNow} from './WeatherNow'
+import { Indoor} from './Indoor'
 import { Time } from './Time'
 import { FamilyCalendar} from './FamilyCalendar'
 
@@ -12,8 +13,9 @@ export class Home extends Component {
     return (
       <div id="home" className="container-fluid">
         <div className="row header box">
-          <div className="col-sm-9"><WeatherNow /></div>
-          <div className="col-sm-3 timeBox"><Time /></div>
+          <div className="col-sm-2"><WeatherNow /></div>
+          <div className="col-sm-4"><Indoor /></div>
+          <div className="d-none d-sm-block col-sm-3 timeBox offset-md-3"><Time /></div>
         </div>
         <div className="row">
           <div className="col-sm-5"><Forecast /></div>
