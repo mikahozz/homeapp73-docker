@@ -22,7 +22,7 @@ export class Indoor extends Component {
   }
 
   async populateIndoorData() {
-    const response = await fetch('http://localhost:5000/indoor');
+    const response = await fetch('http://localhost:5011/indoor');
     const data = await response.json();
     this.setState({ indoordata: data, loading: false });
   }

@@ -2,7 +2,7 @@ FROM python:3.7-alpine
 EXPOSE 5010
 
 WORKDIR /app
-COPY . .
+COPY requirements.txt .
 
 RUN apk add --update --no-cache --virtual .build-deps \
         g++ \
@@ -12,6 +12,8 @@ RUN apk add --update --no-cache --virtual .build-deps \
     apk add libxslt-dev
 RUN pip install --no-cache-dir -r requirements.txt
 RUN apk del .build-deps
+
+COPY . .
 
 CMD ["gunicorn", "--bind", "0.0.0.0:5010", "app:app"]
 #CMD ["gunicorn", "-c", "gunicorn_config.py", "src.app:application"]
