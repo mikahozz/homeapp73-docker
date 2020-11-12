@@ -13,8 +13,8 @@ export class FamilyCalendar extends Component {
 
   componentDidMount() {
     this.populateCalendarData();
-    // Refresh once in 24h
-    this.intervalId = setInterval(this.populateCalendarData.bind(this), 24*60*60*1000);
+    // Refresh once in 1h
+    this.intervalId = setInterval(this.populateCalendarData.bind(this), 60*60*1000);
   } 
   componentWillUnmount() {
     // Stop refreshing
@@ -33,7 +33,7 @@ export class FamilyCalendar extends Component {
   static renderCalendarContents(calendardata) {
     return Object.keys(calendardata).map(calitem => (
       <div key={calitem}>
-          <h3 key={calitem}>{FamilyCalendar.renderDate(calitem)}</h3>
+          <h3>{FamilyCalendar.renderDate(calitem)}</h3>
           {calendardata[calitem].map(eventItem => (
             <div key={eventItem.uid} className={FamilyCalendar.renderEventClasses(eventItem.summary)}>
             <div className="eventTitle">{eventItem.summary} {FamilyCalendar.renderDots(eventItem.summary)} 

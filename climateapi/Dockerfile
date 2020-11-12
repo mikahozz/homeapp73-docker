@@ -4,7 +4,14 @@ EXPOSE 5011
 WORKDIR /app
 COPY . .
 
+RUN apk add --update --no-cache --virtual .build-deps \
+        g++ \
+        python3-dev \
+        libxml2 \
+        libxml2-dev && \
+    apk add libxslt-dev
 RUN pip install --no-cache-dir -r requirements.txt
+RUN apk del .build-deps
 
 CMD ["gunicorn", "--bind", "0.0.0.0:5011", "app:app"]
 #CMD ["gunicorn", "-c", "gunicorn_config.py", "src.app:application"]

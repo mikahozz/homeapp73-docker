@@ -33,7 +33,7 @@ export class Indoor extends Component {
       ? <p><em>Loading...</em></p>
       : <div>
           <p className="indoorTemp">{_.round(this.state.indoordata.temperature, 1) }°</p>
-          <p className="indoorUpdated">Updated: {moment(this.state.indoordata.time).format('ddd HH:mm')}, battery: {this.state.indoordata.battery }%</p>
+          <p className="indoorUpdated">{moment(this.state.indoordata.time).format('ddd HH:mm')}</p>
         </div>
 
     return (
