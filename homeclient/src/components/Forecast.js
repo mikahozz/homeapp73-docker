@@ -13,7 +13,8 @@ export class Forecast extends Component {
   componentDidMount() {
     this.populateForecastData();
     // Refresh data every 1 hour
-    this.intervalId = setInterval(this.populateForecastData.bind(this), 60*60*1000);
+    this.intervalId = setInterval(this.populateForecastData.bind(this), 10*1000);
+    document.getElementById('root').scrollTop = 0 
   }
 
   componentWillUnmount() {

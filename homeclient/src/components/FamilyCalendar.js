@@ -36,11 +36,12 @@ export class FamilyCalendar extends Component {
           <h3 key={calitem}>{FamilyCalendar.renderDate(calitem)}</h3>
           {calendardata[calitem].map(eventItem => (
             <div key={eventItem.uid} className={FamilyCalendar.renderEventClasses(eventItem.summary)}>
-            <div className="eventTime">
+            <div className="eventTitle">{eventItem.summary} {FamilyCalendar.renderDots(eventItem.summary)} 
+            <span className="eventTime">
               {moment(eventItem.start).format('HH:mm')} - {moment(eventItem.end).format('HH:mm')}
-              {FamilyCalendar.renderDots(eventItem.summary)}
+            </span>
             </div>
-            <div className="eventTitle">{eventItem.summary}</div>
+            
             </div>  
             ))}
       </div>
