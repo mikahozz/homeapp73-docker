@@ -5,6 +5,6 @@ services:
     image: climateapi
     build:
       context: .
-      dockerfile: ./Dockerfile.alpine
+      dockerfile: ./Dockerfile
     ports:
       - 5011:5011
