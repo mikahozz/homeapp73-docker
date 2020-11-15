@@ -26,8 +26,6 @@ with DAG('airflow_tutorial_v01',
                                bash_command='echo "hello"')
     sleep = BashOperator(task_id='sleep',
                          bash_command='sleep 5')
-    print_world = PythonOperator(task_id='print_world',
-                                 python_callable=print_world)
 
 
-print_hello >> sleep >> print_world
+print_hello >> sleep 
