@@ -13,8 +13,8 @@ export class Indoor extends Component {
 
   componentDidMount() {
     this.populateIndoorData();
-    // Refresh data every 1 hour
-    this.intervalId = setInterval(this.populateIndoorData.bind(this), 60*60*1000);
+    // Refresh data every 10 minutes
+    this.intervalId = setInterval(this.populateIndoorData.bind(this), 10*60*1000);
   }
   componentWillUnmount() {
     // Stop refreshing
@@ -22,7 +22,7 @@ export class Indoor extends Component {
   }
 
   async populateIndoorData() {
-    const response = await fetch('http://localhost:5011/indoor');
+    const response = await fetch('http://raspberrypi.local:5011/indoor');
     const data = await response.json();
     this.setState({ indoordata: data, loading: false });
   }

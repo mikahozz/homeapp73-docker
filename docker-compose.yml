@@ -24,24 +24,29 @@ services:
         build:
             context: ./climateapi
             dockerfile: ./Dockerfile
+        volumes:
+        - ./climateapi:/app
         ports:
         - 5011:5011
     homeapp73:
         image: homeapp73
+        volumes:
+        - ./homeclient/src:/usr/src/app/src
+        - ./homeclient/public:/usr/src/app/public
         build:
             context: ./homeclient
             dockerfile: ./Dockerfile
         ports:
         - 3000:3000
-#    airflow:
-#        image: airflow
-#        ports:
-#        - "8080:8080"
-#        volumes:
-#        - ./airflow/dags:/usr/local/airflow/dags
-#        build:
-#            context: ./airflow
-#            dockerfile: ./Dockerfile
+    airflow:
+        image: airflow
+        ports:
+        - "8080:8080"
+        volumes:
+        - ./airflow/dags:/usr/local/airflow/dags
+        build:
+            context: ./airflow
+            dockerfile: ./Dockerfile
 
     mosquitto:
         image: eclipse-mosquitto

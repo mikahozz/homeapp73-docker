@@ -6,34 +6,31 @@ from flask import Flask, request, jsonify, Response
 
 @app.route("/outdoor")
 def outdoor():
-    if('location' in request.args):
-        location = request.args['location']
-    else:
-        location = 'Helsinki'
+    location = request.args.get('location')
 
     # Handle date inputs
-    if('start_time' in request.args):
-        startTime = dt.datetime.strptime(request.args['start_time'], "%Y-%m-%dT%H:%M:%S")
+    if('start_date' in request.args):
+        startTime = dt.datetime.strptime(request.args.get('start_date'), "%Y-%m-%dT%H:%M:%SZ")
         if(startTime > dt.datetime.utcnow()):
-            return 'start_time cannot be in future'
-        if('end_time' in request.args):
-            endTime = dt.datetime.strptime(request.args['end_time'], "%Y-%m-%dT%H:%M:%S")
+            return 'start_date cannot be in future'
+        if('end_date' in request.args):
+            endTime = dt.datetime.strptime(request.args.get('end_date'), "%Y-%m-%dT%H:%M:%SZ")
             if(startTime > endTime):
-                return 'start_time cannot be greater than end_time'
+                return 'start_date cannot be greater than end_date'
         else:
             endTime = startTime + dt.timedelta(minutes=(6*24*60)-10)
     else:
-        if('end_time' in request.args):
-            endTime = dt.datetime.strptime(request.args['end_time'], "%Y-%m-%dT%H:%M:%S")
+        if('end_date' in request.args):
+            endTime = dt.datetime.strptime(request.args.get('end_date'), "%Y-%m-%dT%H:%M:%SZ")
             if(endTime > dt.datetime.utcnow()):
-                return 'end_time cannot be in future'
+                return 'end_date cannot be in future'
         else:
             endTime = dt.datetime.utcnow()
         startTime = endTime - dt.timedelta(minutes=(6*24*60)-10)
 
     startTime = startTime.isoformat(timespec="seconds") + "Z"
     endTime = endTime.isoformat(timespec="seconds") + "Z"
-    print("{} {}".format(startTime, endTime))
+    print("Fetching weather data with values {} {} {}".format(location, startTime, endTime), flush=True)
     obs = download_stored_query("fmi::observations::weather::multipointcoverage",
                             args=["place=" + location,
                                   "starttime=" + startTime,

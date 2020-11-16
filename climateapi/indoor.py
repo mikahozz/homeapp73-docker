@@ -5,7 +5,7 @@ from flask import jsonify
 
 @app.route("/indoor")
 def indoor():
-    client = InfluxDBClient(host='raspberrypi.local', port=8086)
+    client = InfluxDBClient(host='influxdb', port=8086)
     client.switch_database('homedb')
     results = client.query('SELECT LAST(temperature),* FROM indoorclimate')
 
