@@ -13,16 +13,16 @@ def outdoor():
         try:
             startTime = dt.datetime.strptime(request.args.get('start_date'), "%Y-%m-%dT%H:%M:%SZ")
         except ValueError:
-            return Response("Invalid start_date. Should be yyyy-MM-ddThh:mm:ssZ", status_code=400)
+            return 'Invalid start_date. Should be yyyy-MM-ddThh:mm:ssZ', 400
         if(startTime > dt.datetime.utcnow()):
-            return Response('start_date cannot be in future', status_code=400)
+            return 'start_date cannot be in future', 400
         if('end_date' in request.args):
             try:
                 endTime = dt.datetime.strptime(request.args.get('end_date'), "%Y-%m-%dT%H:%M:%SZ")
             except ValueError:
-                return Response("Invalid end_date. Should be yyyy-MM-ddThh:mm:ssZ", status_code=400)
+                return "Invalid end_date. Should be yyyy-MM-ddThh:mm:ssZ", 400
             if(startTime > endTime):
-                return Response('start_date cannot be greater than end_date', status_code=400)
+                return 'start_date cannot be greater than end_date', 400
         else:
             endTime = startTime + dt.timedelta(minutes=(6*24*60)-10)
     else:
@@ -30,9 +30,9 @@ def outdoor():
             try:
                 endTime = dt.datetime.strptime(request.args.get('end_date'), "%Y-%m-%dT%H:%M:%SZ")
             except ValueError:
-                return Response("Invalid end_date. Should be yyyy-MM-ddThh:mm:ssZ", status_code=400)
+                return 'Invalid end_date. Should be yyyy-MM-ddThh:mm:ssZ', 400
             if(endTime > dt.datetime.utcnow()):
-                return Response('end_date cannot be in future', status_code=400)
+                return 'end_date cannot be in future', 400
         else:
             endTime = dt.datetime.utcnow()
         startTime = endTime - dt.timedelta(minutes=(6*24*60)-10)

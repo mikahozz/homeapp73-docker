@@ -7,7 +7,6 @@ services:
       - "8080:8080"
     volumes:
       - ./dags:/usr/local/airflow/dags
-      - ./scripts:/usr/local/airflow/scripts
     build:
       context: .
       dockerfile: ./Dockerfile
