@@ -21,6 +21,12 @@ RUN pip install -U pip setuptools wheel \
 COPY ./entrypoint.sh /entrypoint.sh
 RUN chmod +x entrypoint.sh
 
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+RUN mkdir scripts
+COPY ./scripts /scripts
+
 EXPOSE 8080
 
 ENV AIRFLOW_HOME=/usr/local/airflow
