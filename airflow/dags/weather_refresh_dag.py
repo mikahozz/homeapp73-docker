@@ -8,15 +8,15 @@ import weathertask
 
 default_args = {
     'owner': 'me',
-    'start_date': dt.datetime(2020, 11, 15),
-    'retries': 1,
-    'retry_delay': dt.timedelta(minutes=5),
+    'start_date': dt.datetime(2020, 11, 19),
+    'retries': 5,
+    'retry_delay': dt.timedelta(minutes=60),
 }
 
 
-with DAG('update_weather',
+with DAG('weather_refresh',
          default_args=default_args,
-         schedule_interval='0 0 * * *',
+         schedule_interval='0 */10 * * *',
          ) as dag:
 
     print_start = BashOperator(task_id='print_start',

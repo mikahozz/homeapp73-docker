@@ -22,7 +22,7 @@ def fetch(start_date, end_date, location):
                 value.append('{0}={1}'.format(col[0], col[1]))
         data.append('climate,location={location} {data} {time}'.format(location=location, data=','.join(value), time=timestamp))
 
-    client = InfluxDBClient(host='raspberrypi.local', port=8086)
+    client = InfluxDBClient(host='influxdb', port=8086)
     client.switch_database('homedb')
     print('Writing {0} records into the db'.format(len(data)))
     print('First 10: ', '\r\n'.join(data[:10]))
