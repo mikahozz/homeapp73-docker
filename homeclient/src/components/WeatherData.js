@@ -39,7 +39,7 @@ export class WeatherData extends Component {
   }
 
   async populateWeatherData() {
-    const response = await fetch('http://raspberrypi.local:5000/weather');
+    const response = await fetch('http://raspberrypi.local:5011/outdoor/history/Kumpula/30');
     const data = await response.json();
     const sorted = _.sortBy(data, element => element.dt);
     const grouped = _.groupBy(sorted, element => element.dt.substring(0, 10))
