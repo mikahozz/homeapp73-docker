@@ -1,13 +1,17 @@
 import datetime as dt
+from dateutil.parser import parse
 import requests
 import json
 from influxdb import InfluxDBClient
 
 def fetch(start_date, end_date, location):
-    start =  dt.datetime.strptime(start_date, '%Y-%m-%d').strftime('%Y-%m-%dT%H:%M:%SZ')
-    end =  dt.datetime.strptime(end_date, '%Y-%m-%d').strftime('%Y-%m-%dT%H:%M:%SZ')
+    start = parse(start_date).strftime('%Y-%m-%dT%H:%M:%SZ')
+    end = parse(end_date).strftime('%Y-%m-%dT%H:%M:%SZ')
 
-    url = f'http://homeapp73-docker_climateapi_1:5011/outdoor?start_date={start}&end_date={end}&location={location}'
+    if(start == end):
+        url = f'http://homeapp73-docker_climateapi_1:5011/outdoor?start_date={start}&location={location}'
+    else:
+        url = f'http://homeapp73-docker_climateapi_1:5011/outdoor?start_date={start}&end_date={end}&location={location}'
     print(url)
     x = requests.get(url)
     if(x.status_code != 200):
