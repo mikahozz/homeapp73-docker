@@ -29,6 +29,6 @@ def fetch(start_date, end_date, location):
     client = InfluxDBClient(host='influxdb', port=8086)
     client.switch_database('homedb')
     print('Writing {0} records into the db'.format(len(data)))
-    print('First 10: ', '\r\n'.join(data[:10]))
+    print('Rows: ', '\r\n'.join(data))
     if(len(data) > 0):
         client.write_points(data, time_precision='ms', protocol='line')

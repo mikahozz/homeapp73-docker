@@ -3,6 +3,7 @@ import { Forecast } from './Forecast';
 import { WeatherData } from './WeatherData';
 import { WeatherNow} from './WeatherNow'
 import { Indoor} from './Indoor'
+import { Balcony} from './Balcony'
 import { Time } from './Time'
 import { FamilyCalendar} from './FamilyCalendar'
 
@@ -14,7 +15,8 @@ export class Home extends Component {
       <div id="home" className="container-fluid">
         <div className="row header box">
           <div className="col-sm-2"><WeatherNow /></div>
-          <div className="col-sm-4"><Indoor /></div>
+          <div className="col-sm-2"><Indoor /></div>
+          <div className="col-sm-2"><Balcony /></div>
           <div className="d-none d-sm-block col-sm-3 timeBox offset-md-3"><Time /></div>
         </div>
         <div className="row">

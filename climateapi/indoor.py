@@ -3,11 +3,11 @@ from influxdb import InfluxDBClient, DataFrameClient
 import datetime as dt
 from flask import jsonify
 
-@app.route("/indoor")
-def indoor():
+@app.route("/indoor/<device>")
+def indoor(device):
     client = InfluxDBClient(host='influxdb', port=8086)
     client.switch_database('homedb')
-    results = client.query('SELECT LAST(temperature),* FROM indoorclimate')
+    results = client.query(f"SELECT LAST(temperature),* FROM indoorclimate where location = '{device}'")
 
     resultgen = results.get_points()
     response = {}

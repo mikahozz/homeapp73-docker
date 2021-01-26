@@ -1,12 +1,12 @@
 import paho.mqtt.client as mqttClient
 import time
+import json
 import datetime as dt
 from influxdb import InfluxDBClient
 
 mqttmessages = {}
 
-def write(messages):
-    data = f"indoorclimate,location=Shelly temperature={messages['temperature']},humidity={messages['humidity']},battery={messages['battery']}"
+def writeentry(data):
     print("Writing to database: " + data)
     client = InfluxDBClient(host='influxdb', port=8086)
     client.switch_database('homedb')
@@ -30,17 +30,23 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, message):
     global mqttmessages
     msg = message.payload.decode("utf-8")
-    topic = message.topic.split('/')[-1]
-    print(f"Message received: {topic} {msg}")
-    if(topic in ['temperature', 'humidity', 'battery']):
-        print(f"Adding to mqttmessages: {topic} {msg}")
-        mqttmessages[topic] = msg
-    for x, y in mqttmessages.items():
-      print(x, y)
-    if(len(mqttmessages) == 3):
-        print("All 3 climate values received")
-        write(mqttmessages)
-        mqttmessages = {}
+    if(message.topic == "zigbee2mqtt/0x00124b00226b11bc"):
+        msgjson = json.loads(msg)
+        data = f"indoorclimate,location=Sonoff temperature={msgjson['temperature']},humidity={msgjson['humidity']},battery={msgjson['battery']}"
+        writeentry(data)
+    else:
+        topic = message.topic.split('/')[-1]
+        print(f"Message received: {topic} {msg}")
+        if(topic in ['temperature', 'humidity', 'battery']):
+            print(f"Adding to mqttmessages: {topic} {msg}")
+            mqttmessages[topic] = msg
+        for x, y in mqttmessages.items():
+            print(x, y)
+            if(len(mqttmessages) == 3):
+                print("All 3 climate values received")
+                data = f"indoorclimate,location=Shelly temperature={mqttmessages['temperature']},humidity={mqttmessages['humidity']},battery={mqttmessages['battery']}"
+                writeentry(data)
+                mqttmessages = {}
  
 Connected = False   #global variable for the state of the connection
  
