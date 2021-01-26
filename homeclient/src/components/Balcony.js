@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import _ from 'lodash';
 
-export class Indoor extends Component {
-  static displayName = Indoor.name;
+export class Balcony extends Component {
+  static displayName = Balcony.name;
   static intervalId;
 
   constructor(props) {
@@ -22,7 +22,7 @@ export class Indoor extends Component {
   }
 
   async populateIndoorData() {
-    const response = await fetch('http://raspberrypi.local:5011/indoor/Sonoff');
+    const response = await fetch('http://raspberrypi.local:5011/indoor/Shelly');
     const data = await response.json();
     this.setState({ indoordata: data, loading: false });
   }
@@ -32,12 +32,12 @@ export class Indoor extends Component {
     let contents = this.state.loading
       ? <p><em>Loading...</em></p>
       : <div>
-          <p className="indoorTemp">{_.round(this.state.indoordata.temperature, 1) }°</p>
-          <p className="indoorUpdated">{moment(this.state.indoordata.time).format('ddd HH:mm')}</p>
+          <p className="balconyTemp">{_.round(this.state.indoordata.temperature, 1) }°</p>
+          <p className="balconyUpdated">{moment(this.state.indoordata.time).format('ddd HH:mm')}</p>
         </div>
 
     return (
-      <div id="indoor">
+      <div id="balcony">
          {contents}
       </div>
     );
