@@ -83,5 +83,11 @@ services:
         privileged: true
         environment:
             - TZ=Europe/Helsinki
-            
+    prometheus:
+        container_name: prometheus
+        image: prom/prometheus
+        volumes:
+            - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+        ports:
+            - 9090:9090
             
