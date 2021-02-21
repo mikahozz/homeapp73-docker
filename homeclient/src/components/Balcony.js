@@ -22,7 +22,7 @@ export class Balcony extends Component {
   }
 
   async populateIndoorData() {
-    const response = await fetch('http://raspberrypi.local:5011/indoor/Shelly');
+    const response = await fetch('/indoor/Shelly');
     const data = await response.json();
     this.setState({ indoordata: data, loading: false });
   }

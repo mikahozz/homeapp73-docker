@@ -13,44 +13,50 @@ def writeentry(data):
     client.write_points(data, time_precision='ms', protocol='line')
 
 def on_connect(client, userdata, flags, rc):
-    if rc == 0: 
-        print("Connected to broker")
- 
-        global Connected                #Use global variable
-        Connected = True                #Signal connection 
+    try:
+        if rc == 0: 
+            print("Connected to broker")
+    
+            global Connected                #Use global variable
+            Connected = True                #Signal connection 
 
-        #topic = "home/sensors/#"
-        topic = "#"
-        print("Subscribe to " + topic)
-        client.subscribe(topic)
- 
-    else:
-        print("Connection failed")
+            #topic = "home/sensors/#"
+            topic = "#"
+            print("Subscribe to " + topic)
+            client.subscribe(topic)
+    
+        else:
+            print("Connection failed") 
+    except Exception as e:
+        print("Exception in subscribing to mqtt broker: " + e)
 
 def on_message(client, userdata, message):
-    global mqttmessages
-    msg = message.payload.decode("utf-8")
-    if(message.topic == "zigbee2mqtt/0x00124b00226b11bc"):
-        msgjson = json.loads(msg)
-        data = f"indoorclimate,location=Sonoff temperature={msgjson['temperature']},humidity={msgjson['humidity']},battery={msgjson['battery']}"
-        writeentry(data)
-    else:
-        topic = message.topic.split('/')[-1]
-        print(f"Message received: {topic} {msg}")
-        if(topic in ['temperature', 'humidity', 'battery']):
-            print(f"Adding to mqttmessages: {topic} {msg}")
-            mqttmessages[topic] = msg
-        for x, y in mqttmessages.items():
-            print(x, y)
-            if(len(mqttmessages) == 3):
-                print("All 3 climate values received")
-                data = f"indoorclimate,location=Shelly temperature={mqttmessages['temperature']},humidity={mqttmessages['humidity']},battery={mqttmessages['battery']}"
-                writeentry(data)
-                mqttmessages = {}
+    try:
+        global mqttmessages
+        msg = message.payload.decode("utf-8")
+        if(message.topic == "zigbee2mqtt/0x00124b00226b11bc"):
+            msgjson = json.loads(msg)
+            data = f"indoorclimate,location=Sonoff temperature={msgjson['temperature']},humidity={msgjson['humidity']},battery={msgjson['battery']}"
+            writeentry(data)
+        else:
+            topic = message.topic.split('/')[-1]
+            print(f"Message received: {topic} {msg}")
+            if(topic in ['temperature', 'humidity', 'battery']):
+                print(f"Adding to mqttmessages: {topic} {msg}")
+                mqttmessages[topic] = msg
+            for x, y in mqttmessages.items():
+                print(x, y)
+                if(len(mqttmessages) == 3):
+                    print("All 3 climate values received")
+                    data = f"indoorclimate,location=Shelly temperature={mqttmessages['temperature']},humidity={mqttmessages['humidity']},battery={mqttmessages['battery']}"
+                    writeentry(data)
+                    mqttmessages = {}
+    except Exception as e:
+        print("Exception in message handling: " + e)
  
 Connected = False   #global variable for the state of the connection
  
-broker_address= "homeapp73-docker_mosquitto_1"  #Broker address
+broker_address= "10.43.137.155"  #Broker address
 port = 1883                         #Broker port
 user = "yourUser"                    #Connection username
 password = "yourPassword"            #Connection password

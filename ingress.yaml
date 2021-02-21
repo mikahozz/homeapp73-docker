@@ -1,0 +1,59 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: homeapp73
+            port:
+              number: 3000
+      - path: /indoor
+        pathType: Prefix
+        backend:
+          service:
+            name: climateapi
+            port:
+              number: 5011
+      - path: /outdoor
+        pathType: Prefix
+        backend:
+          service:
+            name: climateapi
+            port:
+              number: 5011
+      - path: /weathernow
+        pathType: Prefix
+        backend:
+          service:
+            name: homeappnetapi
+            port:
+              number: 5000 
+      - path: /weatherfore
+        pathType: Prefix
+        backend:
+          service:
+            name: homeappnetapi
+            port:
+              number: 5000 
+      - path: /api/events
+        pathType: Prefix
+        backend:
+          service:
+            name: calendarapi
+            port:
+              number: 5010 
+      - path: /prom
+        pathType: Prefix
+        backend:
+          service:
+            name: prometheus
+            port:
+              number: 9090

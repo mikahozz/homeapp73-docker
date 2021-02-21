@@ -22,7 +22,7 @@ export class Indoor extends Component {
   }
 
   async populateIndoorData() {
-    const response = await fetch('http://raspberrypi.local:5011/indoor/Sonoff');
+    const response = await fetch('/indoor/Sonoff');
     const data = await response.json();
     this.setState({ indoordata: data, loading: false });
   }

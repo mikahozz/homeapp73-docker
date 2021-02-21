@@ -22,7 +22,7 @@ export class FamilyCalendar extends Component {
   }
 
   async populateCalendarData() {
-    const response = await fetch('http://raspberrypi.local:5010/api/events');
+    const response = await fetch('/api/events');
     const data = await response.json();
     const sorted = _.sortBy(data, element => new Date(element.start));
     const grouped = _.groupBy(sorted, element => new Date(element.start).setHours(0,0,0,0));

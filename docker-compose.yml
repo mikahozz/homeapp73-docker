@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
     homeappnetapi:
-        image: homeappnetapi
+        image: localhost:5101/homeappnetapi
         restart: always
         env_file:
             - ./weatherapi/docker-env
@@ -14,7 +14,7 @@ services:
     calendarapi:
         env_file:
             - ./calendarapi/docker.env
-        image: calendarapi
+        image: localhost:5101/calendarapi
         restart: always
         build:
             context: ./calendarapi
@@ -22,7 +22,7 @@ services:
         ports:
         - 5010:5010
     climateapi:
-        image: climateapi
+        image: localhost:5101/climateapi
         restart: always
         build:
             context: ./climateapi
@@ -32,7 +32,7 @@ services:
         ports:
         - 5011:5011
     homeapp73:
-        image: homeapp73
+        image: localhost:5101/homeapp73
         restart: always
         volumes:
         - ./homeclient/src:/usr/src/app/src
@@ -42,27 +42,30 @@ services:
             dockerfile: ./Dockerfile
         ports:
         - 3000:3000
-    airflow:
-        image: airflow
-        restart: always
-        ports:
-        - "8080:8080"
-        volumes:
-        - ./airflow/dags:/usr/local/airflow/dags
-        build:
-            context: ./airflow
-            dockerfile: ./Dockerfile
+    #airflow:
+    #    image: airflow
+    #    restart: always
+    #    ports:
+    #    - "8080:8080"
+    #    volumes:
+    #    - ./airflow/dags:/usr/local/airflow/dags
+    #    build:
+    #        context: ./airflow
+    #        dockerfile: ./Dockerfile
 
     mosquitto:
-        image: eclipse-mosquitto
+        image: localhost:5101/mosquitto
+        build:
+            context: ./mosquitto
+            dockerfile: ./Dockerfile
         restart: always
-        volumes:
-            - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+#        volumes:
+#            - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
         ports: 
             - "1883:1883"
 
     mqttclient:
-        image: mqttclient
+        image: localhost:5101/mqttclient
         restart: always
         volumes:
             - ./mqttclient:/usr/src/app

@@ -62,7 +62,7 @@ static renderRotate(degree) {
   }
 
   async populateForecastData() {
-    const response = await fetch('http://raspberrypi.local:5000/weatherfore');
+    const response = await fetch('/weatherfore');
     const data = await response.json();
     this.setState({ forecastdata: data, loading: false });
   }
