@@ -52,7 +52,7 @@ def on_message(client, userdata, message):
                     writeentry(data)
                     mqttmessages = {}
     except Exception as e:
-        print("Exception in message handling: " + e)
+        print("Exception in message handling: " + str(e))
  
 Connected = False   #global variable for the state of the connection
  
