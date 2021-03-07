@@ -8,13 +8,19 @@ const capacityTabXPath = "//a[contains(text(), 'Kapasiteetit')]";
 const capacityRowSelector = 'table.table.table-condensed.table-striped.table-bordered tr';
 
 (async () => {
+    console.log('Launching browser');
     const browser = await puppeteer.launch({
         headless: true,
         executablePath: '/usr/bin/chromium',
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
+        args: ['--no-sandbox', '--disable-setuid-sandbox'], 
+        ignoreHTTPSErrors: true, 
+        dumpio: false
       });
+    console.log('Opening page');
     const page = await browser.newPage();
+    console.log('Going to url ' + process.env.URL);
     await page.goto(process.env.URL, {waitUntil: 'load'});
+    console.log('Waiting for selector ' + usernameSelector);
     await page.waitForSelector(usernameSelector);
     await page.type(usernameSelector, process.env.USERNAME);
     await page.type(passwordSelector, process.env.PASSWORD);
