@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  cabinbookingstatus:
+    image: cabinbookings
+    volumes:
+      - ./data:/app/data
+    build:
+      context: .
+      dockerfile: ./Dockerfile
