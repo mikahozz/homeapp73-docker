@@ -64,3 +64,10 @@ spec:
             name: prometheus-grafana 
             port:
               number: 80
+      - path: /influx
+        pathType: Prefix
+        backend:
+          service:
+            name: influxdb 
+            port:
+              number: 8086

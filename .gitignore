@@ -1,4 +1,6 @@
 __pycache__
 env
 meta.db
-calendarapi-docker-env-configmap.yaml
+*docker-env-configmap.yaml
+*.env
+*-env
