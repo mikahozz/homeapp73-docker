@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
-require('dotenv').config()
+require('dotenv').config();
+const fs = require('fs');
 
 const usernameSelector = 'input[name=username]';
 const passwordSelector = 'input[type=password]';
@@ -45,5 +46,11 @@ const capacityRowSelector = 'table.table.table-condensed.table-striped.table-bor
         return results;
     })
     console.log(capacity);
+    fs.writeFile('data/bookings.json', JSON.stringify(capacity), (err) => {
+        if (err) {
+            throw err;
+        }
+        console.log("Bookings data is saved.");
+    });
     browser.close();
 })();

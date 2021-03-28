@@ -13,4 +13,4 @@ COPY . .
 
 EXPOSE 80
 
-CMD ["node", "start.js"]
+CMD ["node", "refreshbookings.js"]
