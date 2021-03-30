@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
 require('dotenv').config();
+const utils = require('./util.js')
 const fs = require('fs');
 
 const usernameSelector = 'input[name=username]';
@@ -45,7 +46,12 @@ const capacityRowSelector = 'table.table.table-condensed.table-striped.table-bor
         });
         return results;
     })
-    console.log(capacity);
+    capacityFixed = capacity.map(item => { 
+        var parsed = utils.parseDate(item.date);
+        return { date: parsed.getFullYear() + "-" + parsed.getMonth()-1 + "-" + parsed.getDate(),
+        booked: item.booked }
+    });
+    console.log(capacityFixed);
     fs.writeFile('data/bookings.json', JSON.stringify(capacity), (err) => {
         if (err) {
             throw err;
