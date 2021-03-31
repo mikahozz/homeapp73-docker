@@ -14,8 +14,14 @@ function parseDate(datestr) {
 }
 
 function convertArray(array) {
-    return (array) ? array.map(item => ({ d: toSimpleDate(parseDate(item.date), '-'), b: parseInt(item.booked)}))
-        .filter(item => item.d != null) : null;
+    return (array) ? array
+    .map(item => {
+        parsedDate = toSimpleDate(parseDate(item.date), '-');
+        return (parsedDate) ? parsedDate + "," + parseInt(item.booked) : null;
+    })
+    .filter(item => item != null)
+    .join("\r\n")
+     : null;
 }
 
 function toSimpleDate(date, delim = '') {

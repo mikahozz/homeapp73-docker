@@ -4,10 +4,10 @@ describe("ConvertArray function", () => {
     test("Convert date in an array", () => {
 
         expect(utils.convertArray([{"date":"ma 29.3.2021","booked":"0"},{"date":"ti 30.3.2021","booked":"1"}]))
-        .toEqual([{"d":"2021-03-29","b":0},{"d":"2021-03-30","b":1}]);
+        .toEqual("2021-03-29,0\r\n2021-03-30,1");
         expect(utils.convertArray([{"date":"ma nodate","booked":"0"},{"date":"ti 30.3.2021","booked":"1"}]))
-        .toEqual([{"d":"2021-03-30","b":1}]);
-        expect(utils.convertArray([])).toEqual([]);
+        .toEqual("2021-03-30,1");
+        expect(utils.convertArray([])).toEqual("");
         expect(utils.convertArray(null)).toEqual(null);
     })
 })

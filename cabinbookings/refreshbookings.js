@@ -48,7 +48,7 @@ const capacityRowSelector = 'table.table.table-condensed.table-striped.table-bor
     })
     capacityFixed = utils.convertArray(capacity);
     console.log(capacityFixed);
-    fs.writeFile(`data/bookings_${utils.toSimpleDate(new Date())}.json`, JSON.stringify(capacityFixed), (err) => {
+    fs.writeFile(`data/bookings_${utils.toSimpleDate(new Date())}.csv`, capacityFixed, (err) => {
         if (err) {
             throw err;
         }
