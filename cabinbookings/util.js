@@ -14,9 +14,20 @@ function parseDate(datestr) {
 }
 
 function convertArray(array) {
-    return array.map(item => ({ date: parseDate(item.date), booked: (item.booked == 1)}))
-        .filter(item => item.date != null);
+    return (array) ? array.map(item => ({ d: toSimpleDate(parseDate(item.date), '-'), b: parseInt(item.booked)}))
+        .filter(item => item.d != null) : null;
 }
 
-module.exports = { parseDate, convertArray };
+function toSimpleDate(date, delim = '') {
+    if(!date) { return null; }
+    var mm = date.getMonth() + 1; // getMonth() is zero-based
+    var dd = date.getDate();
+  
+    return [date.getFullYear(),
+            (mm>9 ? '' : '0') + mm,
+            (dd>9 ? '' : '0') + dd
+           ].join(delim);
+}
+
+module.exports = { parseDate, convertArray, toSimpleDate };
 

@@ -46,13 +46,9 @@ const capacityRowSelector = 'table.table.table-condensed.table-striped.table-bor
         });
         return results;
     })
-    capacityFixed = capacity.map(item => { 
-        var parsed = utils.parseDate(item.date);
-        return { date: parsed.getFullYear() + "-" + parsed.getMonth()-1 + "-" + parsed.getDate(),
-        booked: item.booked }
-    });
+    capacityFixed = utils.convertArray(capacity);
     console.log(capacityFixed);
-    fs.writeFile('data/bookings.json', JSON.stringify(capacity), (err) => {
+    fs.writeFile(`data/bookings_${utils.toSimpleDate(new Date())}.json`, JSON.stringify(capacityFixed), (err) => {
         if (err) {
             throw err;
         }

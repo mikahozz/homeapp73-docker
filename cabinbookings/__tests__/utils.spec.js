@@ -4,9 +4,11 @@ describe("ConvertArray function", () => {
     test("Convert date in an array", () => {
 
         expect(utils.convertArray([{"date":"ma 29.3.2021","booked":"0"},{"date":"ti 30.3.2021","booked":"1"}]))
-        .toEqual([{"date":new Date(2021, 2, 29, 16),"booked":false},{"date":new Date(2021, 2, 30, 16),"booked":true}]);
+        .toEqual([{"d":"2021-03-29","b":0},{"d":"2021-03-30","b":1}]);
         expect(utils.convertArray([{"date":"ma nodate","booked":"0"},{"date":"ti 30.3.2021","booked":"1"}]))
-        .toEqual([{"date":new Date(2021, 2, 30, 16),"booked":true}]);
+        .toEqual([{"d":"2021-03-30","b":1}]);
+        expect(utils.convertArray([])).toEqual([]);
+        expect(utils.convertArray(null)).toEqual(null);
     })
 })
 describe("Parsedate function", () => {
@@ -24,5 +26,11 @@ describe("Parsedate function", () => {
         expect(utils.parseDate("pe 30.2.2021")).toEqual(null);
         expect(utils.parseDate("pe 29.2.2021")).toEqual(null);
         expect(utils.parseDate(null)).toEqual(null);
+    });
+});
+describe("toSimpleDate function", () => {
+    test("convert date to format yyyymmdd", () => {
+        expect(utils.toSimpleDate(new Date(2021, 0, 1))).toEqual('20210101');
+        expect(utils.toSimpleDate(null)).toEqual(null);
     });
 });
