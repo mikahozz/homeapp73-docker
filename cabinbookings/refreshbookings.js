@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
 require('dotenv').config();
+const utils = require('./util.js')
 const fs = require('fs');
 
 const usernameSelector = 'input[name=username]';
@@ -45,8 +46,9 @@ const capacityRowSelector = 'table.table.table-condensed.table-striped.table-bor
         });
         return results;
     })
-    console.log(capacity);
-    fs.writeFile('data/bookings.json', JSON.stringify(capacity), (err) => {
+    capacityFixed = utils.convertArray(capacity);
+    console.log(capacityFixed);
+    fs.writeFile(`data/bookings_${utils.toSimpleDate(new Date())}.csv`, capacityFixed, (err) => {
         if (err) {
             throw err;
         }
