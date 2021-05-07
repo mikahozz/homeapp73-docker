@@ -35,12 +35,17 @@ def on_message(client, userdata, message):
         global mqttmessages
         msg = message.payload.decode("utf-8")
         if(message.topic == "zigbee2mqtt/0x00124b00226b11bc"):
+            print(f"Message was received: {message.topic} {msg}")
             msgjson = json.loads(msg)
-            data = f"indoorclimate,location=Sonoff temperature={msgjson['temperature']},humidity={msgjson['humidity']},battery={msgjson['battery']}"
-            writeentry(data)
+            influxdata = "indoorclimate,location=Sonoff "
+            values = {}
+            for value in msgjson:
+                values[value] = f"{value}={msgjson[value]}"
+            influxdata.join(','.join(values))
+            writeentry(influxdata)
         else:
             topic = message.topic.split('/')[-1]
-            print(f"Message received: {topic} {msg}")
+            print(f"Message was received: {topic} {msg}")
             if(topic in ['temperature', 'humidity', 'battery']):
                 print(f"Adding to mqttmessages: {topic} {msg}")
                 mqttmessages[topic] = msg
