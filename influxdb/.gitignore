@@ -1,3 +1,4 @@
 data
 meta
 wal
+influx_backup.db

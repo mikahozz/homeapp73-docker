@@ -38,10 +38,10 @@ def on_message(client, userdata, message):
             print(f"Message was received: {message.topic} {msg}")
             msgjson = json.loads(msg)
             influxdata = "indoorclimate,location=Sonoff "
-            values = {}
+            values = []
             for value in msgjson:
-                values[value] = f"{value}={msgjson[value]}"
-            influxdata.join(','.join(values))
+                values.append(f"{value}={msgjson[value]}")
+            influxdata += ','.join(values)
             writeentry(influxdata)
         else:
             topic = message.topic.split('/')[-1]
@@ -61,7 +61,7 @@ def on_message(client, userdata, message):
  
 Connected = False   #global variable for the state of the connection
  
-broker_address= "10.43.137.155"  #Broker address
+broker_address= "homeapp73-docker_mosquitto_1"  #Broker address
 port = 1883                         #Broker port
 user = "yourUser"                    #Connection username
 password = "yourPassword"            #Connection password

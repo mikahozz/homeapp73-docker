@@ -89,7 +89,7 @@ services:
             - $PWD/influxdb:/var/lib/influxdb  
     zigbee2mqtt:
         container_name: zigbee2mqtt
-        image: koenkk/zigbee2mqtt
+        image: koenkk/zigbee2mqtt:1.18.1
         volumes:
             - ./zigbee2mqtt:/app/data
             - /run/udev:/run/udev:ro
