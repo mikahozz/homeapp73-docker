@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/api/*": {"origins": ["http://raspberrypi.local:3000", "http://localhost:3000"]}})
+cors = CORS(app, resources={r"/api/*": {"origins": ["http://raspberrypi.local:3000", "http://localhost:3000", "http://192.168.10.217"]}})
 
 
 def myconverter(o):

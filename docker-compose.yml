@@ -1,8 +1,15 @@
 version: '3.4'
 
 services:
+    nginx:
+        image: nginx
+        restart: always
+        ports:
+        - 80:80
+        volumes:
+        - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     homeappnetapi:
-        image: localhost:5101/homeappnetapi
+        image: homeappnetapi
         restart: always
         env_file:
             - ./weatherapi/docker-env
@@ -14,7 +21,7 @@ services:
     calendarapi:
         env_file:
             - ./calendarapi/docker.env
-        image: localhost:5101/calendarapi
+        image: calendarapi
         restart: always
         build:
             context: ./calendarapi
@@ -22,7 +29,7 @@ services:
         ports:
         - 5010:5010
     climateapi:
-        image: localhost:5101/climateapi
+        image: climateapi
         restart: always
         build:
             context: ./climateapi
@@ -32,7 +39,7 @@ services:
         ports:
         - 5011:5011
     homeapp73:
-        image: localhost:5101/homeapp73
+        image: homeapp73
         restart: always
         volumes:
         - ./homeclient/src:/usr/src/app/src
@@ -54,7 +61,7 @@ services:
     #        dockerfile: ./Dockerfile
 
     mosquitto:
-        image: localhost:5101/mosquitto
+        image: mosquitto
         build:
             context: ./mosquitto
             dockerfile: ./Dockerfile
@@ -65,7 +72,7 @@ services:
             - "1883:1883"
 
     mqttclient:
-        image: localhost:5101/mqttclient
+        image: mqttclient
         restart: always
         volumes:
             - ./mqttclient:/usr/src/app
