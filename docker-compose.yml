@@ -1,6 +1,14 @@
 version: '3.4'
 
 services:
+    cabinbookings:
+        image: cabinbookings
+        restart: "no"
+        volumes:
+        - ./cabinbookings/data:/usr/src/app/data
+        build:
+            context: ./cabinbookings
+            dockerfile: ./Dockerfile
     nginx:
         image: nginx
         restart: always
