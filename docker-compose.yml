@@ -9,6 +9,8 @@ services:
         build:
             context: ./cabinbookings
             dockerfile: ./Dockerfile
+        ports:
+            - 3011:3011
     nginx:
         image: nginx
         restart: always
