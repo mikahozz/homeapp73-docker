@@ -34,3 +34,9 @@ describe("toSimpleDate function", () => {
         expect(utils.toSimpleDate(null)).toEqual(null);
     });
 });
+describe("toDatabase function", () => {
+    test("convert json to database", () => {
+        expect(utils.saveToDatabase([{"date":"ma 29.3.2021","booked":"0"},{"date":"ti 30.3.2021","booked":"1"}]))
+        .toEqual(undefined);
+    })
+});

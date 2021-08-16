@@ -2,9 +2,9 @@ FROM debian:buster
 
 WORKDIR /usr/src/app
 
-RUN apt-get update && apt-get install -y curl && apt-get install -y chromium
-RUN curl -fsSL https://deb.nodesource.com/setup_15.x | bash -
-RUN apt-get install -y nodejs
+RUN apt-get update && apt-get install -y curl
+RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt-get install -y chromium nodejs sqlite
 
 COPY package*.json ./
 RUN npm install

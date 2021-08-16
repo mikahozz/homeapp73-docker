@@ -46,13 +46,17 @@ const capacityRowSelector = 'table.table.table-condensed.table-striped.table-bor
         });
         return results;
     })
-    capacityFixed = utils.convertArray(capacity);
-    console.log(capacityFixed);
-    fs.writeFile(`data/bookings_${utils.toSimpleDate(new Date())}.csv`, capacityFixed, (err) => {
+    // Save csv file
+    capacityCsv = utils.convertArray(capacity);
+    console.log(capacityCsv);
+    fs.writeFile(`data/bookings_${utils.toSimpleDate(new Date())}.csv`, capacityCsv, (err) => {
         if (err) {
             throw err;
         }
-        console.log("Bookings data is saved.");
+        console.log("Raw bookings data is saved to csv.");
     });
     browser.close();
+    // Write to database
+    utils.saveToDatabase(capacity);
+    console.log("Bookings data is stored in database.");
 })();

@@ -1,3 +1,5 @@
+const sqlite3 = require('sqlite3').verbose();
+
 function parseDate(datestr) {
     let date = null;
     if(datestr) {
@@ -35,5 +37,24 @@ function toSimpleDate(date, delim = '') {
            ].join(delim);
 }
 
-module.exports = { parseDate, convertArray, toSimpleDate };
+function saveToDatabase(capacityJson) {
+    let db = new sqlite3.Database('./data/cabinbookings.db', (err) => {
+        if(err) {
+            console.error(err.message);
+        }
+        db.serialize( () => {
+            db.run('CREATE TABLE IF NOT EXISTS bookings ' +
+            '(date INTEGER PRIMARY KEY, booked INTEGER, updated INTEGER)');
+            var sql = db.prepare('insert into bookings values (?,?,?) ON CONFLICT(date) ' +
+            'DO UPDATE SET booked=excluded.booked, updated=excluded.updated')
+            capacityJson.forEach((item) => {
+                sql.run([parseDate(item.date).getTime(), item.booked, Date.now()])
+            });
+            sql.finalize();
+        })
+        db.close();
+    });
+}
+
+module.exports = { parseDate, convertArray, toSimpleDate, saveToDatabase };
 
