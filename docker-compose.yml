@@ -6,6 +6,7 @@ services:
         restart: "no"
         volumes:
         - ./cabinbookings/data:/usr/src/app/data
+        - ./cabinbookings/app.js:/usr/src/app/app.js
         build:
             context: ./cabinbookings
             dockerfile: ./Dockerfile

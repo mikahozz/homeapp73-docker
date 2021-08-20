@@ -48,7 +48,7 @@ function saveToDatabase(capacityJson) {
             var sql = db.prepare('insert into bookings values (?,?,?) ON CONFLICT(date) ' +
             'DO UPDATE SET booked=excluded.booked, updated=excluded.updated')
             capacityJson.forEach((item) => {
-                sql.run([parseDate(item.date).getTime(), item.booked, Date.now()])
+                sql.run([parseDate(item.date).getTime() / 1000, item.booked, Date.now() / 1000])
             });
             sql.finalize();
         })

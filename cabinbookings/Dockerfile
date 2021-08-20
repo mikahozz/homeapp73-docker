@@ -7,6 +7,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
 RUN apt-get install -y chromium nodejs sqlite
 
 COPY package*.json ./
+RUN npm install -g nodemon
 RUN npm install
 
 RUN mkdir data
@@ -15,4 +16,4 @@ COPY . .
 
 EXPOSE 80
 
-CMD ["node", "app.js"]
+CMD ["nodemon", "app.js"]
