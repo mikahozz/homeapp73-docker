@@ -97,3 +97,19 @@ h3 { color: rgb(151,151,151); font-size: 0.9em; font-weight: normal; margin-top:
 
 .balconyTemp {padding-top: 30px; margin-bottom: 0; }
 .balconyUpdated {margin-top:0; line-height: 1em; color: rgba(151,151,151, 0.5);font-size: 0.7em;}
+
+#cabinBookings {
+  border: solid 1px black;
+  border-radius: 5px;
+  background-color:rgba(255,255,255, 0.9);
+  color: black;
+  width: 100px; text-align: center;
+}
+#cabinBookings h2 { color: rgb(34, 85,157); font-weight: bold; font-style: italic; border-bottom: solid 1px black;}
+.bookingsTable { display: inline-block; margin: 0 auto; }
+.bookingWeekRow { display: grid;  grid-template-columns: 10px 10px 10px 10px 10px 10px 10px; column-gap: 3px;}
+.bookingBox { width: 10px; height: 10px; line-height: 10px; margin: 2px; font-size: 7px; color:gray; background-color: white; text-align: center;}
+.bookingBox.day5 { grid-column-start: 5;} 
+.bookingBox.day6 { grid-column-start: 6;} 
+.bookingBox.day0 { grid-column-start: 7;} 
+.bookingBox.booked { color: white; background-color:rgba(24, 31, 52, 0.7);}
