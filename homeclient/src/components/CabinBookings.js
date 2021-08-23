@@ -33,7 +33,7 @@ export class CabinBookings extends Component {
     console.log(bookingsdata);
     return (
       <div className="bookingsTable">
-        {Object.keys(bookingsdata).map(week =>
+        {Object.keys(bookingsdata).slice(0,4).map(week =>
         <div className="bookingWeekRow"> 
           {bookingsdata[week].map(bookingitem => (
           <div className={CabinBookings.renderBookingClasses(bookingitem)} key={bookingitem} alt={bookingitem.date}>{new Date(bookingitem.date).getDate()}
