@@ -12,6 +12,24 @@ services:
             dockerfile: ./Dockerfile
         ports:
             - 3011:3011
+    mariadb:
+        # On 32bit rasbian docker host, you might need to run these:
+        #   wget http://ftp.us.debian.org/debian/pool/main/libs/libseccomp/libseccomp2_2.4.4-1~bpo10+1_armhf.deb
+        #   sudo dpkg -i libseccomp2_2.4.4-1~bpo10+1_armhf.deb
+        image: linuxserver/mariadb:arm32v7-version-10.5.12-r0
+        container_name: mariadb
+        env_file:
+        - ./mariadb/docker.env
+        environment:
+        - PUID=1000
+        - PGID=1000
+        - TZ=Europe/Helsinki
+        volumes:
+        - ./mariadb/config:/config
+        - ./mariadb/init:/docker-entrypoint-initdb.d/:ro
+        ports:
+        - 3406:3306
+        restart: unless-stopped
     nginx:
         image: nginx
         restart: always
