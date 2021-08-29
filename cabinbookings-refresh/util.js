@@ -1,4 +1,5 @@
-const sqlite3 = require('sqlite3').verbose();
+const mysql = require('mysql');
+require('dotenv').config();
 
 function parseDate(datestr) {
     let date = null;
@@ -37,8 +38,19 @@ function toSimpleDate(date, delim = '') {
            ].join(delim);
 }
 
-function saveToDatabase(capacityJson) {
-    let db = new sqlite3.Database('./data/cabinbookings.db', (err) => {
+function saveToDatabase(capacityJson, callback) {
+    let con = mysql.createConnection({
+        host: "mariadb",
+        user: process.env.DBUSER,
+        password: process.env.DBPASSWORD
+      });
+    con.connect(function(err) {
+        if (err) throw err;
+        console.log("Connected!");
+        callback(1);
+        con.end();
+    });
+    /*let db = new sqlite3.Database('./data/cabinbookings.db', (err) => {
         if(err) {
             console.error(err.message);
         }
@@ -53,7 +65,7 @@ function saveToDatabase(capacityJson) {
             sql.finalize();
         })
         db.close();
-    });
+    });*/
 }
 
 module.exports = { parseDate, convertArray, toSimpleDate, saveToDatabase };
