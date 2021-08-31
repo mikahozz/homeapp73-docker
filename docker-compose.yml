@@ -3,7 +3,7 @@ version: '3.4'
 services:
     cabinbookings:
         image: cabinbookings
-        restart: "no"
+        restart: unless-stopped
         volumes:
         - ./cabinbookings/data:/usr/src/app/data
         - ./cabinbookings/app.js:/usr/src/app/app.js
@@ -12,6 +12,15 @@ services:
             dockerfile: ./Dockerfile
         ports:
             - 3011:3011
+    cabinbookings-refresh:
+        image: cabinbookings-refresh
+        container_name: cabinbookings-refresh
+        restart: "no"
+        volumes:
+        - ./cabinbookings-refresh/util.js:/usr/src/app/util.js
+        build:
+            context: ./cabinbookings-refresh
+            dockerfile: ./Dockerfile
     mariadb:
         # On 32bit rasbian docker host, you might need to run these:
         #   wget http://ftp.us.debian.org/debian/pool/main/libs/libseccomp/libseccomp2_2.4.4-1~bpo10+1_armhf.deb

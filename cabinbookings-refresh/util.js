@@ -1,4 +1,4 @@
-const mysql = require('mysql');
+const Mysql = require('./mysql.js');
 require('dotenv').config();
 
 function parseDate(datestr) {
@@ -38,34 +38,25 @@ function toSimpleDate(date, delim = '') {
            ].join(delim);
 }
 
-function saveToDatabase(capacityJson, callback) {
-    let con = mysql.createConnection({
-        host: "mariadb",
-        user: process.env.DBUSER,
-        password: process.env.DBPASSWORD
-      });
-    con.connect(function(err) {
-        if (err) throw err;
-        console.log("Connected!");
-        callback(1);
-        con.end();
-    });
-    /*let db = new sqlite3.Database('./data/cabinbookings.db', (err) => {
-        if(err) {
-            console.error(err.message);
-        }
-        db.serialize( () => {
-            db.run('CREATE TABLE IF NOT EXISTS bookings ' +
-            '(date INTEGER PRIMARY KEY, booked INTEGER, updated INTEGER)');
-            var sql = db.prepare('insert into bookings values (?,?,?) ON CONFLICT(date) ' +
-            'DO UPDATE SET booked=excluded.booked, updated=excluded.updated')
-            capacityJson.forEach((item) => {
-                sql.run([parseDate(item.date).getTime() / 1000, item.booked, Date.now() / 1000])
-            });
-            sql.finalize();
+function saveToDatabase(capacityJson) {
+    return new Promise( ( resolve, reject ) => {
+        let db = new Mysql({
+            host: "mariadb",
+            user: process.env.DBUSER,
+            password: process.env.DBPASSWORD
+        });
+        /* Prepare database */
+        db.query("CREATE DATABASE IF NOT EXISTS cabok_db")
+        .then(rows => db.query("CREATE TABLE IF NOT EXISTS cabok_db.bookings (date DATETIME PRIMARY KEY, booked BOOLEAN NOT NULL, created TIMESTAMP NOT NULL, updated TIMESTAMP)"))
+        .then(rows => resolve(1))
+        .catch(err => {
+            console.log("Error occurred: " + err);
+            return reject(err);
         })
-        db.close();
-    });*/
+        .finally(() => {
+            db.close();    
+        })
+    });
 }
 
 module.exports = { parseDate, convertArray, toSimpleDate, saveToDatabase };
