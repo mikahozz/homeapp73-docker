@@ -17,6 +17,7 @@ services:
         container_name: cabinbookings-refresh
         restart: "no"
         volumes:
+        - ./cabinbookings-refresh/data:/usr/src/app/data
         - ./cabinbookings-refresh/util.js:/usr/src/app/util.js
         build:
             context: ./cabinbookings-refresh
@@ -35,9 +36,6 @@ services:
         - TZ=Europe/Helsinki
         volumes:
         - ./mariadb/config:/config
-        - ./mariadb/init:/docker-entrypoint-initdb.d/:ro
-        ports:
-        - 3406:3306
         restart: unless-stopped
     nginx:
         image: nginx
