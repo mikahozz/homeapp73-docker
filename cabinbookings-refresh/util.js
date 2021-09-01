@@ -47,7 +47,12 @@ function saveToDatabase(capacityJson) {
         });
         /* Prepare database */
         db.query("CREATE DATABASE IF NOT EXISTS cabok_db")
-        .then(rows => db.query("CREATE TABLE IF NOT EXISTS cabok_db.bookings (date DATETIME PRIMARY KEY, booked BOOLEAN NOT NULL, created TIMESTAMP NOT NULL, updated TIMESTAMP)"))
+        .then(rows => db.query("CREATE TABLE IF NOT EXISTS cabok_db.bookings (date DATETIME PRIMARY KEY, booked BOOLEAN NOT NULL, created TIMESTAMP DEFAULT NOW(), updated TIMESTAMP ON UPDATE NOW())"))
+        .then(rows => {
+            capacityJson.forEach((item) => {
+                db.queryWithParams("INSERT INTO cabok_db.bookings (date, booked) VALUES(?, ?) ON DUPLICATE KEY UPDATE booked = VALUES(booked)", [parseDate(item.date).toISOString().slice(0, 19).replace('T', ' '), item.booked])
+            });
+        })
         .then(rows => resolve(1))
         .catch(err => {
             console.log("Error occurred: " + err);
