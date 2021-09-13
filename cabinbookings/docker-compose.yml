@@ -1,10 +1,14 @@
 version: '3.4'
 
 services:
-  cabinbookingstatus:
-    image: cabinbookings
-    volumes:
-      - ./data:/usr/src/app/data
-    build:
-      context: .
-      dockerfile: ./Dockerfile
+   cabinbookings:
+        image: cabinbookings
+        container_name: cabinbookings
+        restart: unless-stopped
+        volumes:
+        - ./app.js:/usr/src/app/app.js
+        build:
+            context: ./
+            dockerfile: ./Dockerfile
+        ports:
+            - 3011:3011

@@ -3,9 +3,9 @@ version: '3.4'
 services:
     cabinbookings:
         image: cabinbookings
+        container_name: cabinbookings
         restart: unless-stopped
         volumes:
-        - ./cabinbookings/data:/usr/src/app/data
         - ./cabinbookings/app.js:/usr/src/app/app.js
         build:
             context: ./cabinbookings

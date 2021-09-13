@@ -1,32 +1,28 @@
 const express = require('express');
-const sqlite3 = require('sqlite3').verbose();
+const Mysql = require('./mysql.js');
+require('dotenv').config();
 const app = express();
 const port = 3011;
 
 app.get('/', (req, res) => {
-    let db = new sqlite3.Database('./data/cabinbookings.db', (err) => {
-        if(err) {
-            throw Error ('Could not connect to database' + err.message);
-        }
-        bookings = []
-        res.writeHead(200, {"Content-Type": "application/json"});
-        db.each("select datetime(date, 'unixepoch') as date, booked, datetime(updated, 'unixepoch') as updated from bookings WHERE datetime(date, 'unixepoch') < DATETIME('now', '+1 month')", 
-        (err, result) => {
-            if(err) {
-                throw err;
-            }
-            console.log(result.booked);
-            bookings.push({'date': result.date, 'booked': result.booked, 'updated': result.updated});
-        }, 
-        (err, num) => {
-            if(err) {
-                throw err;
-            }
-            res.write(JSON.stringify(bookings));
-            db.close();
-            res.end();
-        });
+    let db = new Mysql({
+        host: "mariadb",
+        user: process.env.DBUSER,
+        password: process.env.DBPASSWORD
     });
+    bookings = [];
+    db.query("SELECT date, booked, created, updated from cabok_db.bookings")
+    .then(rows => {
+        res.writeHead(200, {"Content-Type": "application/json"});
+        rows.forEach((item) => {
+            bookings.push({'date': item.date, 'booked': item.booked, 'created': item.created, 'updated': item.updated});
+        });
+        res.write(JSON.stringify(bookings));
+        res.end();
+    })
+    .finally(() => {
+        db.close();    
+    })
 });
 
 app.listen(port, () => {
