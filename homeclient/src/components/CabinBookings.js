@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import moment from 'moment';
 import _ from 'lodash';
-const utils = require('../Utils')
+import moment from 'moment';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+const utils = require('../Utils');
+import '../assets/custom.css'
 
 export class CabinBookings extends Component {
   static displayName = CabinBookings.name;
@@ -9,9 +11,8 @@ export class CabinBookings extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { bookings: this.props.bookings, loading: true };
+    this.state = { modal: false, bookings: this.props.bookings, lastUpdated: this.props.lastUpdated, loading: true };
   }
-
   componentDidMount() {
     this.populateData();
     // Refresh data every 60 minutes
@@ -23,41 +24,92 @@ export class CabinBookings extends Component {
   }
 
   async populateData() {
-    const response = await fetch('/cabinbookings');
+    const response = await fetch('/cabinbookings/days/365');
     const data = await response.json();
-    const grouped = _.groupBy(data, element => utils.getWeekNumber(new Date(element.date)));
-    this.setState({ bookingsdata: grouped, loading: false });
+    const grouped = _.groupBy(data.bookings, element => utils.getYearWeekNumber(new Date(element.date)));
+    const groupedByMonthWeek = utils.groupByMonthWeek(data.bookings);
+    this.setState({ bookingsdata: grouped, bookingsyeardata: groupedByMonthWeek, lastUpdated: data.lastupdated, loading: false });
   }
 
-  static renderContents(bookingsdata) {
+  static renderContents(bookingsdata, lastUpdated) {
     console.log(bookingsdata);
     return (
-      <div className="bookingsTable">
-        {Object.keys(bookingsdata).slice(0,4).map(week =>
-        <div className="bookingWeekRow"> 
-          {bookingsdata[week].map(bookingitem => (
-          <div className={CabinBookings.renderBookingClasses(bookingitem)} key={bookingitem} alt={bookingitem.date}>{new Date(bookingitem.date).getDate()}
-          </div>
-          ))}
-          </div>
-          )}
+      <div className="bookingsContainer">
+        <div className="bookingsTable">
+          {Object.keys(bookingsdata).slice(0,5).map(week =>
+          <div className="bookingWeekRow"> 
+            {bookingsdata[week].map(bookingitem => (
+            <div className={CabinBookings.renderBookingClasses(bookingitem)} key={bookingitem} alt={bookingitem.date}>{new Date(bookingitem.date).getDate()}
+            </div>
+            ))}
+            </div>
+            )}
+        </div>
+        <div className="bookingsUpdated">{ moment(lastUpdated).format('ddd HH:mm') }</div>
       </div>
     );
   }
-static renderBookingClasses(bookingItem) {
+  static renderYearContents(bookingsdata, lastUpdated) {
+    let monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+    ];
+     console.log(bookingsdata);
+    return (
+      <div className="bookingsContainer">
+        {Object.keys(bookingsdata).map(year =>
+        <div key={year}>
+            <h2>{year}</h2>
+            {Object.keys(bookingsdata[year]).map(month =>
+            <div class="bookingsMonth">
+              <div className="bookingsTable" key={month}>
+                {monthNames[month]} 
+                {Object.keys(bookingsdata[year][month]).map(week =>
+                <div className="bookingWeekRow" key={week}> 
+                    {bookingsdata[year][month][week].map(bookingitem => 
+                    {
+                    return(
+                    <div className={CabinBookings.renderBookingClasses(bookingitem)} key={bookingitem} alt={bookingitem.date}>
+                      {new Date(bookingitem.date).getDate()}
+                    </div>
+                    )}
+                )}
+                </div>
+                  )}
+                </div>
+              </div>
+              )}
+          </div>
+        )}
+        <div className="bookingsUpdated">{ moment(lastUpdated).format('ddd HH:mm') }</div>      </div>
+    );
+  }
+
+  static renderBookingClasses(bookingItem) {
   let cssClass = "bookingBox day" + new Date(bookingItem.date).getDay();
   if(bookingItem.booked) { cssClass += " booked"} 
   return cssClass;
 }
-  render() {
+toggle = () => {
+  this.setState({ modal: !this.state.modal });
+}
+render() {
     let contents = this.state.loading
       ? <p><em>Loading...</em></p>
-      : CabinBookings.renderContents(this.state.bookingsdata);
+      : CabinBookings.renderContents(this.state.bookingsdata, this.state.lastUpdated)
+    let yearContents = this.state.loading
+      ? <p><em>Loading...</em></p>
+      : CabinBookings.renderYearContents(this.state.bookingsyeardata, this.state.lastUpdated)
 
     return (
-      <div id="cabinBookings">
-        <h2>Himos</h2>
+      <div id="cabinBookings" onClick={this.toggle}>
+        <h2>Cabin bookings</h2>
          {contents}
+        <Modal className="cabinbookings-modal" funk={true} isOpen={this.state.modal} toggle={this.toggle}>
+          <ModalHeader toggle={this.toggle}>Cabin bookings, upcoming year</ModalHeader>
+          <ModalBody>
+          {yearContents}
+          </ModalBody>
+        </Modal>
       </div>
     );
   }

@@ -45,15 +45,20 @@ function saveToDatabase(capacityJson) {
             user: process.env.DBUSER,
             password: process.env.DBPASSWORD
         });
-        /* Prepare database */
+        rowsUpdated = 0;
         db.query("CREATE DATABASE IF NOT EXISTS cabok_db")
-        .then(rows => db.query("CREATE TABLE IF NOT EXISTS cabok_db.bookings (date DATETIME PRIMARY KEY, booked BOOLEAN NOT NULL, created TIMESTAMP DEFAULT NOW(), updated TIMESTAMP ON UPDATE NOW())"))
-        .then(rows => {
-            capacityJson.forEach((item) => {
-                db.queryWithParams("INSERT INTO cabok_db.bookings (date, booked) VALUES(?, ?) ON DUPLICATE KEY UPDATE booked = VALUES(booked)", [parseDate(item.date).toISOString().slice(0, 19).replace('T', ' '), item.booked])
+        .then(async rows => await db.query("CREATE TABLE IF NOT EXISTS cabok_db.bookings (date DATETIME PRIMARY KEY, booked BOOLEAN NOT NULL, created TIMESTAMP DEFAULT NOW(), updated TIMESTAMP ON UPDATE NOW())"))
+        .then(async rows => {
+            await capacityJson.forEach(async (item) => {
+                await db.queryWithParams("INSERT INTO cabok_db.bookings (date, booked) VALUES(?, ?) ON DUPLICATE KEY UPDATE booked = VALUES(booked)", [parseDate(item.date).toISOString().slice(0, 19).replace('T', ' '), item.booked])
+                rowsUpdated++;
             });
         })
-        .then(rows => resolve(1))
+        .then(async () => {
+            await db.query("CREATE TABLE IF NOT EXISTS cabok_db.runs (runfinished DATETIME, updatedrows INT)")
+            await db.queryWithParams("INSERT INTO cabok_db.runs SET runfinished = NOW(), updatedrows = ?", rowsUpdated)
+        })
+        .then(() => resolve(1))
         .catch(err => {
             console.log("Error occurred: " + err);
             return reject(err);

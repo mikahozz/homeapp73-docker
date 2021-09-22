@@ -19,7 +19,7 @@ export class Home extends Component {
           <div className="col-sm-2"><Indoor /></div>
           <div className="col-sm-2"><Balcony /></div>
           <div className="col-sm-2"><CabinBookings /></div>
-          <div className="d-none d-sm-block col-sm-2 timeBox offset-md-2"><Time /></div>
+          <div className="d-none d-sm-block col-sm-3 timeBox offset-md-1"><Time /></div>
         </div>
         <div className="row">
           <div className="col-sm-5"><Forecast /></div>
