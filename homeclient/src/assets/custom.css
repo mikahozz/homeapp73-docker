@@ -101,22 +101,26 @@ h3 { color: rgb(151,151,151); font-size: 0.9em; font-weight: normal; margin-top:
 #cabinBookings {
   border-radius: 0px;
   color: #000000;
-  width: 120px; text-align: center;
+  width: 150px; text-align: center;
   cursor: pointer;
 }
 #cabinBookings h2 {  font-size: 15px; font-style: italic; }
-.bookingsUpdated { line-height: 1em; color: rgba(151,151,151, 0.5); font-size: 0.7em;}
+.bookingsUpdated { line-height: 1em; margin-top: 3px; color: rgba(151,151,151, 0.5); font-size: 0.7em;}
 .bookingsTable { display: inline-block; margin: 0 auto; background-color: rgba(120, 120, 120, 0.1); padding: 10px 5px 5px 5px; }
-.bookingWeekRow { display: grid;  grid-template-columns: 14px 14px 14px 14px 14px 14px 14px; column-gap: 4px; row-gap: 0px;}
+.bookingWeekRow { display: grid;  grid-template-columns: 14px 14px 14px 14px 14px 14px 14px 14px; column-gap: 4px; row-gap: 0px;}
+.bookingWeekRow.noWeek {grid-template-columns: 0px 14px 14px 14px 14px 14px 14px 14px; }
 .bookingBox { width: 14px; height: 14px; line-height: 10px; padding: 2px; margin: 2px; font-size: 9px; color:rgb(213, 213, 213); text-align: center;}
-.bookingBox.day1 { grid-column-start: 1;} 
-.bookingBox.day2 { grid-column-start: 2;} 
-.bookingBox.day3 { grid-column-start: 3;} 
-.bookingBox.day4 { grid-column-start: 4;} 
-.bookingBox.day5 { grid-column-start: 5;} 
-.bookingBox.day6 { grid-column-start: 6;} 
-.bookingBox.day0 { grid-column-start: 7;} 
+.bookingBox.weekNumber { grid-column-start: 1; color:rgba(151, 128, 179, 0.9); font-weight: bold; } 
+.bookingBox.day1 { grid-column-start: 2;} 
+.bookingBox.day2 { grid-column-start: 3;} 
+.bookingBox.day3 { grid-column-start: 4;} 
+.bookingBox.day4 { grid-column-start: 5;} 
+.bookingBox.day5 { grid-column-start: 6;} 
+.bookingBox.day6 { grid-column-start: 7;} 
+.bookingBox.day0 { grid-column-start: 8;} 
 .bookingBox.booked { background-color:rgba(255, 255, 255, 0.7); color:rgba(74, 1, 164, 0.9); font-weight: bold;}
+
+.updatedOver24h { color:#ff3e3e; font-weight: bold; } 
 
 .modal-content { 
   background-color:  rgba(0,0,0,0.8); 
@@ -129,4 +133,6 @@ h3 { color: rgb(151,151,151); font-size: 0.9em; font-weight: normal; margin-top:
 .modal-body { 
   background-color:  rgba(15, 21, 36, 0.8); 
 }
+.close { font-weight: normal; color: white; opacity: 0.8; text-shadow: none;}
 .bookingsMonth { display: inline-block; vertical-align: top; margin: 3px 3px 3px 3px; }
+.bookingsMonthTitle { margin-bottom: 5px;}

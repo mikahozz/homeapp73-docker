@@ -37,7 +37,7 @@ export class CabinBookings extends Component {
       <div className="bookingsContainer">
         <div className="bookingsTable">
           {Object.keys(bookingsdata).slice(0,5).map(week =>
-          <div className="bookingWeekRow"> 
+          <div className="bookingWeekRow noWeek"> 
             {bookingsdata[week].map(bookingitem => (
             <div className={CabinBookings.renderBookingClasses(bookingitem)} key={bookingitem} alt={bookingitem.date}>{new Date(bookingitem.date).getDate()}
             </div>
@@ -45,7 +45,7 @@ export class CabinBookings extends Component {
             </div>
             )}
         </div>
-        <div className="bookingsUpdated">{ moment(lastUpdated).format('ddd HH:mm') }</div>
+        <div className={CabinBookings.renderUpdatedClasses(Date.parse(lastUpdated))}>{ moment(lastUpdated).format('ddd HH:mm') }</div>
       </div>
     );
   }
@@ -62,9 +62,10 @@ export class CabinBookings extends Component {
             {Object.keys(bookingsdata[year]).map(month =>
             <div class="bookingsMonth">
               <div className="bookingsTable" key={month}>
-                {monthNames[month]} 
+                <div className="bookingsMonthTitle">{monthNames[month]}</div> 
                 {Object.keys(bookingsdata[year][month]).map(week =>
-                <div className="bookingWeekRow" key={week}> 
+                <div className="bookingWeekRow" key={week}>
+                    <div className="bookingBox weekNumber">{week.split(",")[1]}</div>
                     {bookingsdata[year][month][week].map(bookingitem => 
                     {
                     return(
@@ -80,13 +81,21 @@ export class CabinBookings extends Component {
               )}
           </div>
         )}
-        <div className="bookingsUpdated">{ moment(lastUpdated).format('ddd HH:mm') }</div>      </div>
+      </div>
     );
   }
 
-  static renderBookingClasses(bookingItem) {
+static renderBookingClasses(bookingItem) {
   let cssClass = "bookingBox day" + new Date(bookingItem.date).getDay();
   if(bookingItem.booked) { cssClass += " booked"} 
+  return cssClass;
+}
+static renderUpdatedClasses(date) {
+  let diff = Math.abs(new Date() - date);
+  let cssClass = "bookingsUpdated";
+  if((diff / (1000 * 60 * 60 * 24) > 1)) {
+    cssClass += " updatedOver24h";
+  }
   return cssClass;
 }
 toggle = () => {

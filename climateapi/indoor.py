@@ -13,7 +13,11 @@ def indoor(device):
     response = {}
     for value in resultgen:
         print(x for x in value.keys())
-        date = dt.datetime.strptime(value['time'], '%Y-%m-%dT%H:%M:%S.%fZ')
+        date = None
+        try:
+            date = dt.datetime.strptime(value['time'], '%Y-%m-%dT%H:%M:%S.%fZ')
+        except ValueError:
+            date = dt.datetime.strptime(value['time'], '%Y-%m-%dT%H:%M:%S')
         temperature = value['temperature']
         humidity = value['humidity']
         battery = value['battery']
