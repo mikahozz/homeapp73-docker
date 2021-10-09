@@ -37,7 +37,7 @@ export class CabinBookings extends Component {
       <div className="bookingsContainer">
         <div className="bookingsTable">
           {Object.keys(bookingsdata).slice(0,5).map(week =>
-          <div className="bookingWeekRow noWeek"> 
+          <div className="bookingWeekRow noWeek" key={week}> 
             {bookingsdata[week].map(bookingitem => (
             <div className={CabinBookings.renderBookingClasses(bookingitem)} key={bookingitem} alt={bookingitem.date}>{new Date(bookingitem.date).getDate()}
             </div>
@@ -60,8 +60,8 @@ export class CabinBookings extends Component {
         <div key={year}>
             <h2>{year}</h2>
             {Object.keys(bookingsdata[year]).map(month =>
-            <div class="bookingsMonth">
-              <div className="bookingsTable" key={month}>
+            <div className="bookingsMonth" key={month}>
+              <div className="bookingsTable">
                 <div className="bookingsMonthTitle">{monthNames[month]}</div> 
                 {Object.keys(bookingsdata[year][month]).map(week =>
                 <div className="bookingWeekRow" key={week}>
@@ -88,6 +88,16 @@ export class CabinBookings extends Component {
 static renderBookingClasses(bookingItem) {
   let cssClass = "bookingBox day" + new Date(bookingItem.date).getDay();
   if(bookingItem.booked) { cssClass += " booked"} 
+  let updatedDate = new Date(Date.parse(bookingItem.updated));
+  if(updatedDate) {
+    let daysAgo = Math.abs(new Date() - updatedDate) / (1000 * 60 * 60 * 24);
+    if(daysAgo < 7) {
+      cssClass += " updatedWithinWeek";
+    }
+    else if(daysAgo < 14) {
+      cssClass += " updatedWithin2Weeks";
+    }  
+  }  
   return cssClass;
 }
 static renderUpdatedClasses(date) {
