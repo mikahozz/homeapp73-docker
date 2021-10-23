@@ -136,18 +136,4 @@ services:
         privileged: true
         environment:
             - TZ=Europe/Helsinki
-    prometheus:
-        container_name: prometheus
-        image: prom/prometheus
-        restart: always
-        volumes:
-            - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-        ports:
-            - 9090:9090
-    grafana:
-        container_name: grafana
-        image: grafana/grafana
-        restart: always
-        ports:
-            - 3010:3000 
             
