@@ -2,6 +2,7 @@ from app import app
 from influxdb import InfluxDBClient, DataFrameClient
 import datetime as dt
 from flask import jsonify
+import utils
 
 @app.route("/indoor/<device>")
 def indoor(device):
@@ -13,11 +14,7 @@ def indoor(device):
     response = {}
     for value in resultgen:
         print(x for x in value.keys())
-        date = None
-        try:
-            date = dt.datetime.strptime(value['time'], '%Y-%m-%dT%H:%M:%S.%fZ')
-        except ValueError:
-            date = dt.datetime.strptime(value['time'], '%Y-%m-%dT%H:%M:%S')
+        date = utils.parseDate(value['time'])
         temperature = value['temperature']
         humidity = value['humidity']
         battery = value['battery']
