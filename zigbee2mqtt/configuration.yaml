@@ -8,3 +8,5 @@ serial:
 devices:
   '0x00124b00226b11bc':
     friendly_name: '0x00124b00226b11bc'
+  '0x00158d00068b39cb':
+    friendly_name: '0x00158d00068b39cb'

@@ -48,7 +48,7 @@ const capacityRowSelector = 'table.table.table-condensed.table-striped.table-bor
     })
     // Save csv file
     capacityCsv = utils.convertArray(capacity);
-    console.log(capacityCsv);
+    //console.log(capacityCsv);
     fs.writeFile(`data/bookings_${utils.toSimpleDate(new Date())}.csv`, capacityCsv, (err) => {
         if (err) {
             throw err;
