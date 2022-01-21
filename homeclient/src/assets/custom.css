@@ -121,7 +121,9 @@ h3 { color: rgb(151,151,151); font-size: 0.9em; font-weight: normal; margin-top:
 .bookingBox.booked { background-color:rgba(255, 255, 255, 0.7); color:rgba(74, 1, 164, 0.9); font-weight: bold;}
 .bookingBox.updatedWithinWeek { box-shadow: 0 0 10px 2px rgb(255, 255, 255, 0.9);}
 .bookingBox.updatedWithin2Weeks { box-shadow: 0 0 5px 1px rgb(255, 255, 255, 0.5);}
+
 .updatedOver24h { color:#ff3e3e; font-weight: bold; } 
+.updatedOver12h { color:#ff3e3e; font-weight: bold; } 
 
 .modal-content { 
   background-color:  rgba(0,0,0,0.8); 

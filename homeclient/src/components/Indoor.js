@@ -30,8 +30,8 @@ export class Indoor extends Component {
   static renderUpdatedClasses(date) {
     let diff = Math.abs(new Date() - date);
     let cssClass = "indoorUpdated";
-    if((diff / (1000 * 60 * 60 * 24) > 1)) {
-      cssClass += " updatedOver24h";
+    if((diff / (1000 * 60 * 60 * 12) > 1)) {
+      cssClass += " updatedOver12h";
     }
     return cssClass;
   }
