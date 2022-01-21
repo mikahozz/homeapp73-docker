@@ -13,8 +13,8 @@ export class Indoor extends Component {
 
   componentDidMount() {
     this.populateIndoorData();
-    // Refresh data every 10 minutes
-    this.intervalId = setInterval(this.populateIndoorData.bind(this), 10*60*1000);
+    // Refresh data every 1 minutes
+    this.intervalId = setInterval(this.populateIndoorData.bind(this), 60*1000);
   }
   componentWillUnmount() {
     // Stop refreshing
@@ -22,18 +22,27 @@ export class Indoor extends Component {
   }
 
   async populateIndoorData() {
-    const response = await fetch('/indoor/Sonoff');
+    const response = await fetch('/indoor/dev_upstairs');
     const data = await response.json();
     this.setState({ indoordata: data, loading: false });
   }
 
+  static renderUpdatedClasses(date) {
+    let diff = Math.abs(new Date() - date);
+    let cssClass = "indoorUpdated";
+    if((diff / (1000 * 60 * 60 * 24) > 1)) {
+      cssClass += " updatedOver24h";
+    }
+    return cssClass;
+  }
+  
 
   render() {
     let contents = this.state.loading
       ? <p><em>Loading...</em></p>
       : <div>
           <p className="indoorTemp">{_.round(this.state.indoordata.temperature, 1) }°</p>
-          <p className="indoorUpdated">{moment(this.state.indoordata.time).format('ddd HH:mm')}</p>
+          <p className={Indoor.renderUpdatedClasses(Date.parse(this.state.indoordata.time))}>{moment(this.state.indoordata.time).format('ddd HH:mm')}</p>
         </div>
 
     return (

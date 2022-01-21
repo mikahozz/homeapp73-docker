@@ -7,6 +7,6 @@ serial:
   port: /dev/ttyACM0
 devices:
   '0x00124b00226b11bc':
-    friendly_name: '0x00124b00226b11bc'
+    friendly_name: 'dev_downstairs'
   '0x00158d00068b39cb':
-    friendly_name: '0x00158d00068b39cb'
+    friendly_name: 'dev_upstairs'
