@@ -4,3 +4,4 @@ meta.db
 *docker-env-configmap.yaml
 *.env
 *-env
+node_modules
