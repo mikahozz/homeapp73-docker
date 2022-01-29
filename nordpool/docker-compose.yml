@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+   nordpool:
+        image: nordpool
+        container_name: nordpool
+        restart: unless-stopped
+        volumes:
+        - ./index.js:/usr/src/app/index.js
+        build:
+            context: ./
+            dockerfile: ./Dockerfile
+        ports:
+            - 3013:3013
