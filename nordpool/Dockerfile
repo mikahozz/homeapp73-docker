@@ -19,9 +19,11 @@ FROM node:12-alpine
 
 WORKDIR /usr/src/app
 
+RUN npm install -g nodemon
+
 # copy from build image
 COPY --from=BUILD_IMAGE /usr/src/app/ ./
 
 EXPOSE 3013
 
-CMD [ "node", "./index.js" ]
+CMD [ "nodemon", "./index.js" ]
