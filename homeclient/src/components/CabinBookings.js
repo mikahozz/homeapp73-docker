@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import moment from 'moment';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-const utils = require('../Utils');
+import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import '../assets/custom.css'
+const utils = require('../Utils');
 
 export class CabinBookings extends Component {
   static displayName = CabinBookings.name;

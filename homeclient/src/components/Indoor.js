@@ -39,7 +39,7 @@ export class Indoor extends Component {
 
   render() {
     let contents = this.state.loading
-      ? <p><em>Loading...</em></p>
+      ? <div className="indoorTemp"><em>...</em></div>
       : <div>
           <p className="indoorTemp">{_.round(this.state.indoordata.temperature, 1) }°</p>
           <p className={Indoor.renderUpdatedClasses(Date.parse(this.state.indoordata.time))}>{moment(this.state.indoordata.time).format('ddd HH:mm')}</p>

@@ -2,6 +2,7 @@
   "name": "homeapp73",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:4000",
   "dependencies": {
     "bootstrap": "^4.1.3",
     "jquery": "^3.4.1",

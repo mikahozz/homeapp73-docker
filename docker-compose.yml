@@ -1,6 +1,17 @@
 version: '3.4'
 
 services:
+    nordpool:
+        image: nordpool
+        container_name: nordpool
+        restart: unless-stopped
+        volumes:
+        - ./nordpool/index.js:/usr/src/app/index.js
+        build:
+            context: ./nordpool
+            dockerfile: ./Dockerfile
+        ports:
+            - 3013:3013
     cabinbookings:
         image: cabinbookings
         container_name: cabinbookings

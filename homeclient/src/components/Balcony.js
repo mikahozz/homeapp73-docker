@@ -30,7 +30,7 @@ export class Balcony extends Component {
 
   render() {
     let contents = this.state.loading
-      ? <p><em>Loading...</em></p>
+      ? <div><p className="balconyTemp"><em>...</em></p></div>
       : <div>
           <p className="balconyTemp">{_.round(this.state.indoordata.temperature, 1) }°</p>
           <p className="balconyUpdated">{moment(this.state.indoordata.time).format('ddd HH:mm')}</p>
