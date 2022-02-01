@@ -20,16 +20,42 @@ h3 { color: rgb(151,151,151); font-size: 0.9em; font-weight: normal; margin-top:
   border-radius: 5px;
 }
 
-.colBox { background-color: rgba(120, 120, 120, 0.1); margin-bottom: 10px; border-radius: 5px; }
-#weatherNow { width: 200px; display: inline-block; }
+.inlineBox { display: inline-block;vertical-align:top;}
+#weatherNow { width: 200px;  }
 
-#indoor {margin-left: 5%; height: 110px; width: 80px; display: inline-block; }
-.indoorTemp {font-size: 150%; line-height: 2.5em;}
-.indoorUpdated {color: rgba(151,151,151, 0.5); font-size: 0.7em; margin-bottom: 0;}
+#indoorContainer { 
+  position: relative; 
+  height: 140px;
+}
+#indoorContainer:before {
+  content: "";
+  position: absolute;
+  width: 250px;
+  height: 200px;
+  opacity: .1;
+  background: url("/src/assets/img/house.svg");
+  background-repeat: no-repeat; 
+}
+#indoor {
+  position: absolute; top: 40px; left: 60px; 
+  cursor: pointer; }
+#alert { position: absolute; right: -5px; top: -5px; 
+  background-color: red; 
+  color: white; 
+  height: 12px;
+  line-height: 8px;
+  font-size: 0.7em;
+  width: 12px;
+  text-align: center;
+  padding: 2px;
+  border-radius: 50%;
+}
+.indoorTemp {font-size: 150%; }
 
-#balcony { margin-left: 5%; display: inline-block; }
-.balconyTemp {padding-top: 30px; margin-bottom: 0; }
-.balconyUpdated {margin-top:0; line-height: 1em; color: rgba(151,151,151, 0.5);font-size: 0.7em;}
+#balcony { 
+  position: absolute; top: 40px; left: 160px;
+  cursor: pointer;}
+.balconyTemp {margin-bottom: 0; }
 
 #cabinBookings {
   border-radius: 0px;
@@ -55,6 +81,7 @@ h3 { color: rgb(151,151,151); font-size: 0.9em; font-weight: normal; margin-top:
 .bookingBox.updatedWithinWeek { box-shadow: 0 0 10px 2px rgb(255, 255, 255, 0.9);}
 .bookingBox.updatedWithin2Weeks { box-shadow: 0 0 5px 1px rgb(255, 255, 255, 0.5);}
 
+.dateUpdated {color: rgba(151,151,151, 0.5);}
 .updatedOver24h { color:#ff3e3e; font-weight: bold; } 
 .updatedOver12h { color:#ff3e3e; font-weight: bold; } 
 

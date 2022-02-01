@@ -15,10 +15,14 @@ export class Home extends Component {
     return (
       <div id="home" className="container-fluid">
         <div className="row header box">
-          <div className="col-sm-5 colBox">
-            <WeatherNow />
-            <Indoor />
-            <Balcony />
+          <div className="colBox col-sm-5">
+            <div className="inlineBox">
+              <WeatherNow />
+            </div>
+            <div id="indoorContainer" className="inlineBox">
+              <Indoor />
+              <Balcony />
+            </div>
           </div>
           <div className="col-sm-3"><CabinBookings /></div>
           <div className="d-none d-sm-block col-sm-3 timeBox offset-md-1"><Time /></div>

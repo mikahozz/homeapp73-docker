@@ -2,6 +2,7 @@
   "name": "homeapp73",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "proxy": "http://localhost:4000",
   "dependencies": {
     "bootstrap": "^4.1.3",
@@ -35,6 +36,7 @@
   "scripts": {
     "rimraf": "../node_modules/rimraf/bin.js",
     "start": "rimraf ./build && react-scripts start",
+    "withmockup": "node src/mockup.js & rimraf ./build && react-scripts start",
     "build": "react-scripts build",
     "test": "cross-env CI=true react-scripts test --env=jsdom",
     "eject": "react-scripts eject",

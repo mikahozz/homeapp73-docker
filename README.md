@@ -1,3 +1,8 @@
+# Getting started 
+## Running locally with mockup data
+- Install node on your machine (e.g. `brew install node` if you are on Mac and using Brew)
+- In the homeclient folder, execute `npm run withmockup` to open the client in development mode using mockup data
+
 Mariadb
 - Create docker.env file and set the following environment variables:
     MYSQL_ROOT_PASSWORD={your root password}
