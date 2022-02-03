@@ -21,7 +21,9 @@ h3 { color: rgb(151,151,151); font-size: 0.9em; font-weight: normal; margin-top:
 }
 
 .inlineBox { display: inline-block;vertical-align:top;}
-#weatherNow { width: 200px;  }
+#weatherNow { width: 120px;  }
+.temperatureNow { font-size: 400%; margin-top: 49px;}
+
 
 #indoorContainer { 
   position: relative; 
@@ -37,7 +39,7 @@ h3 { color: rgb(151,151,151); font-size: 0.9em; font-weight: normal; margin-top:
   background-repeat: no-repeat; 
 }
 #indoor {
-  position: absolute; top: 40px; left: 60px; 
+  position: absolute; top: 30px; left: 40px; 
   cursor: pointer; }
 #alert { position: absolute; right: -5px; top: -5px; 
   background-color: red; 
@@ -53,9 +55,9 @@ h3 { color: rgb(151,151,151); font-size: 0.9em; font-weight: normal; margin-top:
 .indoorTemp {font-size: 150%; }
 
 #balcony { 
-  position: absolute; top: 40px; left: 160px;
+  position: absolute; top: 30px; left: 120px;
   cursor: pointer;}
-.balconyTemp {margin-bottom: 0; }
+.balconyTemp {margin-bottom: 0; color: rgba(255, 255, 255, 0.7) }
 
 #cabinBookings {
   border-radius: 0px;
@@ -110,8 +112,6 @@ h3 { color: rgb(151,151,151); font-size: 0.9em; font-weight: normal; margin-top:
 
 
 .recharts-text { color: rgb(151,151,151); }
-
-.temperatureNow { font-size: 400%; line-height: 1.6em; text-align: center; margin-bottom: 0;}
 
 .wind-container {
   width: 40px;

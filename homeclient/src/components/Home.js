@@ -24,7 +24,8 @@ export class Home extends Component {
               <Balcony />
             </div>
           </div>
-          <div className="col-sm-3"><CabinBookings /></div>
+          <div className="col-sm-1">&nbsp;</div>
+          <div className="col-sm-2"><CabinBookings /></div>
           <div className="d-none d-sm-block col-sm-3 timeBox offset-md-1"><Time /></div>
         </div>
         <div className="row">

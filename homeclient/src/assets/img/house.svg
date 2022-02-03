@@ -1,20 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="209px" height="122px" viewBox="0 0 209 122" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 53 (72520) - https://sketchapp.com -->
-    <title>Group 3</title>
-    <desc>Created with Sketch.</desc>
+<svg width="130px" height="96px" viewBox="0 0 130 96" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group 4</title>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Group-3" transform="translate(0.000000, 0.297061)">
-            <rect id="Rectangle-Copy-3" fill="#FFFFFF" x="159.014417" y="45.3503613" width="41.5" height="66.1463833"></rect>
-            <polygon id="Rectangle" fill="#D8D8D8" points="2.62163999 12.7782786 205.691011 12.7782786 208.461329 45.3503613 0 45.3503613"></polygon>
-            <rect id="Rectangle-Copy-2" fill="#D8D8D8" x="8.5188524" y="40.5426603" width="150.495564" height="80.4751546"></rect>
-            <rect id="Rectangle-Copy-4" fill="#D8D8D8" x="6.51441654" y="111.496745" width="194" height="9.52107033"></rect>
-            <rect id="Rectangle-Copy-9" fill="#D8D8D8" x="8.5188524" y="76.4191171" width="191.995564" height="7"></rect>
-            <rect id="Rectangle-Copy-5" fill="#FFFFFF" x="22.5" y="45.7564297" width="25.6449882" height="22.5499034"></rect>
-            <rect id="Rectangle-Copy-6" fill="#FFFFFF" x="67.5113758" y="45.7564297" width="25.6449882" height="22.5499034"></rect>
-            <rect id="Rectangle-Copy-7" fill="#FFFFFF" x="114.762825" y="45.7564297" width="12.5277241" height="22.5499034"></rect>
-            <rect id="Rectangle-Copy-8" fill="#FFFFFF" x="134.5" y="45.7564297" width="12.5277241" height="22.5499034"></rect>
-            <rect id="Rectangle-Copy" fill="#D8D8D8" x="134.798312" y="0" width="12.5277241" height="36.5809544"></rect>
+        <g id="Group-4" transform="translate(0.722412, 1.143021)" fill="#F1F1F1">
+            <rect id="Rectangle-Copy-11" x="18" y="27" width="92" height="67"></rect>
+            <polygon id="Triangle-Copy" stroke="#F1F1F1" stroke-linecap="round" stroke-linejoin="round" points="64 0 128 27 0 27"></polygon>
         </g>
     </g>
 </svg>
