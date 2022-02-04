@@ -51,6 +51,10 @@ h3 { color: rgb(151,151,151); font-size: 0.9em; font-weight: normal; margin-top:
   text-align: center;
   padding: 2px;
   border-radius: 50%;
+  visibility: hidden;
+}
+#alert.updatedOver12h {
+  visibility: visible;
 }
 .indoorTemp {font-size: 150%; }
 
