@@ -121,7 +121,7 @@ render() {
 
     return (
       <div id="cabinBookings" onClick={this.toggle}>
-        <h2>Cabin bookings</h2>
+        <h2 className='small'>Cabin bookings</h2>
          {contents}
         <Modal className="cabinbookings-modal" funk={true} isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>Cabin bookings, upcoming year</ModalHeader>

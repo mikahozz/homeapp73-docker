@@ -32,7 +32,7 @@ h3 { color: rgb(151,151,151); font-size: 0.9em; font-weight: normal; margin-top:
 #indoorContainer:before {
   content: "";
   position: absolute;
-  width: 250px;
+  width: 180px;
   height: 200px;
   opacity: .1;
   background: url("./img/house.svg");
@@ -69,7 +69,7 @@ h3 { color: rgb(151,151,151); font-size: 0.9em; font-weight: normal; margin-top:
   width: 150px; text-align: center;
   cursor: pointer;
 }
-#cabinBookings h2 {  font-size: 15px; font-style: italic; }
+h2.small {  font-size: 15px; font-style: italic; }
 .bookingsUpdated { line-height: 1em; margin-top: 3px; color: rgba(151,151,151, 0.5); font-size: 0.7em;}
 .bookingsTable { display: inline-block; margin: 0 auto; background-color: rgba(120, 120, 120, 0.1); padding: 10px 5px 5px 5px; }
 .bookingWeekRow { display: grid;  grid-template-columns: 14px 14px 14px 14px 14px 14px 14px 14px; column-gap: 4px; row-gap: 0px;}

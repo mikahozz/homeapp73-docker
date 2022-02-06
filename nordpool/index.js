@@ -51,7 +51,8 @@ function getPriceArray(dataRows, daysAgo = 0) {
         .map((row) => {
             return { 
                 DateTime: parseDate(row.Columns[daysAgo].Name, row.StartTime ), 
-                Price: (parseFloat(row.Columns[daysAgo].Value.replace(',', '.')) / 10 * 1.24 + 0.24).toFixed(3)};
+                Price: parseFloat((parseFloat(row.Columns[daysAgo].Value.replace(',', '.')) / 10 * 1.24 + 0.24).toFixed(3))
+            };
         });
 }
 function parseDate(dateCET, timeLocal) {

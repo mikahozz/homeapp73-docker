@@ -7,6 +7,7 @@ import { Balcony} from './Balcony';
 import { Time } from './Time';
 import { FamilyCalendar} from './FamilyCalendar';
 import { CabinBookings } from './CabinBookings';
+import { ElectricityPrice } from './ElectricityPrice';
 
 export class Home extends Component {
   static displayName = Home.name;
@@ -15,7 +16,7 @@ export class Home extends Component {
     return (
       <div id="home" className="container-fluid">
         <div className="row header box">
-          <div className="colBox col-sm-5">
+          <div className="colBox col-sm-4">
             <div className="inlineBox">
               <WeatherNow />
             </div>
@@ -24,7 +25,7 @@ export class Home extends Component {
               <Balcony />
             </div>
           </div>
-          <div className="col-sm-1">&nbsp;</div>
+          <div className="col-sm-2"><ElectricityPrice /></div>
           <div className="col-sm-2"><CabinBookings /></div>
           <div className="d-none d-sm-block col-sm-3 timeBox offset-md-1"><Time /></div>
         </div>

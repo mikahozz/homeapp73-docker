@@ -9,6 +9,7 @@
     "jquery": "^3.4.1",
     "merge": "^1.2.1",
     "moment": "^2.29.0",
+    "nodemon": "^2.0.15",
     "oidc-client": "^1.9.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
@@ -17,18 +18,19 @@
     "react-scripts": "^3.4.0",
     "reactstrap": "^8.4.1",
     "recharts": "^1.8.5",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "victory": "^36.2.1"
   },
   "devDependencies": {
     "ajv": "^6.9.1",
     "cross-env": "^5.2.0",
-    "typescript": "^3.7.5",
     "eslint": "^6.8.0",
     "eslint-config-react-app": "^5.2.0",
     "eslint-plugin-flowtype": "^4.6.0",
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-react": "^7.18.3"
+    "eslint-plugin-react": "^7.18.3",
+    "typescript": "^3.7.5"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -36,7 +38,7 @@
   "scripts": {
     "rimraf": "../node_modules/rimraf/bin.js",
     "start": "rimraf ./build && react-scripts start",
-    "withmockup": "node src/mockup.js & rimraf ./build && react-scripts start",
+    "withmockup": "nodemon src/mockup.js & rimraf ./build && react-scripts start",
     "build": "react-scripts build",
     "test": "cross-env CI=true react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
