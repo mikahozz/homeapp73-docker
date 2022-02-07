@@ -120,29 +120,28 @@ domainPadding={22}
           <VictoryAxis/>
           <VictoryLine y={() => this.state.dayAvg} />
           </VictoryChart>
-          <Modal style={{maxWidth: '800px', width: '100%'}} funk={true} isOpen={this.state.modal} toggle={this.toggle}>
+          <Modal style={{maxWidth: '1000px', width: '100%'}} funk={true} isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>Electricity Price</ModalHeader>
           <ModalBody>
           <VictoryChart
             theme={this.chartTheme}
             domainPadding={22}
             height={200}
-            scale={{x: "time"}}
-          >
+            >
            <VictoryBar
             data={this.state.data
               .map(item => {
-              return {x: Date.parse(item.DateTime), y: item.Price}
+              return {x: item.DateTime, y: item.Price}
             })}
             style={{
               data: {
                 fill: ({ datum }) => datum.y >= this.state.dayAvg ? "#ff0000" : "#00ff00",
                 fillOpacity: 0.7,
                 strokeWidth: ({ datum }) => {
-                  return datum.x === new Date().setMinutes(0,0,0) ? 1 : 0.1;
+                  return Date.parse(datum.x) === new Date().setMinutes(0,0,0) ? 1 : 0.1;
                 },
                 stroke: ({ datum }) => {
-                  return datum.x === new Date().setMinutes(0,0,0) ? "#ffffff" : "none";
+                  return Date.parse(datum.x) === new Date().setMinutes(0,0,0) ? "#ffffff" : "none";
                 },
               },
             }}
@@ -152,16 +151,16 @@ domainPadding={22}
               ticks: {
                 fill: "transparent",
                 size: 5}, 
-              tickLabels: { fontSize: 12 } }}
+              tickLabels: { fontSize: 5 } }}
           />
           <VictoryAxis
             style={{ 
               ticks: {
                 fill: "transparent",
                 size: 5}, 
-              tickLabels: { fontSize: 6 }
+              tickLabels: { fontSize: 5 }
             }}
-            tickFormat={(t) => new Date(t).getHours()}
+            tickFormat={(t) => t.slice(11,13)}
           >
           </VictoryAxis>
           <VictoryLine y={() => this.state.dayAvg} />
