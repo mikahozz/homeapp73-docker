@@ -26,4 +26,4 @@ COPY --from=BUILD_IMAGE /usr/src/app/ ./
 
 EXPOSE 3013
 
-CMD [ "nodemon", "./index.js" ]
+CMD [ "node", "./index.js" ]

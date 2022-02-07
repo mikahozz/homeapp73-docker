@@ -10,7 +10,7 @@ app.use(function(err, req, res, next) {
     res.send(err);
   });
 
-app.get('/test', (req, res) => {
+app.get('/', (req, res) => {
     try {
         let url = "https://www.nordpoolgroup.com/api/marketdata/page/35?currency=,EUR,EUR,EUR&entityName=FI";
 
