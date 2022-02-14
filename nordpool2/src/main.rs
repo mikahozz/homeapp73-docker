@@ -26,10 +26,11 @@ struct Column {
     name: String,
 }
 
-/*struct Price {
+#[derive(Serialize, Debug)]
+struct Price {
     date_time: String,
-    price: String
-}*/
+    price: f64
+}
 
 async fn greet() -> impl Responder {
     let url = "https://www.nordpoolgroup.com/api/marketdata/page/35?currency=,EUR,EUR,EUR&entityName=FI";
@@ -40,8 +41,11 @@ async fn greet() -> impl Responder {
             let json = prices_response.json::<PriceInput>().await.unwrap();
             let prices = json.data.rows.into_iter()
             .filter(|item| !item.is_extra_row)
-            .collect::<Vec<Row>>();
-            //.map(|item| (item.start_time, item.columns[0].value): Price);
+            .map(|item| Price { 
+                date_time: item.start_time, 
+                price: ((item.columns[0].value.clone().replace(",", ".").parse::<f64>().unwrap() / 10.0 * 1.24 + 0.24) * 1000.0).round() / 1000.0
+            })
+            .collect::<Vec<Price>>();
             println!("{:?}", prices);
             return HttpResponse::Ok().json(prices);        
         },
