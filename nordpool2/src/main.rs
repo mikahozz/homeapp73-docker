@@ -1,6 +1,7 @@
 use actix_web::{web, App, HttpResponse, HttpServer, Responder};
-//use serde_json::{Value};
 use serde::{Serialize, Deserialize};
+use chrono::{NaiveDateTime, DateTime, FixedOffset, Utc};
+use chrono::TimeZone;
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all(deserialize = "lowercase"))]
@@ -28,7 +29,7 @@ struct Column {
 
 #[derive(Serialize, Debug)]
 struct Price {
-    date_time: String,
+    date_time: DateTime<Utc>,
     price: f64
 }
 
@@ -41,9 +42,14 @@ async fn greet() -> impl Responder {
             let json = prices_response.json::<PriceInput>().await.unwrap();
             let prices = json.data.rows.into_iter()
             .filter(|item| !item.is_extra_row)
-            .map(|item| Price { 
-                date_time: item.start_time, 
-                price: ((item.columns[0].value.clone().replace(",", ".").parse::<f64>().unwrap() / 10.0 * 1.24 + 0.24) * 1000.0).round() / 1000.0
+            .map(|item| {
+                let tz_offset = FixedOffset::east(1 * 3600);
+                return Price { 
+                    date_time: tz_offset.from_local_datetime(
+                        &NaiveDateTime::parse_from_str(&item.start_time, "%Y-%m-%dT%H:%M:%S").unwrap()
+                    ).unwrap().with_timezone(&Utc), 
+                    price: ((item.columns[0].value.clone().replace(",", ".").parse::<f64>().unwrap() / 10.0 * 1.24 + 0.24) * 1000.0).round() / 1000.0
+                }
             })
             .collect::<Vec<Price>>();
             println!("{:?}", prices);
