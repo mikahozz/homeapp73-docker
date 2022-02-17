@@ -1,5 +1,5 @@
 [package]
-name = "nordpool2"
+name = "nordpoolrust"
 version = "0.1.0"
 edition = "2021"
 

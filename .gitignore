@@ -5,3 +5,7 @@ meta.db
 *.env
 *-env
 node_modules
+
+# Added by cargo
+
+/target

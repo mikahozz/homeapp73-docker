@@ -1,6 +1,15 @@
 version: '3.4'
 
 services:
+    nordpoolrust:
+        image: nordpoolrust
+        container_name: nordpoolrust
+        restart: unless-stopped
+        build:
+            context: ./nordpoolrust
+            dockerfile: ./Dockerfile
+        ports:
+            - 3014:3014
     nordpool:
         image: nordpool
         container_name: nordpool
