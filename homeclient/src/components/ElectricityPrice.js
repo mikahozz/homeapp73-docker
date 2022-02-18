@@ -106,18 +106,32 @@ domainPadding={22}
               })
               .slice(0,6)
               .map(item => {
-                let priceDate = new Date(Date.parse(item.DateTime));
-              return {x: priceDate.getHours().toFixed(), y: item.Price}
+              return {x: item.DateTime, y: item.Price}
             })}
+            barRatio={0.7}
             style={{
               data: {
-                fill: ({ datum }) => datum.y >= this.state.dayAvg ? "#ff0000" : "#00ff00",
-                fillOpacity: 0.7,
-                strokeWidth: 3
+                fill: ({ datum }) => datum.y >= this.state.dayAvg ? "#FF0046" : "rgb(0,255,121)",
+                fillOpacity: 0.9,
+                strokeWidth: ({ datum }) => {
+                  return Date.parse(datum.x) === new Date().setMinutes(0,0,0) ? 3 : 1;
+                },
+                stroke: ({ datum }) => {
+                  return Date.parse(datum.x) === new Date().setMinutes(0,0,0) ? "rgb(255,255,255,0.8)" :  "none";
+                },
               },
             }}
             />
-          <VictoryAxis/>
+          <VictoryAxis
+            style={{ 
+              ticks: {
+                fill: "transparent",
+                size: 5}, 
+              tickLabels: { fontSize: 35 }
+            }}
+            tickFormat={(t) => new Date(Date.parse(t)).getHours()}
+          >
+          </VictoryAxis>
           <VictoryLine y={() => this.state.dayAvg} />
           </VictoryChart>
           <Modal style={{maxWidth: '1000px', width: '100%'}} funk={true} isOpen={this.state.modal} toggle={this.toggle}>
@@ -131,17 +145,18 @@ domainPadding={22}
            <VictoryBar
             data={this.state.data
               .map(item => {
-              return {x: item.DateTime, y: item.Price}
+                return {x: item.DateTime, y: item.Price}
             })}
+            barRatio={0.5}
             style={{
               data: {
-                fill: ({ datum }) => datum.y >= this.state.dayAvg ? "#ff0000" : "#00ff00",
-                fillOpacity: 0.7,
+                fill: ({ datum }) => datum.y >= this.state.dayAvg ? "#FF0046" : "rgb(0,255,121)",
+                fillOpacity: 0.9,
                 strokeWidth: ({ datum }) => {
-                  return Date.parse(datum.x) === new Date().setMinutes(0,0,0) ? 1 : 0.1;
+                  return Date.parse(datum.x) === new Date().setMinutes(0,0,0) ? 1 : 1;
                 },
                 stroke: ({ datum }) => {
-                  return Date.parse(datum.x) === new Date().setMinutes(0,0,0) ? "#ffffff" : "none";
+                  return Date.parse(datum.x) === new Date().setMinutes(0,0,0) ? "rgb(255,255,255,0.9)" :  "none";
                 },
               },
             }}
@@ -160,10 +175,19 @@ domainPadding={22}
                 size: 5}, 
               tickLabels: { fontSize: 5 }
             }}
-            tickFormat={(t) => t.slice(11,13)}
+            tickFormat={(t) => new Date(Date.parse(t)).getHours()}
           >
           </VictoryAxis>
-          <VictoryLine y={() => this.state.dayAvg} />
+          <VictoryLine 
+            y={() => this.state.dayAvg} 
+            style={{
+              data: {
+                strokeWidth: 0.5,
+                stroke: "rgb(0,255,121)",
+                strokeDasharray: "2, 2" ,
+              },
+            }}
+            />
           </VictoryChart>
           </ModalBody>
         </Modal>
