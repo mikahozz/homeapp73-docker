@@ -23,9 +23,16 @@ fn get_price_array(data_rows: &Vec<Row>, days_ago: usize) -> Vec<Price> {
     data_rows.iter()
     .filter(|row| !row.is_extra_row)
     .map(|row| 
-        Price { 
-            date_time: parse_date(&row.columns[days_ago].name, &row.start_time), 
-            price: ((row.columns[days_ago].value.clone().replace(",", ".").parse::<f64>().unwrap() / 10.0 * 1.24 + 0.24) * 1000.0).round() / 1000.0
+        {
+            let price_string = row.columns[days_ago].value.clone().replace(",", ".");
+            let price = price_string.parse::<f64>()
+            .unwrap_or_else(|err| {
+                panic!("Could not parsefloat the value {}: {} ", price_string, err);
+            } );
+            return Price { 
+                date_time: parse_date(&row.columns[days_ago].name, &row.start_time), 
+                price: ((price / 10.0 * 1.24 + 0.24) * 1000.0).round() / 1000.0
+            }    
         }
     )
     .collect::<Vec<Price>>()
