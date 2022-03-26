@@ -1,6 +1,14 @@
 version: '3.4'
 
 services:
+    sofar:
+        image: sofar
+        restart: unless-stopped
+#        volumes:
+#            - ./src:/usr/src/app
+        build:
+            context: ./sofar_lsw3
+            dockerfile: ./Dockerfile
     nordpoolrust:
         image: nordpoolrust
         container_name: nordpoolrust
@@ -125,7 +133,7 @@ services:
             context: ./mqttclient
             dockerfile: ./Dockerfile
     influxdb:
-        image: influxdb
+        image: influxdb:1.8.10
         container_name: influxdb
         restart: always
         ports:
