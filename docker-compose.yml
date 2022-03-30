@@ -1,6 +1,15 @@
 version: '3.4'
 
 services:
+    electricity:
+        image: electricity
+        container_name: electricity
+        restart: unless-stopped
+        build:
+            context: ./electricity
+            dockerfile: ./Dockerfile
+        ports:
+        - 3016:3016
     sofar:
         image: sofar
         restart: unless-stopped
@@ -140,6 +149,8 @@ services:
             - 8086:8086
         volumes:
             - $PWD/influxdb:/var/lib/influxdb  
+        environment:
+        - INFLUXDB_HTTP_FLUX_ENABLED=true
     zigbee2mqtt:
         container_name: zigbee2mqtt
         image: koenkk/zigbee2mqtt:1.18.1
