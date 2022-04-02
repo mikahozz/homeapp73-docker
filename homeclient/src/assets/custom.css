@@ -165,4 +165,37 @@ h2.small {  font-size: 15px; font-style: italic; }
 .time { font-size: 4em; line-height: 1em; margin-top: 5px; width:100%}
 .date {padding-left: 5px; opacity: 0.7;}
 
-
+#solarIcon {
+  position: absolute;
+  left: -30px;
+  top: -10px;
+  width: 30px;
+  opacity: 0.9;
+}
+.solarBar { 
+  position: relative;
+  width: 80%; 
+  margin-left: 15px;
+  margin-top: 10px; 
+  line-height: 15px;
+}
+#powerRow { width: 100; white-space: nowrap;}
+.powerNow {
+  background-color: rgb(111, 241, 255, 0.8);
+  padding: 4px;
+}
+.powerNow, .powerCapacity {
+  vertical-align:top;
+  display: inline-block ;
+  border: solid 1px rgb(111, 241, 255, 0.8);
+  height: 10px;
+}
+.powerNow {
+  background-color: rgb(111, 241, 255, 0.8);
+  padding: 4px;
+}
+.powerW {
+  vertical-align:top;
+  display: inline-block ;
+  font-size: small;
+}

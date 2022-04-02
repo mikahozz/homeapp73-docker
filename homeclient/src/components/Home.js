@@ -8,6 +8,7 @@ import { Time } from './Time';
 import { FamilyCalendar} from './FamilyCalendar';
 import { CabinBookings } from './CabinBookings';
 import { ElectricityPrice } from './ElectricityPrice';
+import Solar from './Solar';
 
 export class Home extends Component {
   static displayName = Home.name;
@@ -25,7 +26,7 @@ export class Home extends Component {
               <Balcony />
             </div>
           </div>
-          <div className="col-sm-2"><ElectricityPrice /></div>
+          <div className="col-sm-2"><ElectricityPrice /><Solar /></div>
           <div className="col-sm-2"><CabinBookings /></div>
           <div className="d-none d-sm-block col-sm-3 timeBox offset-md-1"><Time /></div>
         </div>
