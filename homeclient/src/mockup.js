@@ -9,6 +9,15 @@ app.use(function(err, req, res, next) {
     res.send(err);
   });
 
+app.get('/electricity/current', (reg, res) => {
+  res.writeHead(200, {"Content-Type": "application/json"});
+  res.write(`{
+    "datetime": "2022-04-02T11:55:58.103Z",
+    "powerw": 500
+  }`)
+  res.end();
+})
+  
 app.get('/indoor/dev_upstairs', (req, res) => {
     res.writeHead(200, {"Content-Type": "application/json"});
     res.write('{"battery":100.0,"humidity":27.4,"temperature":22.5,"time":"2022-01-31T19:06:06.604000Z"}');
