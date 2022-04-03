@@ -31,15 +31,13 @@ export default function Solar(props) {
     }, []);
 
     return (
-        <div className="solarBar">
-            <img id="solarIcon" src="/img/1.svg" />
-            <div id="powerRow">
-                <span className="powerNow" style={{width: _.round(data.currentPower / 4760 * 100) + "%"}} />
-                <span className="powerCapacity" style={{width: _.round((1-data.currentPower / 4760 )*100) + "%"}}/>
-            </div>
-            <span className="powerW">
+        <div className="solarBar" style={data.currentPower === 0 ? {opacity: 0.5} : {}}>
+            <div className="powerRow">
+            <span className="powerW" style={data.currentPower / 4760 > 0.5? { float: "left", color: "#000", textShadow: "0 0 5px #fff;"} : {}}>
                 {data.currentPower} W
             </span>
+                <span className="powerNow" style={{width: _.round(data.currentPower / 4760 * 100) + "%"}} />
+            </div>
         </div>
         );
 }

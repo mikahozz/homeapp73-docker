@@ -13,7 +13,7 @@ app.get('/electricity/current', (reg, res) => {
   res.writeHead(200, {"Content-Type": "application/json"});
   res.write(`{
     "datetime": "2022-04-02T11:55:58.103Z",
-    "powerw": 500
+    "powerw": 2500
   }`)
   res.end();
 })
