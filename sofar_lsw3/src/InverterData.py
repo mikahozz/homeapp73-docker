@@ -17,6 +17,7 @@ from datetime import datetime
 
 class Inverter:
   def __init__(self) -> None:
+    print("Initializing the inverter logic")
     # CONFIG
     configParser = configparser.RawConfigParser()
     configFilePath = r'./config.cfg'
@@ -63,7 +64,7 @@ class Inverter:
         clientSocket.settimeout(10);
         clientSocket.connect(sockadress);
       except socket.error as msg:
-        print("Could not open socket - inverter/logger turned off");
+        print(f"Could not open socket to {self.inverter_ip}:{self.inverter_port} - inverter/logger turned off");
         invstatus=0;
 
     if invstatus==1:
@@ -93,24 +94,17 @@ class Inverter:
         frame_bytes[len(frame_bytes) - 2] = int((checksum & 255))
 
         # SEND DATA
-        if self.verbose=="1":
+        if self.verbose=="2":
           print("*** Chunk no: ", chunks);
           print("Sent data: ", frame);
         clientSocket.sendall(frame_bytes);
 
-        ok=False;
-        while (not ok):
-          try:
-            data = clientSocket.recv(1024);
-            ok=True
-            try:
-              data
-            except:
-              print("No data - Exit")
-              sys.exit(1) #Exit, no data
-          except socket.timeout as msg:
-            print("Connection timeout - inverter and/or gateway is offline");
-            invstatus=0;
+        data = clientSocket.recv(1024);
+        try:
+          data
+        except:
+          print("No data - Exit")
+          sys.exit(1) #Exit, no data
 
         if invstatus==1:
           # PARSE RESPONSE (start position 56, end position 60)
@@ -175,7 +169,7 @@ class Inverter:
     output=output[:-1]+"}"
     if invstatus>0:
       jsonoutput=json.loads(output)
-      if self.verbose == "1":
+      if self.verbose == "2":
         print("*** JSON output:")
         print(json.dumps(jsonoutput, indent=4, sort_keys=False, ensure_ascii=False))
       return jsonoutput

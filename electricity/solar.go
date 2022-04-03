@@ -29,7 +29,7 @@ func getCurrentSolar(w http.ResponseWriter, r *http.Request) {
 	result, err := queryAPI.Query(context.Background(),
 		`from(bucket:"homedb")|> range(start: -5d) 
 		|> filter(fn: (r) => r._measurement == "electricity")
-		|> filter(fn: (r) => r._field == "OutputActivePower")`)
+		|> filter(fn: (r) => r._field == "OutputActivePowerW")`)
 	if err != nil {
 		w.Write([]byte(fmt.Sprintf("Could not get Solar: %s", err)))
 

@@ -10,8 +10,8 @@ def writeentry(data):
 
 inverter = Inverter()
 
-try:
-    while True:
+while True:
+    try:
         data = inverter.GetData()
         if data:
             influxdata = f"electricity,location=Solar "
@@ -24,8 +24,9 @@ try:
             values.append(f"OutputActivePowerW={data['Output active power (W)']}")
             influxdata += ','.join(values)
             writeentry(influxdata)
-
-        time.sleep(60)
- 
-except Exception as e:
-    print("exiting with exception " + e)
+            time.sleep(60)
+        else:
+            time.sleep(60*10)
+    except BaseException as e:
+        print(f"exiting with exception: {e}")
+        time.sleep(60*10)
