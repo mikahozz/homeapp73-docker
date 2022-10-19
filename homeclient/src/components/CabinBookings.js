@@ -26,7 +26,11 @@ export class CabinBookings extends Component {
   async populateData() {
     const response = await fetch('/cabinbookings/days/365');
     const data = await response.json();
-    const grouped = _.groupBy(data.bookings, element => utils.getYearWeekNumber(new Date(element.date)));
+    const grouped = _.chain(data.bookings)
+    .filter(element => new Date(element.date) >= new Date().setHours(0,0,0,0)) 
+    .groupBy(element => utils.getYearWeekNumber(new Date(element.date)))
+    .value();
+    console.log(grouped)
     const groupedByMonthWeek = utils.groupByMonthWeek(data.bookings);
     this.setState({ bookingsdata: grouped, bookingsyeardata: groupedByMonthWeek, lastUpdated: data.lastupdated, loading: false });
   }

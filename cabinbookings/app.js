@@ -30,7 +30,7 @@ app.get('/days/:amountOfDays', (req, res) => {
         db.query("SELECT MAX(runfinished) as runfinished FROM cabok_db.runs")
         .then(async row => {
             bookingRes.lastupdated = row[0].runfinished;
-            let rows = await db.queryWithParams("SELECT date, booked, created, updated from cabok_db.bookings WHERE date BETWEEN CURDATE() AND CURDATE() + INTERVAL ? DAY", [days])
+            let rows = await db.queryWithParams("SELECT date, booked, created, updated from cabok_db.bookings WHERE date BETWEEN CURDATE() - INTERVAL 365 DAY AND CURDATE() + INTERVAL ? DAY", [days])
             rows.forEach((item) => {
                 bookingRes.bookings.push({'date': item.date, 'booked': item.booked, 'created': item.created, 'updated': item.updated});
             });

@@ -27,6 +27,9 @@ while True:
             time.sleep(60)
         else:
             time.sleep(60*10)
-    except BaseException as e:
-        print(f"exiting with exception: {e}")
+    except Exception as e:
+        print(f"Exception occurred: {e}")
         time.sleep(60*10)
+    except:
+        print("Exiting with unexpected error", sys.exc_info()[0])
+        raise
