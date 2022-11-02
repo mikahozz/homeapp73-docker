@@ -32,12 +32,12 @@ static renderRotate(degree) {
         <table className="forecastTable">
           <tbody>
             {forecastdata.map(forecastitem =>
-              <tr key={forecastitem.Datetime}>
-                <td className="time-col">{moment(forecastitem.Datetime).format('HH:mm')}</td>
-                <td><img alt="" width="55" height="55" src={"/img/" + forecastitem.WeatherSymbol3 + ".svg"} /></td>
-                <td className="temperature-col">{Math.round(forecastitem.Temperature)}°</td>
-                <td><div className="wind-container"><img alt="" style={Forecast.renderRotate(forecastitem.WindDirection-180)} src="/img/arrow.svg" width="40px" height="40px" /><span className="wind-text">{Math.round(forecastitem.WindSpeedMS)}</span></div></td>
-                <td><div className="rainBox" style={{width: forecastitem.Precipitation1h*10 + 'px'}}></div></td>
+              <tr key={forecastitem.datetime}>
+                <td className="time-col">{moment(forecastitem.datetime).format('HH:mm')}</td>
+                <td><img alt="" width="55" height="55" src={"/img/" + forecastitem.weather + ".svg"} /></td>
+                <td className="temperature-col">{Math.round(forecastitem.temperature)}°</td>
+                <td><div className="wind-container"><img alt="" style={Forecast.renderRotate(forecastitem.wind_dir-180)} src="/img/arrow.svg" width="40px" height="40px" /><span className="wind-text">{Math.round(forecastitem.wind_speed)}</span></div></td>
+                <td><div className="rainBox" style={{width: forecastitem.rain*10 + 'px'}}></div></td>
               </tr>
             )}
           </tbody>
