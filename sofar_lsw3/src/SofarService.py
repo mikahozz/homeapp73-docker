@@ -1,6 +1,7 @@
 from InverterData import Inverter
 from influxdb import InfluxDBClient
 import time
+import sys
 
 def writeentry(data):
     print("Writing to database: " + data)

@@ -10,3 +10,5 @@ devices:
     friendly_name: dev_downstairs
   '0x00158d00068b39cb':
     friendly_name: dev_upstairs
+  '0x00158d00066972f2':
+    friendly_name: '0x00158d00066972f2'

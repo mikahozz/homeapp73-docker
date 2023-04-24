@@ -45,9 +45,11 @@ func getCurrentSolar(w http.ResponseWriter, r *http.Request) {
 			}
 		} else {
 			datetime := time.UnixMilli(record.Time().UnixMilli()).UTC()
-			power = PowerGeneration{
-				DateTime: &datetime,
-				PowerW:   record.Value().(float64),
+			if datetime.After(datetime.Add(time.Duration(time.Duration.Minutes(60)))) {
+				power = PowerGeneration{
+					DateTime: &datetime,
+					PowerW:   record.Value().(float64),
+				}
 			}
 		}
 		output, err := json.MarshalIndent(power, "", "  ")
