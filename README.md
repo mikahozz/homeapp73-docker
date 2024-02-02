@@ -17,6 +17,30 @@ I created the app to try out interesting technologies and make something useful 
 
 Because the target has been to learn and experiment, the app uses a large variety of programming languages and approaches to the problems at hand. It's not the simplest nor the most lightweight. But it still runs without issues on Raspberry PI 4. 
 
+# Tech stack
+
+Docker compose based containerized solution which can be run on a Raspberry PI. Contains a React app, NGINX gateway, multiple independent API services, various data fetching containers, InfluxDB time series database, solar inverter integration, sensor integration with MQTT client that integrates to Mosquitto MQTT bridge. More detailed description below:
+
+## Client (Container: homeclient)
+
+Oldish Create React App based React application still using class components and not hooks. To be renewed to Next.js and React Server Components to create a more ligthweight client with better error handling and real-timeness.
+
+## Gateway (Container NGINX)
+
+NGINX provides a common protected endpoint for the client and hides the details of the API services.
+
+## Cabin bookings (Containers: cabinbookings, cabinbookings-refresh)
+
+Node.js/Express.js server that reads bookings from a MariaDB and returns them to the client. Cabinbookings-refersh is a periodically run container that scrapes a web site and writes the bookings into the MariaDB and local file system.
+
+## Calendar service (Container: calendarapi)
+
+A Python API that uses Flask as a the web framework. Fetches family calendar events from a CalDAV compliant calendar service and returns the events to the client.
+
+## Climate service (Container: climateapi)
+
+A Python API using Flask framework. Reads indoor climate data and outdoor history data from an InfluxDB database and gets real-time weather forecast from Finnish Meteorological Institute.
+
 # Getting started 
 ## Running locally with mockup data
 - Install node on your machine (e.g. `brew install node` if you are on Mac and using Brew)
