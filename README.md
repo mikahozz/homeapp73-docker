@@ -65,6 +65,10 @@ Database for relational data, such as cabin bookings
 
 ## Data ingestion
 
+### Airflow
+
+A Python based workflow for syncing historical weather data from Finnish Meteorological Institute and storing it in InfluxDB.
+
 ### Mosquitto
 
 MQTT broker that takes in MQTT messages from sensors and sends them to the subscriber(s) such as MQTT Client service.
