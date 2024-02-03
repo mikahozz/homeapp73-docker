@@ -15,31 +15,81 @@ Example home screen:
 
 I created the app to try out interesting technologies and make something useful from it. The app has been in daily use for many years as has proven it's value.
 
-Because the target has been to learn and experiment, the app uses a large variety of programming languages and approaches to the problems at hand. It's not the simplest nor the most lightweight. But it still runs without issues on Raspberry PI 4. 
+Because the target has been to learn and experiment, the app uses a large variety of programming languages and approaches to the problems at hand. It's not the simplest nor the most lightweight and it's lacking some error handling and security. Thus, it's not real-life production quality, but it's a fun and useful project that runs without issues on Raspberry PI 4. 
 
 # Tech stack
 
 Docker compose based containerized solution which can be run on a Raspberry PI. Contains a React app, NGINX gateway, multiple independent API services, various data fetching containers, InfluxDB time series database, solar inverter integration, sensor integration with MQTT client that integrates to Mosquitto MQTT bridge. More detailed description below:
 
-## Client (Container: homeclient)
+## Frontend
 
-Oldish Create React App based React application still using class components and not hooks. To be renewed to Next.js and React Server Components to create a more ligthweight client with better error handling and real-timeness.
+### Client
 
-## Gateway (Container NGINX)
+Oldish Create React App based React application using class components. To be renewed to Next.js and React Server Components to create a more ligthweight client with better error handling and real-timeness.
+
+### Gateway
 
 NGINX provides a common protected endpoint for the client and hides the details of the API services.
 
-## Cabin bookings (Containers: cabinbookings, cabinbookings-refresh)
+## APIs
+
+### Cabin bookings
 
 Node.js/Express.js server that reads bookings from a MariaDB and returns them to the client. Cabinbookings-refersh is a periodically run container that scrapes a web site and writes the bookings into the MariaDB and local file system.
 
-## Calendar service (Container: calendarapi)
+### Calendar service
 
 A Python API that uses Flask as a the web framework. Fetches family calendar events from a CalDAV compliant calendar service and returns the events to the client.
 
-## Climate service (Container: climateapi)
+### Climate service
 
 A Python API using Flask framework. Reads indoor climate data and outdoor history data from an InfluxDB database and gets real-time weather forecast from Finnish Meteorological Institute.
+
+### Electricity service
+
+Golang based API that reads the real-time solar panel production from InfluxDB and returns it to the client.
+
+### Nordpool
+
+A Rust API that reads prices from Nordpool and returns them to the client.
+
+## Databases
+
+### InfluxDB
+
+InfluxDB database that contains timeseries data, such as sensor, solar inverter and weather data.
+
+### MariaDB
+
+Database for relational data, such as cabin bookings
+
+## Data ingestion
+
+### Mosquitto
+
+MQTT broker that takes in MQTT messages from sensors and sends them to the subscriber(s) such as MQTT Client service.
+
+### MQTT client
+
+A Python application that reads messages from Mosquitto MQTT broker and writes them to the InfluxDB database.
+
+### Zigbee2MQTT
+
+A service that makes the USB-plugged Zigbee device talk with the Mosquitto MQTT server.
+
+### Sofar_lsw3
+
+Solar inverter reader application, which uses Wifi to connect to the ModBus interface of the solar inverter and stores the data in InfluxDB
+
+## Monitoring
+
+### Prometheus
+
+A Prometheus instance which uses Node Exporter to read metrics from the Raspberry PI host system and stores them in its database.
+
+### Grafana
+
+A report web site that reads Prometheus data and shows it in a dashboard.
 
 # Getting started 
 ## Running locally with mockup data
