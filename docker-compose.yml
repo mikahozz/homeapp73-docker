@@ -80,16 +80,16 @@ services:
             dockerfile: ./Dockerfile
         ports:
             - 5000:5000
-    calendarapi:
-        env_file:
-            - ./calendarapi/docker.env
-        image: calendarapi
-        restart: always
-        build:
-            context: ./calendarapi
-            dockerfile: ./Dockerfile
-        ports:
-        - 5010:5010
+    # calendarapi:
+    #     env_file:
+    #         - ./calendarapi/docker.env
+    #     image: calendarapi
+    #     restart: always
+    #     build:
+    #         context: ./calendarapi
+    #         dockerfile: ./Dockerfile
+    #     ports:
+    #     - 5010:5010
     climateapi:
         image: climateapi
         restart: always
