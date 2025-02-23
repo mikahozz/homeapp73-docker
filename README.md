@@ -1,6 +1,7 @@
 # homeapp73-docker
 
-A home web application, which shows 
+A home web application, which shows
+
 - outdoor and indoor climate info
 - family calendar from icloud
 - booking calendar with booked/unbooked status
@@ -15,7 +16,7 @@ Example home screen:
 
 I created the app to try out interesting technologies and make something useful from it. The app has been in daily use for many years as has proven it's value.
 
-Because the target has been to learn and experiment, the app uses a large variety of programming languages and approaches to the problems at hand. It's not the simplest nor the most lightweight and it's lacking some error handling and security. Thus, it's not real-life production quality, but it's a fun and useful project that runs without issues on Raspberry PI 4. 
+Because the target has been to learn and experiment, the app uses a large variety of programming languages and approaches to the problems at hand. It's not the simplest nor the most lightweight and it's lacking some error handling and security. Thus, it's not real-life production quality, but it's a fun and useful project that runs without issues on Raspberry PI 4.
 
 # Tech stack
 
@@ -95,22 +96,24 @@ A Prometheus instance which uses Node Exporter to read metrics from the Raspberr
 
 A report web site that reads Prometheus data and shows it in a dashboard.
 
-# Getting started 
+# Getting started
 
 Note! This app is being partially rewritten. The weather service has already been ported to Go (https://github.com/mikaahopelto/gohome). So, getting this running, takes some additional configuration effort, not described here.
 
 ## Running locally with mockup data
+
 - Install node on your machine (e.g. `brew install node` if you are on Mac and using Brew)
 - In the homeclient folder, execute `npm run withmockup` to open the client in development mode using mockup data
 
 Mariadb
+
 - Create docker.env file and set the following environment variables:
-    MYSQL_ROOT_PASSWORD={your root password}
-    CABIN_USER_PASSWORD={password for cabin user}
-Cabinbookings-refresh
+  MYSQL_ROOT_PASSWORD={your root password}
+  CABIN_USER_PASSWORD={password for cabin user}
+  Cabinbookings-refresh
 - Create .env file and set the following environment variables:
-    URL={url to bookign system}
-    USERNAME={username to the booking system}
-    PASSWORD={password to the bookings system}
-    DBUSER={username to the mariadb}
-    DBPASSWORD={password to the DBUSER}
+  URL={url to bookign system}
+  USERNAME={username to the booking system}
+  PASSWORD={password to the bookings system}
+  DBUSER={username to the mariadb}
+  DBPASSWORD={password to the DBUSER}

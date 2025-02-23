@@ -1,192 +1,181 @@
-version: '3.4'
+version: "3.4"
 
 services:
-    electricity:
-        image: electricity
-        container_name: electricity
-        restart: unless-stopped
-        build:
-            context: ./electricity
-            dockerfile: ./Dockerfile
-        ports:
-        - 3016:3016
-    sofar:
-        image: sofar
-        restart: unless-stopped
-#        volumes:
-#            - ./src:/usr/src/app
-        build:
-            context: ./sofar_lsw3
-            dockerfile: ./Dockerfile
-    nordpoolrust:
-        image: nordpoolrust
-        container_name: nordpoolrust
-        restart: unless-stopped
-        build:
-            context: ./nordpoolrust
-            dockerfile: ./Dockerfile
-        ports:
-            - 3014:3014
-    cabinbookings:
-        image: cabinbookings
-        container_name: cabinbookings
-        restart: unless-stopped
-        volumes:
-        - ./cabinbookings/app.js:/usr/src/app/app.js
-        build:
-            context: ./cabinbookings
-            dockerfile: ./Dockerfile
-        ports:
-            - 3011:3011
-    cabinbookings-refresh:
-        image: cabinbookings-refresh
-        container_name: cabinbookings-refresh
-        restart: "no"
-        volumes:
-        - ./cabinbookings-refresh/data:/usr/src/app/data
-        - ./cabinbookings-refresh/util.js:/usr/src/app/util.js
-        build:
-            context: ./cabinbookings-refresh
-            dockerfile: ./Dockerfile
-    mariadb:
-        # On 32bit rasbian docker host, you might need to run these:
-        #   wget http://ftp.us.debian.org/debian/pool/main/libs/libseccomp/libseccomp2_2.4.4-1~bpo10+1_armhf.deb
-        #   sudo dpkg -i libseccomp2_2.4.4-1~bpo10+1_armhf.deb
-        image: linuxserver/mariadb:arm32v7-version-10.5.12-r0
-        container_name: mariadb
-        env_file:
-        - ./mariadb/docker.env
-        environment:
-        - PUID=1000
-        - PGID=1000
-        - TZ=Europe/Helsinki
-        volumes:
-        - ./mariadb/config:/config
-        restart: unless-stopped
-    nginx:
-        image: nginx
-        restart: always
-        ports:
-        - 80:80
-        volumes:
-        - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-    homeappnetapi:
-        image: homeappnetapi
-        restart: always
-        env_file:
-            - ./weatherapi/docker-env
-        build:
-            context: ./weatherapi
-            dockerfile: ./Dockerfile
-        ports:
-            - 5000:5000
-    # calendarapi:
-    #     env_file:
-    #         - ./calendarapi/docker.env
-    #     image: calendarapi
-    #     restart: always
-    #     build:
-    #         context: ./calendarapi
-    #         dockerfile: ./Dockerfile
-    #     ports:
-    #     - 5010:5010
-    climateapi:
-        image: climateapi
-        restart: always
-        build:
-            context: ./climateapi
-            dockerfile: ./Dockerfile
-        volumes:
-        - ./climateapi:/app
-        ports:
-        - 5011:5011
-    homeapp73:
-        image: homeapp73
-        restart: always
-        volumes:
-        - ./homeclient/src:/usr/src/app/src
-        - ./homeclient/public:/usr/src/app/public
-        build:
-            context: ./homeclient
-            dockerfile: ./Dockerfile
-        ports:
-        - 3000:3000
-    #airflow:
-    #    image: airflow
-    #    restart: always
-    #    ports:
-    #    - "8080:8080"
-    #    volumes:
-    #    - ./airflow/dags:/usr/local/airflow/dags
-    #    build:
-    #        context: ./airflow
-    #        dockerfile: ./Dockerfile
+  electricity:
+    image: electricity
+    container_name: electricity
+    restart: unless-stopped
+    build:
+      context: ./electricity
+      dockerfile: ./Dockerfile
+    ports:
+      - 3016:3016
+  sofar:
+    image: sofar
+    restart: unless-stopped
+    #        volumes:
+    #            - ./src:/usr/src/app
+    build:
+      context: ./sofar_lsw3
+      dockerfile: ./Dockerfile
+  nordpoolrust:
+    image: nordpoolrust
+    container_name: nordpoolrust
+    restart: unless-stopped
+    build:
+      context: ./nordpoolrust
+      dockerfile: ./Dockerfile
+    ports:
+      - 3014:3014
+  cabinbookings:
+    image: cabinbookings
+    container_name: cabinbookings
+    restart: unless-stopped
+    volumes:
+      - ./cabinbookings/app.js:/usr/src/app/app.js
+    build:
+      context: ./cabinbookings
+      dockerfile: ./Dockerfile
+    ports:
+      - 3011:3011
+  cabinbookings-refresh:
+    image: cabinbookings-refresh
+    container_name: cabinbookings-refresh
+    restart: "no"
+    volumes:
+      - ./cabinbookings-refresh/data:/usr/src/app/data
+      - ./cabinbookings-refresh/util.js:/usr/src/app/util.js
+    build:
+      context: ./cabinbookings-refresh
+      dockerfile: ./Dockerfile
+  mariadb:
+    # On 32bit rasbian docker host, you might need to run these:
+    #   wget http://ftp.us.debian.org/debian/pool/main/libs/libseccomp/libseccomp2_2.4.4-1~bpo10+1_armhf.deb
+    #   sudo dpkg -i libseccomp2_2.4.4-1~bpo10+1_armhf.deb
+    image: linuxserver/mariadb:arm32v7-version-10.5.12-r0
+    container_name: mariadb
+    env_file:
+      - ./mariadb/docker.env
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Helsinki
+    volumes:
+      - ./mariadb/config:/config
+    restart: unless-stopped
+  nginx:
+    image: nginx
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+  homeappnetapi:
+    image: homeappnetapi
+    restart: always
+    env_file:
+      - ./weatherapi/docker-env
+    build:
+      context: ./weatherapi
+      dockerfile: ./Dockerfile
+    ports:
+      - 5000:5000
+  climateapi:
+    image: climateapi
+    restart: always
+    build:
+      context: ./climateapi
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./climateapi:/app
+    ports:
+      - 5011:5011
+  homeapp73:
+    image: homeapp73
+    restart: always
+    volumes:
+      - ./homeclient/src:/usr/src/app/src
+      - ./homeclient/public:/usr/src/app/public
+    build:
+      context: ./homeclient
+      dockerfile: ./Dockerfile
+    ports:
+      - 3000:3000
+  #airflow:
+  #    image: airflow
+  #    restart: always
+  #    ports:
+  #    - "8080:8080"
+  #    volumes:
+  #    - ./airflow/dags:/usr/local/airflow/dags
+  #    build:
+  #        context: ./airflow
+  #        dockerfile: ./Dockerfile
 
-    mosquitto:
-        image: mosquitto
-        build:
-            context: ./mosquitto
-            dockerfile: ./Dockerfile
-        restart: always
-#        volumes:
-#            - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
-        ports: 
-            - "1883:1883"
+  mosquitto:
+    image: mosquitto
+    build:
+      context: ./mosquitto
+      dockerfile: ./Dockerfile
+    restart: always
+    #        volumes:
+    #            - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    ports:
+      - "1883:1883"
 
-    mqttclient:
-        image: mqttclient
-        restart: always
-        volumes:
-            - ./mqttclient:/usr/src/app
-        build:
-            context: ./mqttclient
-            dockerfile: ./Dockerfile
-    influxdb:
-        image: influxdb:1.8.10
-        container_name: influxdb
-        restart: always
-        ports:
-            - 8086:8086
-        volumes:
-            - $PWD/influxdb:/var/lib/influxdb  
-        environment:
-        - INFLUXDB_HTTP_FLUX_ENABLED=true
-    zigbee2mqtt:
-        container_name: zigbee2mqtt
-        image: koenkk/zigbee2mqtt:1.18.1
-        volumes:
-            - ./zigbee2mqtt:/app/data
-            - /run/udev:/run/udev:ro
-        devices:
-            - /dev/ttyACM0:/dev/ttyACM0
-        restart: always
-        network_mode: host
-        privileged: true
-        environment:
-            - TZ=Europe/Helsinki
-    prometheus:
-        container_name: prometheus
-        image: prom/prometheus:v2.31.1
-        restart: always
-        ports:
-        - 9090:9090
-        volumes:
-        - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-        - ./prometheus/data:/prometheus
-        command:
-        - '--config.file=/etc/prometheus/prometheus.yml'
-        - '--storage.tsdb.path=/prometheus'
-        - '--web.console.libraries=/etc/prometheus/console_libraries'
-        - '--web.console.templates=/etc/prometheus/consoles'
-        - '--storage.tsdb.retention.time=200h'
-        - '--web.enable-admin-api'
-        - '--web.enable-lifecycle'
-    grafana:
-        container_name: grafana
-        image: grafana/grafana:8.2.5
-        restart: always
-        ports:
-        - 3010:3000 
-        volumes:
-        - ./grafana/data:/var/lib/grafana
-            
+  mqttclient:
+    image: mqttclient
+    restart: always
+    volumes:
+      - ./mqttclient:/usr/src/app
+    build:
+      context: ./mqttclient
+      dockerfile: ./Dockerfile
+  influxdb:
+    image: influxdb:1.8.10
+    container_name: influxdb
+    restart: always
+    ports:
+      - 8086:8086
+    volumes:
+      - $PWD/influxdb:/var/lib/influxdb
+    environment:
+      - INFLUXDB_HTTP_FLUX_ENABLED=true
+  zigbee2mqtt:
+    container_name: zigbee2mqtt
+    image: koenkk/zigbee2mqtt:1.18.1
+    volumes:
+      - ./zigbee2mqtt:/app/data
+      - /run/udev:/run/udev:ro
+    devices:
+      - /dev/ttyACM0:/dev/ttyACM0
+    restart: always
+    network_mode: host
+    privileged: true
+    environment:
+      - TZ=Europe/Helsinki
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:v2.31.1
+    restart: always
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/etc/prometheus/console_libraries"
+      - "--web.console.templates=/etc/prometheus/consoles"
+      - "--storage.tsdb.retention.time=200h"
+      - "--web.enable-admin-api"
+      - "--web.enable-lifecycle"
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:8.2.5
+    restart: always
+    ports:
+      - 3010:3000
+    volumes:
+      - ./grafana/data:/var/lib/grafana
