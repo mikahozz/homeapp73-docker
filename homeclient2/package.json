@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "serve": "cd dist && bun --port 4000 --hot index.html",
     "lint": "eslint .",
     "preview": "vite preview",
     "server": "bun run src/mockup.ts",

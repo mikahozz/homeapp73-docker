@@ -13,4 +13,13 @@ export default defineConfig({
       },
     },
   },
+  base: "./", // This makes asset paths relative
+  build: {
+    assetsDir: "assets",
+    rollupOptions: {
+      output: {
+        assetFileNames: "assets/[name]-[hash][extname]",
+      },
+    },
+  },
 });
