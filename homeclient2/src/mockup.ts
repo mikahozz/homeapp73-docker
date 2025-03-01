@@ -106,7 +106,7 @@ app.get("/api/weatherfore", (c) => {
     date.setHours(now.getHours() + i);
     data.push({
       datetime: date.toISOString(),
-      weather: i % 5 === 0 ? "rain" : "cloudy",
+      weather: i % 5 === 0 ? "1" : "2",
       temperature: Math.round((Math.random() * 10 - 5) * 10) / 10,
       wind_dir: Math.round(Math.random() * 360),
       wind_speed: Math.round(Math.random() * 10),

@@ -1,8 +1,14 @@
+:root {
+  --bs-body-color: #fff;
+  --bs-body-bg: #000;
+  --bs-modal-bg: rgb(0,0,0);
+  --bs-modal-color: #fff;
+}
 body { 
   background-color:  rgb(0,0,0); 
   background-size: 100% auto;
   background-repeat: no-repeat;
-  background-image: url('./img/trees_night_starry_sky_146805_3840x2400.jpg');
+  background-image: url('./assets/img/trees_night_starry_sky_146805_3840x2400.jpg');
   color: white;
   font: 300 1em Ubuntu;
 }
@@ -35,7 +41,7 @@ h3 { color: rgb(151,151,151); font-size: 0.9em; font-weight: normal; margin-top:
   width: 180px;
   height: 200px;
   opacity: .1;
-  background: url("./img/house.svg");
+  background: url("./assets/img/house.svg");
   background-repeat: no-repeat; 
 }
 #indoor {

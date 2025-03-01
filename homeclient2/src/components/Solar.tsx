@@ -44,7 +44,7 @@ export function Solar() {
           className="powerW"
           style={
             data.currentPower / 4760 > 0.5
-              ? { float: "left", color: "#000", textShadow: "0 0 5px #fff;" }
+              ? { float: "left", color: "#000", textShadow: "0 0 5px #fff" }
               : {}
           }
         >

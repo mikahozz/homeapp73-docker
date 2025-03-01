@@ -109,10 +109,10 @@ export function ElectricityPrice() {
           data={data
             .filter((item) => {
               const priceDateTime = new Date(Date.parse(item.DateTime));
-              return (
-                priceDateTime.getHours() >= 0 && priceDateTime.getHours() <= 24
-              );
+              const currentHour = new Date(new Date().setMinutes(0, 0, 0));
+              return priceDateTime >= currentHour;
             })
+            .slice(0, 6)
             .map((item) => {
               return { x: item.DateTime, y: item.Price };
             })}
