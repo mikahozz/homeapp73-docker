@@ -1,0 +1,45 @@
+
+> homeapp73@0.0.0 build
+> tsc -b && vite build
+
+src/components/Balcony.tsx(3,15): error TS7016: Could not find a declaration file for module 'lodash'. '/Users/mikaahopelto/dev/homeapp73-docker/homeclient2/node_modules/lodash/lodash.js' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/lodash` if it exists or add a new declaration (.d.ts) file containing `declare module 'lodash';`
+src/components/Balcony.tsx(4,47): error TS2307: Cannot find module 'reactstrap' or its corresponding type declarations.
+src/components/CabinBookings.tsx(2,15): error TS7016: Could not find a declaration file for module 'lodash'. '/Users/mikaahopelto/dev/homeapp73-docker/homeclient2/node_modules/lodash/lodash.js' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/lodash` if it exists or add a new declaration (.d.ts) file containing `declare module 'lodash';`
+src/components/CabinBookings.tsx(4,47): error TS2307: Cannot find module 'reactstrap' or its corresponding type declarations.
+src/components/CabinBookings.tsx(100,5): error TS6133: 'lastUpdated' is declared but its value is never read.
+src/components/ElectricityPrice.tsx(2,15): error TS7016: Could not find a declaration file for module 'lodash'. '/Users/mikaahopelto/dev/homeapp73-docker/homeclient2/node_modules/lodash/lodash.js' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/lodash` if it exists or add a new declaration (.d.ts) file containing `declare module 'lodash';`
+src/components/ElectricityPrice.tsx(4,47): error TS2307: Cannot find module 'reactstrap' or its corresponding type declarations.
+src/components/FamilyCalendar.tsx(3,15): error TS7016: Could not find a declaration file for module 'lodash'. '/Users/mikaahopelto/dev/homeapp73-docker/homeclient2/node_modules/lodash/lodash.js' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/lodash` if it exists or add a new declaration (.d.ts) file containing `declare module 'lodash';`
+src/components/Indoor.tsx(3,15): error TS7016: Could not find a declaration file for module 'lodash'. '/Users/mikaahopelto/dev/homeapp73-docker/homeclient2/node_modules/lodash/lodash.js' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/lodash` if it exists or add a new declaration (.d.ts) file containing `declare module 'lodash';`
+src/components/Indoor.tsx(4,47): error TS2307: Cannot find module 'reactstrap' or its corresponding type declarations.
+src/components/Solar.tsx(2,15): error TS7016: Could not find a declaration file for module 'lodash'. '/Users/mikaahopelto/dev/homeapp73-docker/homeclient2/node_modules/lodash/lodash.js' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/lodash` if it exists or add a new declaration (.d.ts) file containing `declare module 'lodash';`
+src/components/Solar.tsx(4,31): error TS6133: 'props' is declared but its value is never read.
+src/components/Solar.tsx(4,31): error TS7006: Parameter 'props' implicitly has an 'any' type.
+src/components/WeatherData.tsx(15,15): error TS7016: Could not find a declaration file for module 'lodash'. '/Users/mikaahopelto/dev/homeapp73-docker/homeclient2/node_modules/lodash/lodash.js' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/lodash` if it exists or add a new declaration (.d.ts) file containing `declare module 'lodash';`
+src/components/WeatherData.tsx(122,21): error TS2322: Type '(value: string | undefined, entry: LegendEntry) => JSX.Element' is not assignable to type 'Formatter'.
+  Types of parameters 'entry' and 'entry' are incompatible.
+    Type '{ value: any; id?: string | undefined; type?: LegendType | undefined; color?: string | undefined; payload?: { strokeDasharray: string | number; value?: any; } | undefined; dataKey?: DataKey<...> | undefined; }' is not assignable to type 'LegendEntry'.
+      Types of property 'color' are incompatible.
+        Type 'string | undefined' is not assignable to type 'string'.
+          Type 'undefined' is not assignable to type 'string'.
+src/components/WeatherData.tsx(133,25): error TS2322: Type '(props: LabelProps) => JSX.Element' is not assignable to type 'ContentType | undefined'.
+  Type '(props: LabelProps) => JSX.Element' is not assignable to type '(props: Props) => ReactNode'.
+    Types of parameters 'props' and 'props' are incompatible.
+      Type 'Props' is not assignable to type 'LabelProps'.
+        Types of property 'x' are incompatible.
+          Type 'string | number | undefined' is not assignable to type 'number'.
+            Type 'undefined' is not assignable to type 'number'.
+src/components/WeatherData.tsx(147,25): error TS2322: Type '(props: LabelProps) => JSX.Element' is not assignable to type 'ContentType | undefined'.
+  Type '(props: LabelProps) => JSX.Element' is not assignable to type '(props: Props) => ReactNode'.
+    Types of parameters 'props' and 'props' are incompatible.
+      Type 'Props' is not assignable to type 'LabelProps'.
+        Types of property 'x' are incompatible.
+          Type 'string | number | undefined' is not assignable to type 'number'.
+            Type 'undefined' is not assignable to type 'number'.
