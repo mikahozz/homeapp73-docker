@@ -41,7 +41,7 @@ export function CabinBookings() {
 
   const populateData = async () => {
     try {
-      const response = await fetch("/cabinbookings/days/365");
+      const response = await fetch("/api/cabinbookings/days/365");
       const data = await response.json();
       const grouped = _.chain(data.bookings)
         .filter(

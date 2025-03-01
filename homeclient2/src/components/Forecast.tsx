@@ -82,7 +82,7 @@ export function Forecast() {
 
   const populateForecastData = async () => {
     try {
-      const response = await fetch("/weatherfore");
+      const response = await fetch("/api/weatherfore");
       const data = await response.json();
       setForecastdata(data);
       setLoading(false);

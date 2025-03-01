@@ -26,7 +26,7 @@ export function Balcony() {
 
   const populateIndoorData = async () => {
     try {
-      const response = await fetch("/indoor/Shelly");
+      const response = await fetch("/api/indoor/Shelly");
       const data = await response.json();
       setIndoordata(data);
       setLoading(false);

@@ -26,7 +26,7 @@ export function Indoor() {
 
   const populateIndoorData = async () => {
     try {
-      const response = await fetch("/indoor/dev_upstairs");
+      const response = await fetch("/api/indoor/dev_upstairs");
       const data = await response.json();
       setIndoordata(data);
       setLoading(false);

@@ -98,7 +98,7 @@ export function WeatherData() {
 
   const populateWeatherData = async () => {
     try {
-      const response = await fetch("/outdoor/history/Kumpula/30");
+      const response = await fetch("/api/outdoor/history/Kumpula/30");
       const data = await response.json();
       const sorted = _.sortBy(data, (element: WeatherDataItem) => element.dt);
       const grouped = _.groupBy(sorted, (element: WeatherDataItem) =>

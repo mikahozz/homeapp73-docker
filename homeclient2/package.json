@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "server": "bun src/mockup.ts",
+    "server": "bun run src/mockup.ts",
     "dev:with-mockup": "concurrently \"npm run server\" \"npm run dev\""
   },
   "dependencies": {
@@ -33,6 +33,7 @@
     "eslint-plugin-react-refresh": "^0.4.19",
     "express": "^4.21.2",
     "globals": "^15.15.0",
+    "hono": "^4.7.2",
     "ts-node": "^10.9.2",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",

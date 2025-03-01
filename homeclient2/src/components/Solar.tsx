@@ -5,7 +5,7 @@ export function Solar() {
   const [data, setData] = useState({ currentPower: 0 });
   useEffect(() => {
     const fetchData = async () => {
-      await fetch("/electricity/current")
+      await fetch("/api/electricity/current")
         .then((response) => {
           if (response.status === 200) {
             response

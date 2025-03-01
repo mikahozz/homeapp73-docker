@@ -26,7 +26,7 @@ export function ElectricityPrice() {
 
   const populateData = async () => {
     try {
-      const response = await fetch("/electricity/price");
+      const response = await fetch("/api/electricity/price");
       const data = await response.json();
       const todayData = data.filter((item: PriceData) => {
         const priceDateTime = new Date(Date.parse(item.DateTime));
