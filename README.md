@@ -103,7 +103,7 @@ Note! This app is being partially rewritten. The weather service has already bee
 ## Running locally with mockup data
 
 - Install node on your machine (e.g. `brew install node` if you are on Mac and using Brew)
-- In the homeclient folder, execute `npm run withmockup` to open the client in development mode using mockup data
+- In the homeclient folder, execute `npm run dev` to open the client in development mode using mockup data
 
 Mariadb
 

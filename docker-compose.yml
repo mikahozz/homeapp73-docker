@@ -93,9 +93,6 @@ services:
   homeapp73:
     image: homeapp73
     restart: always
-    volumes:
-      - ./homeclient/src:/usr/src/app/src
-      - ./homeclient/public:/usr/src/app/public
     build:
       context: ./homeclient
       dockerfile: ./Dockerfile
