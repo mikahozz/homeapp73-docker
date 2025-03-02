@@ -10,17 +10,10 @@ COPY . .
 RUN npm run build
 
 # Production stage
-FROM node:20-bookworm-slim AS production
+FROM nginx:alpine AS production
 
-WORKDIR /app
+COPY --from=build /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Install Bun using the official installer
-RUN apt-get update && apt-get install -y curl unzip
-RUN curl -fsSL https://bun.sh/install | bash
-# Add Bun to PATH
-ENV PATH="/root/.bun/bin:${PATH}"
-
-COPY --from=build /app/dist ./dist
-ENV NODE_ENV=production
 EXPOSE 3000
-CMD ["bun", "dist/index.html"]
+CMD ["nginx", "-g", "daemon off;"]
