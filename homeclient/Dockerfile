@@ -10,9 +10,10 @@ COPY . .
 RUN npm run build
 
 # Production stage
-FROM oven/bun:1.2.4 AS production
+FROM node:20-alpine AS production
 
 WORKDIR /app
+RUN npm install -g bun
 COPY --from=build /app/dist ./dist
 ENV NODE_ENV=production
 EXPOSE 3000
