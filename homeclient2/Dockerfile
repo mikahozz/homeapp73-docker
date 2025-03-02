@@ -9,10 +9,10 @@ COPY . .
 RUN npm run build
 
 # Production stage
-FROM oven/bun:latest AS production
+FROM oven/bun:1.2.4 AS production
 
 WORKDIR /app
 COPY --from=build /app/dist ./dist
 ENV NODE_ENV=production
 EXPOSE 3000
-CMD ["bun", "run", "serve"]
+CMD ["bun", "dist/index.html"]

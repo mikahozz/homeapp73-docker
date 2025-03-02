@@ -1,13 +1,11 @@
-version: '3.8'
-
 services:
-  homeapp:
+  homeapp73:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: homeapp73
     ports:
-      - "3000:3000"
+      - 3000:3000
     environment:
       - NODE_ENV=production
     restart: unless-stopped
