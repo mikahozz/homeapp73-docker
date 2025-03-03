@@ -12,8 +12,9 @@ cors = CORS(
 )
 
 import indoor
-import outdoor
-import outdoorhistory
+
+# import outdoor
+# import outdoorhistory
 
 
 @app.before_request
