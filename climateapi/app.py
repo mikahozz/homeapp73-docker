@@ -26,6 +26,9 @@ import indoor
 def before_request():
     g.start_time = time.time()
     logger.info(f"Request started: {request.method} {request.path} {request.remote_addr}")
+    logger.info(f"Full URL: {request.url}")
+    logger.info(f"Request Headers: {dict(request.headers)}")
+    logger.info(f"Request Base URL: {request.base_url}")
 
 
 @app.after_request
