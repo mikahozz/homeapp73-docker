@@ -20,7 +20,7 @@ export function WeatherNow() {
 
   const populateWeatherData = async () => {
     try {
-      const response = await fetch("/api/outdoor/now");
+      const response = await fetch("/api/weathernow");
       const data = await response.json();
       setWeatherdata(data);
       setLoading(false);
