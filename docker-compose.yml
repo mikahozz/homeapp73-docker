@@ -64,23 +64,15 @@ services:
       - ./mariadb/config:/config
     restart: unless-stopped
   nginx:
+    container_name: nginx
     image: nginx
     restart: always
     ports:
       - 80:80
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-  homeappnetapi:
-    image: homeappnetapi
-    restart: always
-    env_file:
-      - ./weatherapi/docker-env
-    build:
-      context: ./weatherapi
-      dockerfile: ./Dockerfile
-    ports:
-      - 5000:5000
   climateapi:
+    container_name: climateapi
     image: climateapi
     restart: always
     build:
@@ -91,6 +83,7 @@ services:
     ports:
       - 5011:5011
   homeapp73:
+    container_name: homeapp73
     image: homeapp73
     restart: unless-stopped
     build:
@@ -110,6 +103,7 @@ services:
   #        dockerfile: ./Dockerfile
 
   mosquitto:
+    container_name: mosquitto
     image: mosquitto
     build:
       context: ./mosquitto
@@ -121,6 +115,7 @@ services:
       - "1883:1883"
 
   mqttclient:
+    container_name: mqttclient
     image: mqttclient
     restart: always
     volumes:
