@@ -43,10 +43,15 @@ export function CabinBookings() {
     try {
       const response = await fetch("/api/cabinbookings/days/365");
       const data = await response.json();
+      // Create a date object for the start of today
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
       const grouped = _.chain(data.bookings)
         .filter(
           (element: BookingItem) =>
-            new Date(element.date) >= new Date(new Date().setHours(0, 0, 0, 0))
+            // Compare dates without time component
+            new Date(element.date).setHours(0, 0, 0, 0) >= today.getTime()
         )
         .groupBy((element: BookingItem) =>
           utils.getYearWeekNumber(new Date(element.date))
