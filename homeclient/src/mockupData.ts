@@ -1,3 +1,5 @@
+import { DateTime } from "luxon";
+
 export function getMockData(path: string): object | undefined {
   // Route handlers
   switch (path) {
@@ -105,19 +107,22 @@ export function getMockData(path: string): object | undefined {
     case "/api/cabinbookings/days/365": {
       // Generate mock cabin booking data
       const bookings = [];
-      const now = new Date();
+      const startDate = DateTime.now()
+        .minus({ days: 365 / 2 })
+        .set({ hour: 16, minute: 0, second: 0, millisecond: 0 });
       for (let i = 0; i < 365; i++) {
-        const date = new Date();
-        date.setDate(now.getDate() + i);
+        const newDate = startDate.plus({ days: i });
         bookings.push({
-          date: date.toISOString().split("T")[0],
+          date: newDate.toISO(),
           booked: Math.random() > 0.7,
-          updated: new Date().toISOString(),
+          updated: newDate
+            .minus({ days: Math.floor(Math.random() * 60) + 1 })
+            .toISO(),
         });
       }
       return {
         bookings,
-        lastupdated: new Date().toISOString(),
+        lastupdated: DateTime.now().toISO(),
       };
     }
 
