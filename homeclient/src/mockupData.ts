@@ -108,6 +108,7 @@ export function getMockData(path: string): object | undefined {
       // Generate mock cabin booking data
       const bookings = [];
       const startDate = DateTime.now()
+        .toUTC()
         .minus({ days: 365 / 2 })
         .set({ hour: 16, minute: 0, second: 0, millisecond: 0 });
       for (let i = 0; i < 365; i++) {
