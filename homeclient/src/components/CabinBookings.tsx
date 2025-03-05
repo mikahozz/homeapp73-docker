@@ -4,6 +4,11 @@ import moment from "moment";
 import { Modal, ModalHeader, ModalBody } from "reactstrap";
 import * as utils from "../Utils";
 
+export interface Bookings {
+  bookings: BookingItem[];
+  lastupdated: string;
+}
+
 interface BookingItem {
   date: string;
   booked: boolean;
@@ -14,7 +19,7 @@ interface GroupedBookings {
   [key: string]: BookingItem[];
 }
 
-interface YearMonthWeekBookings {
+export interface YearMonthWeekBookings {
   [year: string]: {
     [month: string]: {
       [week: string]: BookingItem[];
@@ -42,22 +47,19 @@ export function CabinBookings() {
   const populateData = async () => {
     try {
       const response = await fetch("/api/cabinbookings/days/365");
-      const data = await response.json();
+      const data: Bookings = await response.json();
       // Create a date object for the start of today
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 
+      const startOfToday = new Date(today.setHours(0, 0, 0, 0));
       const grouped = _.chain(data.bookings)
         .filter(
-          (element: BookingItem) =>
-            // Compare dates without time component
-            new Date(element.date).setHours(0, 0, 0, 0) >= today.getTime()
+          (element) =>
+            new Date(element.date).getTime() >= startOfToday.getTime()
         )
-        .groupBy((element: BookingItem) =>
-          utils.getYearWeekNumber(new Date(element.date))
-        )
+        .groupBy((element) => utils.getYearWeekNumber(new Date(element.date)))
         .value();
-
       const groupedByMonthWeek = utils.groupByMonthWeek(data.bookings);
 
       setBookingsdata(grouped);
@@ -130,9 +132,7 @@ export function CabinBookings() {
                   </div>
                   {Object.keys(bookingsdata[year][month]).map((week) => (
                     <div className="bookingWeekRow" key={week}>
-                      <div className="bookingBox weekNumber">
-                        {week.split(",")[1]}
-                      </div>
+                      <div className="bookingBox weekNumber">{week}</div>
                       {bookingsdata[year][month][week].map((bookingitem) => (
                         <div
                           className={renderBookingClasses(bookingitem)}
@@ -206,12 +206,7 @@ export function CabinBookings() {
     <div id="cabinBookings" onClick={toggle}>
       <h2 className="small">Cabin bookings</h2>
       {contents}
-      <Modal
-        className="cabinbookings-modal"
-        funk={true}
-        isOpen={modal}
-        toggle={toggle}
-      >
+      <Modal className="cabinbookings-modal" isOpen={modal} toggle={toggle}>
         <ModalHeader toggle={toggle}>Cabin bookings, upcoming year</ModalHeader>
         <ModalBody>{yearContents}</ModalBody>
       </Modal>

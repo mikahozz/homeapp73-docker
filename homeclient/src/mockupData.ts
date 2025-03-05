@@ -1,4 +1,5 @@
 import { DateTime } from "luxon";
+import dummyBookings from "./components/dummy-bookings";
 
 export function getMockData(path: string): object | undefined {
   // Route handlers
@@ -105,6 +106,7 @@ export function getMockData(path: string): object | undefined {
     }
 
     case "/api/cabinbookings/days/365": {
+      return dummyBookings;
       // Generate mock cabin booking data
       const bookings = [];
       const startDate = DateTime.now()
