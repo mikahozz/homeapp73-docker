@@ -138,6 +138,9 @@ h2.small {  font-size: 15px; font-style: italic; }
   padding: 1% 2% 1% 1%;
   width: 15%;
 }
+.forecastTable .dayDivider {
+  height: 5px;
+}
 .forecastTable .time-col { padding-right: 10%; color: rgb(151,151,151); width: 15%; }
 .forecastTable .temperature-col {  font-size: 1.5em;}
 .rainBox { height: 20px; background-color: rgba(0, 182, 255, 0.5); display: inline-block; overflow: hidden;}

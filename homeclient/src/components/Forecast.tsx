@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import moment from "moment";
 
 interface ForecastItem {
@@ -74,6 +74,7 @@ export function Forecast() {
         groupedForecasts[groupedForecasts.length - 1].items.push(item);
       }
     });
+    let previousDay: string | undefined;
 
     return (
       <div>
@@ -83,44 +84,55 @@ export function Forecast() {
               key={`group-${groupIndex}`}
               className={group.isDayTime ? "day" : "night"}
             >
-              {group.items.map((forecastitem) => (
-                <tr key={forecastitem.datetime}>
-                  <td className="time-col">
-                    {moment(forecastitem.datetime).format("HH:mm")}
-                  </td>
-                  <td>
-                    <img
-                      alt=""
-                      width="55"
-                      height="55"
-                      src={`/img/${forecastitem.weather}.svg`}
-                    />
-                  </td>
-                  <td className="temperature-col">
-                    {Math.round(forecastitem.temperature)}°
-                  </td>
-                  <td>
-                    <div className="wind-container">
-                      <img
-                        alt=""
-                        style={renderRotate(forecastitem.wind_dir - 180)}
-                        src="/img/arrow.svg"
-                        width="40px"
-                        height="40px"
-                      />
-                      <span className="wind-text">
-                        {Math.round(forecastitem.wind_speed)}
-                      </span>
-                    </div>
-                  </td>
-                  <td>
-                    <div
-                      className="rainBox"
-                      style={{ width: `${forecastitem.rain * 10}px` }}
-                    ></div>
-                  </td>
-                </tr>
-              ))}
+              {group.items.map((forecastitem) => {
+                const itemDate = new Date(forecastitem.datetime);
+                const itemDay = itemDate.toDateString();
+                const dayChanged = previousDay
+                  ? itemDay !== previousDay
+                  : false;
+                previousDay = itemDay;
+                return (
+                  <React.Fragment key={forecastitem.datetime}>
+                    {dayChanged && <tr className="dayDivider"></tr>}
+                    <tr>
+                      <td className="time-col">
+                        {moment(forecastitem.datetime).format("HH:mm")}
+                      </td>
+                      <td>
+                        <img
+                          alt=""
+                          width="55"
+                          height="55"
+                          src={`/img/${forecastitem.weather}.svg`}
+                        />
+                      </td>
+                      <td className="temperature-col">
+                        {Math.round(forecastitem.temperature)}°
+                      </td>
+                      <td>
+                        <div className="wind-container">
+                          <img
+                            alt=""
+                            style={renderRotate(forecastitem.wind_dir - 180)}
+                            src="/img/arrow.svg"
+                            width="40px"
+                            height="40px"
+                          />
+                          <span className="wind-text">
+                            {Math.round(forecastitem.wind_speed)}
+                          </span>
+                        </div>
+                      </td>
+                      <td>
+                        <div
+                          className="rainBox"
+                          style={{ width: `${forecastitem.rain * 10}px` }}
+                        ></div>
+                      </td>
+                    </tr>
+                  </React.Fragment>
+                );
+              })}
             </tbody>
           ))}
         </table>
@@ -130,7 +142,11 @@ export function Forecast() {
 
   const populateForecastData = async () => {
     try {
-      const sunResponse = await fetch("/api/sun");
+      const sunResponse = await fetch(
+        `/api/sun?start=${moment().format("YYYY-MM-DD")}&end=${moment()
+          .add(1, "days")
+          .format("YYYY-MM-DD")}`
+      );
       const sunData = await sunResponse.json();
       setSunData(sunData);
 
