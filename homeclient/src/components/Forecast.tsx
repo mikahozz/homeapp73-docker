@@ -70,6 +70,7 @@ export function Forecast() {
 
   const renderWeatherContents = (forecastdata: ForecastItem[]) => {
     let previousDay: string | undefined;
+    const today = DateTime.now().startOf("day");
 
     return (
       <div>
@@ -82,12 +83,29 @@ export function Forecast() {
               const isDay = isDayTime(itemDate);
               previousDay = itemDay;
 
+              // Get day label for the divider
+              let dayLabel = "";
+              if (dayChanged) {
+                const forecastDateTime =
+                  DateTime.fromJSDate(itemDate).startOf("day");
+                const diffInDays = forecastDateTime.diff(today, "days").days;
+
+                if (diffInDays < 1) {
+                  dayLabel = "TODAY";
+                } else if (diffInDays < 2) {
+                  dayLabel = "TOMORROW";
+                } else {
+                  // Format the day name (e.g., "WEDNESDAY")
+                  dayLabel = forecastDateTime.toFormat("EEEE").toUpperCase();
+                }
+              }
+
               return (
                 <React.Fragment key={forecastitem.datetime}>
                   {dayChanged && (
                     <tr className="dayDivider">
                       <td colSpan={5}>
-                        <h3>TOMORROW</h3>
+                        <h3>{dayLabel}</h3>
                       </td>
                     </tr>
                   )}
