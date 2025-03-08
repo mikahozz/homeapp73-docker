@@ -164,6 +164,49 @@ export function getMockData(path: string): object | undefined {
       return events;
     }
 
+    case "/api/sun": {
+      // Create sun data for today and tomorrow directly
+      const today = new Date();
+      const tomorrow = new Date(today);
+      tomorrow.setDate(today.getDate() + 1);
+
+      // Format dates as YYYY-MM-DD
+      const todayFormatted = today.toISOString().split("T")[0];
+      const tomorrowFormatted = tomorrow.toISOString().split("T")[0];
+
+      // Create the sun data directly
+      return [
+        {
+          date: todayFormatted,
+          sunrise: "6:23:21 AM",
+          sunset: "6:34:44 PM",
+          first_light: "3:56:42 AM",
+          last_light: "9:01:22 PM",
+          dawn: "5:41:33 AM",
+          dusk: "7:16:32 PM",
+          solar_noon: "12:29:02 PM",
+          golden_hour: "5:39:29 PM",
+          day_length: "12:11:22",
+          timezone: "Europe/Helsinki",
+          utc_offset: 120,
+        },
+        {
+          date: tomorrowFormatted,
+          sunrise: "6:20:17 AM",
+          sunset: "6:37:10 PM",
+          first_light: "3:52:52 AM",
+          last_light: "9:04:35 PM",
+          dawn: "5:38:25 AM",
+          dusk: "7:19:02 PM",
+          solar_noon: "12:28:44 PM",
+          golden_hour: "5:41:59 PM",
+          day_length: "12:16:53",
+          timezone: "Europe/Helsinki",
+          utc_offset: 120,
+        },
+      ];
+    }
+
     default:
       return undefined;
   }
