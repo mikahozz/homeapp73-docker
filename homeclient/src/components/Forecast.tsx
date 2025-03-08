@@ -49,99 +49,89 @@ export function Forecast() {
       return false;
     }
 
-    const sunrise = new Date(daySunData.date + " " + daySunData.sunrise);
-    const sunset = new Date(daySunData.date + " " + daySunData.sunset);
+    // Use Luxon to parse sunrise and sunset times
+    const parseSunTime = (timeStr: string, dateStr: string) => {
+      // Parse time like "6:20:17 AM" with date like "2025-03-09"
+      const fullDateTimeStr = `${dateStr} ${timeStr}`;
+      const dateTime = DateTime.fromFormat(
+        fullDateTimeStr,
+        "yyyy-MM-dd h:mm:ss a"
+      );
+
+      // Convert to JavaScript Date object for comparison
+      return dateTime.toJSDate();
+    };
+
+    const sunrise = parseSunTime(daySunData.sunrise, daySunData.date);
+    const sunset = parseSunTime(daySunData.sunset, daySunData.date);
+
     console.log("Sunrise and sunset: ", dateTime, sunrise, sunset);
     return dateTime >= sunrise && dateTime <= sunset;
   };
 
   const renderWeatherContents = (forecastdata: ForecastItem[]) => {
-    // Group forecast items by day/night status
-    const groupedForecasts: { isDayTime: boolean; items: ForecastItem[] }[] =
-      [];
-
-    forecastdata.forEach((item) => {
-      const itemDateTime = new Date(item.datetime);
-      const isDay = isDayTime(itemDateTime);
-
-      // If this is the first item or the day/night status changed, create a new group
-      if (
-        groupedForecasts.length === 0 ||
-        groupedForecasts[groupedForecasts.length - 1].isDayTime !== isDay
-      ) {
-        groupedForecasts.push({ isDayTime: isDay, items: [item] });
-      } else {
-        // Add to the current group
-        groupedForecasts[groupedForecasts.length - 1].items.push(item);
-      }
-    });
     let previousDay: string | undefined;
 
     return (
       <div>
         <table className="forecastTable">
-          {groupedForecasts.map((group, groupIndex) => (
-            <tbody
-              key={`group-${groupIndex}`}
-              className={group.isDayTime ? "day" : "night"}
-            >
-              {group.items.map((forecastitem) => {
-                const itemDate = new Date(forecastitem.datetime);
-                const itemDay = itemDate.toDateString();
-                const dayChanged = previousDay
-                  ? itemDay !== previousDay
-                  : false;
-                previousDay = itemDay;
-                return (
-                  <React.Fragment key={forecastitem.datetime}>
-                    {dayChanged && (
-                      <tr className="dayDivider">
-                        <td colSpan={5}>
-                          <h3>TOMORROW</h3>
-                        </td>
-                      </tr>
-                    )}
-                    <tr>
-                      <td className="time-col">
-                        {moment(forecastitem.datetime).format("HH:mm")}
-                      </td>
-                      <td>
-                        <img
-                          alt=""
-                          width="55"
-                          height="55"
-                          src={`/img/${forecastitem.weather}.svg`}
-                        />
-                      </td>
-                      <td className="temperature-col">
-                        {Math.round(forecastitem.temperature)}°
-                      </td>
-                      <td>
-                        <div className="wind-container">
-                          <img
-                            alt=""
-                            style={renderRotate(forecastitem.wind_dir - 180)}
-                            src="/img/arrow.svg"
-                            width="40px"
-                            height="40px"
-                          />
-                          <span className="wind-text">
-                            {Math.round(forecastitem.wind_speed)}
-                          </span>
-                        </div>
-                      </td>
-                      <td>
-                        <div
-                          className="rainBox"
-                          style={{ width: `${forecastitem.rain * 10}px` }}
-                        ></div>
+          <tbody>
+            {forecastdata.map((forecastitem) => {
+              const itemDate = new Date(forecastitem.datetime);
+              const itemDay = itemDate.toDateString();
+              const dayChanged = previousDay ? itemDay !== previousDay : false;
+              const isDay = isDayTime(itemDate);
+              previousDay = itemDay;
+
+              return (
+                <React.Fragment key={forecastitem.datetime}>
+                  {dayChanged && (
+                    <tr className="dayDivider">
+                      <td colSpan={5}>
+                        <h3>TOMORROW</h3>
                       </td>
                     </tr>
-                  </React.Fragment>
-                );
-              })}
-            </tbody>
-          ))}
+                  )}
+                  <tr className={isDay ? "day-row" : "night-row"}>
+                    <td className="time-col">
+                      {moment(forecastitem.datetime).format("HH:mm")}
+                    </td>
+                    <td>
+                      <img
+                        alt=""
+                        width="55"
+                        height="55"
+                        src={`/img/${forecastitem.weather}.svg`}
+                      />
+                    </td>
+                    <td className="temperature-col">
+                      {Math.round(forecastitem.temperature)}°
+                    </td>
+                    <td>
+                      <div className="wind-container">
+                        <img
+                          alt=""
+                          style={renderRotate(forecastitem.wind_dir - 180)}
+                          src="/img/arrow.svg"
+                          width="40px"
+                          height="40px"
+                        />
+                        <span className="wind-text">
+                          {Math.round(forecastitem.wind_speed)}
+                        </span>
+                      </div>
+                    </td>
+                    <td>
+                      <div
+                        className="rainBox"
+                        style={{ width: `${forecastitem.rain * 10}px` }}
+                      ></div>
+                    </td>
+                  </tr>
+                </React.Fragment>
+              );
+            })}
+          </tbody>
         </table>
       </div>
     );
@@ -175,8 +165,14 @@ export function Forecast() {
     renderWeatherContents(forecastdata)
   );
 
+  const itemDate = new Date(forecastdata[0].datetime);
+  const isDay = isDayTime(itemDate);
+
   return (
-    <div id="forecast" className="box">
+    <div
+      id="forecast"
+      className={["box", isDay ? "day-row" : "night-row"].join(" ")}
+    >
       <h2>Forecast 24h</h2>
       <h3>Tapanila, Helsinki</h3>
       {contents}
