@@ -144,12 +144,9 @@ export function Forecast() {
   const populateForecastData = async () => {
     try {
       const sunResponse = await fetch(
-        `/api/sun?start=${DateTime.now()
-          .set({ hour: 0, minute: 0, second: 0 })
-          .toISO()}&end=${DateTime.now()
+        `/api/sun?start=${DateTime.now().toISODate()}&end=${DateTime.now()
           .plus({ days: 1 })
-          .set({ hour: 23, minute: 59, second: 59 })
-          .toISO()}`
+          .toISODate()}`
       );
       const sunData = await sunResponse.json();
       setSunData(sunData);
