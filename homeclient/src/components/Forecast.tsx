@@ -65,7 +65,6 @@ export function Forecast() {
     const sunrise = parseSunTime(daySunData.sunrise, daySunData.date);
     const sunset = parseSunTime(daySunData.sunset, daySunData.date);
 
-    console.log("Sunrise and sunset: ", dateTime, sunrise, sunset);
     return dateTime >= sunrise && dateTime <= sunset;
   };
 
@@ -165,14 +164,8 @@ export function Forecast() {
     renderWeatherContents(forecastdata)
   );
 
-  const itemDate = new Date(forecastdata[0].datetime);
-  const isDay = isDayTime(itemDate);
-
   return (
-    <div
-      id="forecast"
-      className={["box", isDay ? "day-row" : "night-row"].join(" ")}
-    >
+    <div id="forecast" className="box">
       <h2>Forecast 24h</h2>
       <h3>Tapanila, Helsinki</h3>
       {contents}
