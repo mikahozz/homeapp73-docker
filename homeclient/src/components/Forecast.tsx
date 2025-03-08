@@ -158,7 +158,7 @@ export function Forecast() {
     try {
       const sunResponse = await fetch(
         `/api/sun?start=${DateTime.now().toISODate()}&end=${DateTime.now()
-          .plus({ days: 1 })
+          .plus({ days: 3 })
           .toISODate()}`
       );
       const sunData = await sunResponse.json();

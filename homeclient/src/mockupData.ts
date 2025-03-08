@@ -90,7 +90,7 @@ export function getMockData(path: string): object | undefined {
       // Generate mock forecast data
       const data = [];
       const now = new Date();
-      for (let i = 0; i < 24; i++) {
+      for (let i = 0; i < 48; i++) {
         const date = new Date();
         date.setHours(now.getHours() + i);
         data.push({
@@ -169,11 +169,14 @@ export function getMockData(path: string): object | undefined {
       const today = new Date();
       const tomorrow = new Date(today);
       tomorrow.setDate(today.getDate() + 1);
-
+      const dayAfterTomorrow = new Date(today);
+      dayAfterTomorrow.setDate(today.getDate() + 2);
       // Format dates as YYYY-MM-DD
       const todayFormatted = today.toISOString().split("T")[0];
       const tomorrowFormatted = tomorrow.toISOString().split("T")[0];
-
+      const dayAfterTomorrowFormatted = dayAfterTomorrow
+        .toISOString()
+        .split("T")[0];
       // Create the sun data directly
       return [
         {
@@ -201,6 +204,20 @@ export function getMockData(path: string): object | undefined {
           solar_noon: "12:28:44 PM",
           golden_hour: "5:41:59 PM",
           day_length: "12:16:53",
+          timezone: "Europe/Helsinki",
+          utc_offset: 120,
+        },
+        {
+          date: dayAfterTomorrowFormatted,
+          sunrise: "6:18:10 AM",
+          sunset: "6:39:22 PM",
+          first_light: "3:50:23 AM",
+          last_light: "9:06:58 PM",
+          dawn: "5:36:17 AM",
+          dusk: "7:20:32 PM",
+          solar_noon: "12:28:20 PM",
+          golden_hour: "5:44:25 PM",
+          day_length: "12:23:08",
           timezone: "Europe/Helsinki",
           utc_offset: 120,
         },
