@@ -94,7 +94,13 @@ export function Forecast() {
                 previousDay = itemDay;
                 return (
                   <React.Fragment key={forecastitem.datetime}>
-                    {dayChanged && <tr className="dayDivider"></tr>}
+                    {dayChanged && (
+                      <tr className="dayDivider">
+                        <td colSpan={5}>
+                          <h3>TOMORROW</h3>
+                        </td>
+                      </tr>
+                    )}
                     <tr>
                       <td className="time-col">
                         {moment(forecastitem.datetime).format("HH:mm")}

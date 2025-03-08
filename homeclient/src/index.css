@@ -138,8 +138,13 @@ h2.small {  font-size: 15px; font-style: italic; }
   padding: 1% 2% 1% 1%;
   width: 15%;
 }
-.forecastTable .dayDivider {
-  height: 5px;
+.forecastTable .dayDivider td {
+  height: 40px;
+  padding-bottom: 0;
+  padding-top: 20px;
+}
+.forecastTable .dayDivider td h3 {
+  margin-bottom: 0;
 }
 .forecastTable .time-col { padding-right: 10%; color: rgb(151,151,151); width: 15%; }
 .forecastTable .temperature-col {  font-size: 1.5em;}
