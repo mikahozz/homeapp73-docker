@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
+import { DateTime } from "luxon";
 
 interface ForecastItem {
   datetime: string;
@@ -143,9 +144,12 @@ export function Forecast() {
   const populateForecastData = async () => {
     try {
       const sunResponse = await fetch(
-        `/api/sun?start=${moment().format("YYYY-MM-DD")}&end=${moment()
-          .add(1, "days")
-          .format("YYYY-MM-DD")}`
+        `/api/sun?start=${DateTime.now()
+          .set({ hour: 0, minute: 0, second: 0 })
+          .toISO()}&end=${DateTime.now()
+          .plus({ days: 1 })
+          .set({ hour: 23, minute: 59, second: 59 })
+          .toISO()}`
       );
       const sunData = await sunResponse.json();
       setSunData(sunData);
