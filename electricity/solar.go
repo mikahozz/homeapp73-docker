@@ -41,27 +41,41 @@ func getCurrentSolar(w http.ResponseWriter, r *http.Request) {
 	result, err := queryAPI.Query(context.Background(),
 		`from(bucket:"homedb")|> range(start: -5d) 
 		|> filter(fn: (r) => r._measurement == "electricity")
-		|> filter(fn: (r) => r._field == "OutputActivePowerW")`)
+		|> filter(fn: (r) => r._field == "OutputActivePowerW")
+		|> sort(columns: ["_time"], desc: true)
+		|> limit(n: 1)`)
 	if err != nil {
 		log.Printf("Error querying InfluxDB: %v", err)
 		rw.WriteHeader(http.StatusInternalServerError)
 		rw.Write([]byte(fmt.Sprintf("Could not get Solar: %s", err)))
 	} else {
 		record := new(query.FluxRecord)
+		hasRecord := false
 		for result.Next() {
 			record = result.Record()
+			hasRecord = true
+			log.Printf("Found record: time=%v, value=%v", record.Time(), record.Value())
 		}
 		var power PowerGeneration
-		if record.Value() == nil {
+		if !hasRecord || record.Value() == nil {
+			log.Printf("No valid record found or record value is nil")
 			power = PowerGeneration{
 				PowerW: 0,
 			}
 		} else {
 			datetime := time.UnixMilli(record.Time().UnixMilli()).UTC()
-			if datetime.After(datetime.Add(time.Duration(time.Duration.Minutes(60)))) {
+			// Check if the record is recent (within the last hour)
+			if time.Since(datetime) < time.Hour {
 				power = PowerGeneration{
 					DateTime: &datetime,
 					PowerW:   record.Value().(float64),
+				}
+				log.Printf("Using recent record: time=%v, power=%v", datetime, power.PowerW)
+			} else {
+				log.Printf("Record is too old: %v (more than 1 hour old)", datetime)
+				power = PowerGeneration{
+					DateTime: &datetime,
+					PowerW:   0, // Zero power for old records
 				}
 			}
 		}
