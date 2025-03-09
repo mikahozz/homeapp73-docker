@@ -24,6 +24,18 @@ func main() {
 }
 
 func getCurrentSolar(w http.ResponseWriter, r *http.Request) {
+	startTime := time.Now()
+	requestURL := r.URL.String()
+	log.Printf("Request received: %s %s", r.Method, requestURL)
+
+	// Create a custom response writer to capture status code
+	rw := newResponseWriter(w)
+
+	defer func() {
+		duration := time.Since(startTime)
+		log.Printf("Request completed: %s %s, status: %d, duration: %v", r.Method, requestURL, rw.statusCode, duration)
+	}()
+
 	client := influxdb2.NewClient("http://influxdb:8086", "")
 	queryAPI := client.QueryAPI("")
 	result, err := queryAPI.Query(context.Background(),
@@ -31,8 +43,9 @@ func getCurrentSolar(w http.ResponseWriter, r *http.Request) {
 		|> filter(fn: (r) => r._measurement == "electricity")
 		|> filter(fn: (r) => r._field == "OutputActivePowerW")`)
 	if err != nil {
-		w.Write([]byte(fmt.Sprintf("Could not get Solar: %s", err)))
-
+		log.Printf("Error querying InfluxDB: %v", err)
+		rw.WriteHeader(http.StatusInternalServerError)
+		rw.Write([]byte(fmt.Sprintf("Could not get Solar: %s", err)))
 	} else {
 		record := new(query.FluxRecord)
 		for result.Next() {
@@ -54,9 +67,32 @@ func getCurrentSolar(w http.ResponseWriter, r *http.Request) {
 		}
 		output, err := json.MarshalIndent(power, "", "  ")
 		if err != nil {
-			w.Write([]byte(fmt.Sprintf("Error converting data to json: %v", err)))
+			log.Printf("Error marshaling JSON: %v", err)
+			rw.WriteHeader(http.StatusInternalServerError)
+			rw.Write([]byte(fmt.Sprintf("Error converting data to json: %v", err)))
+			return
 		}
-		w.Header().Set("Content-Type", "application/json")
-		w.Write(output)
+
+		// Log the output as a separate event
+		log.Printf("Response data: %s", string(output))
+
+		rw.Header().Set("Content-Type", "application/json")
+		rw.WriteHeader(http.StatusOK)
+		rw.Write(output)
 	}
+}
+
+// Custom response writer to capture status code
+type responseWriter struct {
+	http.ResponseWriter
+	statusCode int
+}
+
+func newResponseWriter(w http.ResponseWriter) *responseWriter {
+	return &responseWriter{w, http.StatusOK}
+}
+
+func (rw *responseWriter) WriteHeader(code int) {
+	rw.statusCode = code
+	rw.ResponseWriter.WriteHeader(code)
 }
