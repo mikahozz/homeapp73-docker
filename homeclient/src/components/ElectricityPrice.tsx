@@ -109,6 +109,23 @@ export function ElectricityPrice() {
     },
   };
 
+  const chartData = data
+    .filter((item) => {
+      const priceDateTime = new Date(Date.parse(item.DateTime));
+      const currentHour = new Date(new Date().setMinutes(0, 0, 0));
+      return priceDateTime >= currentHour;
+    })
+    .slice(0, 6)
+    .map((item) => {
+      return { x: item.DateTime, y: item.Price };
+    });
+  const maxPrice = Math.max(...chartData.map((item) => item.y));
+  const baseDomain = 20; // 20c is the max in the chart unless higher prices appear
+  const chartHeightMultiplier = 5; // E.g. for each 10c above baseDomain, add 5px to the chart height
+  const extraPrice = maxPrice > baseDomain ? maxPrice - baseDomain : 0; // How much is the price above the baseDomain
+  const chartHeight = 300 + chartHeightMultiplier * extraPrice;
+  const domainMax = maxPrice > baseDomain ? maxPrice : baseDomain;
+  console.log("chartHeight", chartHeight);
   const contents = loading ? (
     <div>
       <p className="elPrice">
@@ -120,21 +137,13 @@ export function ElectricityPrice() {
       <h2 className="small">Electricity price</h2>
       <VictoryChart
         theme={chartTheme}
+        domain={{ y: [0, domainMax] }}
         domainPadding={10}
-        height={220}
+        height={chartHeight}
         padding={{ top: 0, bottom: 32, left: 50, right: 50 }}
       >
         <VictoryBar
-          data={data
-            .filter((item) => {
-              const priceDateTime = new Date(Date.parse(item.DateTime));
-              const currentHour = new Date(new Date().setMinutes(0, 0, 0));
-              return priceDateTime >= currentHour;
-            })
-            .slice(0, 6)
-            .map((item) => {
-              return { x: item.DateTime, y: item.Price };
-            })}
+          data={chartData}
           barRatio={0.8}
           style={{
             data: {

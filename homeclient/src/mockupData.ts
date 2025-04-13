@@ -56,12 +56,14 @@ export function getMockData(path: string): object | undefined {
       };
 
     case "/api/electricity/prices": {
+      const lowestPrice = 0;
+      const highestPrice = 20;
       const prices = [];
       for (let i = -5; i < 43; i++) {
         const now = new Date();
         prices.push({
           DateTime: new Date(now.setHours(now.getHours() + i, 0, 0, 0)),
-          Price: Math.random() * (20 - 1) + 1,
+          Price: Math.random() * (highestPrice - lowestPrice) + lowestPrice,
         });
       }
       return prices;
