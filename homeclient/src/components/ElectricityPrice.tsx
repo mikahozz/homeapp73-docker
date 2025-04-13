@@ -118,7 +118,12 @@ export function ElectricityPrice() {
   ) : (
     <div>
       <h2 className="small">Electricity price</h2>
-      <VictoryChart theme={chartTheme} domainPadding={22} height={200}>
+      <VictoryChart
+        theme={chartTheme}
+        domainPadding={10}
+        height={220}
+        padding={{ top: 0, bottom: 32, left: 50, right: 50 }}
+      >
         <VictoryBar
           data={data
             .filter((item) => {
@@ -130,7 +135,7 @@ export function ElectricityPrice() {
             .map((item) => {
               return { x: item.DateTime, y: item.Price };
             })}
-          barRatio={0.7}
+          barRatio={0.8}
           style={{
             data: {
               fill: ({ datum }) =>
@@ -155,7 +160,7 @@ export function ElectricityPrice() {
               fill: "transparent",
               size: 5,
             },
-            tickLabels: { fontSize: 35 },
+            tickLabels: { fontSize: 30 },
           }}
           tickFormat={(t) => new Date(Date.parse(t)).getHours()}
         />
