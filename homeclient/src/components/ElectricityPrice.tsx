@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import _ from "lodash";
 import { VictoryBar, VictoryChart, VictoryAxis, VictoryLine } from "victory";
 import { Modal, ModalHeader, ModalBody } from "reactstrap";
+import { DateTime } from "luxon";
 
 interface PriceData {
   DateTime: string;
@@ -26,7 +27,20 @@ export function ElectricityPrice() {
 
   const populateData = async () => {
     try {
-      const response = await fetch("/api/electricity/price");
+      const start = DateTime.now()
+        .minus({ days: 1 })
+        .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+        .toUTC()
+        .toISO({ suppressMilliseconds: true });
+      const end = DateTime.now()
+        .plus({ days: 1 })
+        .set({ hour: 23, minute: 0, second: 0, millisecond: 0 })
+        .toUTC()
+        .toISO({ suppressMilliseconds: true });
+      const timeZone = "Europe/Helsinki";
+      const response = await fetch(
+        `/api/electricity/prices?start=${start}&end=${end}&timeFormat=${timeZone}`
+      );
       const data = await response.json();
       const todayData = data.filter((item: PriceData) => {
         const priceDateTime = new Date(Date.parse(item.DateTime));

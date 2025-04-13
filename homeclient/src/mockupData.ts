@@ -55,7 +55,7 @@ export function getMockData(path: string): object | undefined {
         time: "2022-01-31T19:36:07.313000Z",
       };
 
-    case "/api/electricity/price": {
+    case "/api/electricity/prices": {
       const prices = [];
       for (let i = -5; i < 43; i++) {
         const now = new Date();
