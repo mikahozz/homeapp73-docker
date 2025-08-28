@@ -99,6 +99,9 @@ export function Forecast() {
                   dayLabel = forecastDateTime.toFormat("EEEE").toUpperCase();
                 }
               }
+              const iconNumber = isDay
+                ? forecastitem.weather
+                : Number.parseInt(forecastitem.weather) + 100;
 
               return (
                 <React.Fragment key={forecastitem.datetime}>
@@ -118,7 +121,7 @@ export function Forecast() {
                         alt=""
                         width="55"
                         height="55"
-                        src={`/img/${forecastitem.weather}.svg`}
+                        src={`/img/${iconNumber}.svg`}
                       />
                     </td>
                     <td className="temperature-col">
