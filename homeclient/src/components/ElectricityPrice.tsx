@@ -1,72 +1,73 @@
-import { useState, useEffect } from "react";
-import _ from "lodash";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { VictoryBar, VictoryChart, VictoryAxis, VictoryLine } from "victory";
 import { Modal, ModalHeader, ModalBody } from "reactstrap";
-import { DateTime } from "luxon";
-
-interface PriceData {
-  DateTime: string;
-  Price: number;
-  time?: string;
-}
-
+import { useElectricityPrices } from "../hooks/useElectricityPrices";
+import { DateTime, Duration } from "luxon";
 export function ElectricityPrice() {
+  const chartRefreshInterval = useMemo(
+    () => Duration.fromObject({ minutes: 1 }),
+    []
+  );
+  const thisHour = () => DateTime.now().startOf("hour");
+  const nextHour = useCallback(
+    () => DateTime.now().plus(chartRefreshInterval).startOf("hour"),
+    [chartRefreshInterval]
+  );
+  const timeUntilNextHour = useCallback(
+    () => nextHour().diffNow().toMillis(),
+    [nextHour]
+  );
+
+  const [firstTimeToShow, setFirstTimeToShow] = useState(thisHour());
   const [modal, setModal] = useState(false);
-  const [data, setData] = useState<PriceData[]>([]);
-  const [dayAvg, setDayAvg] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const { data, isLoading, error } = useElectricityPrices(firstTimeToShow);
 
   useEffect(() => {
-    populateData();
-    // Refresh data every 1 minute
-    const intervalId = setInterval(populateData, 60 * 1000);
+    console.log("useEffect");
+    const activateRefresh = () => {
+      const timeoutId = setTimeout(() => {
+        setFirstTimeToShow(thisHour());
+        console.log(
+          "Setting first time firstTimeToShow to",
+          thisHour().toISO()
+        );
 
-    // Cleanup on unmount
-    return () => clearInterval(intervalId);
-  }, []);
+        const intervalId = setInterval(() => {
+          setFirstTimeToShow(thisHour());
+          console.log(
+            `Setting firstTimeToShow to: ${thisHour()} with interval ${chartRefreshInterval}`
+          );
+        }, chartRefreshInterval.toMillis());
 
-  const populateData = async () => {
-    try {
-      const start = DateTime.now()
-        .minus({ days: 1 })
-        .set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
-        .toUTC()
-        .toISO({ suppressMilliseconds: true });
-      const end = DateTime.now()
-        .plus({ days: 1 })
-        .set({ hour: 23, minute: 0, second: 0, millisecond: 0 })
-        .toUTC()
-        .toISO({ suppressMilliseconds: true });
-      const timeZone = "Europe/Helsinki";
-      const response = await fetch(
-        `/api/electricity/prices?start=${start}&end=${end}&timeFormat=${timeZone}`
-      );
-      const data = await response.json();
-      const todayData = data.filter((item: PriceData) => {
-        const priceDateTime = new Date(Date.parse(item.DateTime));
-        return priceDateTime.getHours() >= 8 && priceDateTime.getHours() <= 24;
-      });
+        return intervalId;
+      }, timeUntilNextHour());
 
-      setData(data);
-      setDayAvg(_.meanBy(todayData, (o: PriceData) => o.Price));
-      setLoading(false);
-    } catch (error) {
-      console.error("Failed to fetch electricity price data:", error);
-    }
-  };
+      return timeoutId;
+    };
 
-  const renderUpdatedClasses = (date: number) => {
-    const diff = Math.abs(new Date().getTime() - date);
-    let cssClass = "dateUpdated";
-    if (diff / (1000 * 60 * 60 * 12) > 1) {
-      cssClass += " updatedOver12h";
-    }
-    return cssClass;
-  };
+    let timeoutId = activateRefresh();
 
-  const toggle = () => {
-    setModal(!modal);
-  };
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        setFirstTimeToShow(thisHour());
+        timeoutId = activateRefresh();
+      } else {
+        clearInterval(timeoutId);
+        clearTimeout(timeoutId);
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    // Cleanup function
+    return () => {
+      clearInterval(timeoutId);
+      clearTimeout(timeoutId);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [chartRefreshInterval, timeUntilNextHour]);
+
+  const toggle = () => setModal(!modal);
 
   const chartTheme = {
     axis: {
@@ -109,30 +110,48 @@ export function ElectricityPrice() {
     },
   };
 
-  const chartData = data
-    .filter((item) => {
-      const priceDateTime = new Date(Date.parse(item.DateTime));
-      const currentHour = new Date(new Date().setMinutes(0, 0, 0));
-      return priceDateTime >= currentHour;
-    })
-    .slice(0, 6)
-    .map((item) => {
-      return { x: item.DateTime, y: item.Price };
-    });
+  const renderUpdatedClasses = (date: number) => {
+    const diff = Math.abs(new Date().getTime() - date);
+    let cssClass = "dateUpdated";
+    if (diff / (1000 * 60 * 60 * 12) > 1) {
+      cssClass += " updatedOver12h";
+    }
+    return cssClass;
+  };
+
+  if (isLoading) {
+    return (
+      <div>
+        <p className="elPrice">
+          <em>Loading...</em>
+        </p>
+      </div>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <div>
+        <p className="elPrice">
+          <em>Error loading electricity prices</em>
+        </p>
+      </div>
+    );
+  }
+
+  const chartData = data.currentAndFuturePrices.map((item) => ({
+    x: item.DateTime,
+    y: item.Price,
+  }));
+
   const maxPrice = Math.max(...chartData.map((item) => item.y));
-  const baseDomain = 20; // 20c is the max in the chart unless higher prices appear
-  const chartHeightMultiplier = 5; // E.g. for each 10c above baseDomain, add 5px to the chart height
-  const extraPrice = maxPrice > baseDomain ? maxPrice - baseDomain : 0; // How much is the price above the baseDomain
+  const baseDomain = 20;
+  const chartHeightMultiplier = 5;
+  const extraPrice = maxPrice > baseDomain ? maxPrice - baseDomain : 0;
   const chartHeight = 300 + chartHeightMultiplier * extraPrice;
   const domainMax = maxPrice > baseDomain ? maxPrice : baseDomain;
-  console.log("chartHeight", chartHeight);
-  const contents = loading ? (
-    <div>
-      <p className="elPrice">
-        <em>Loading...</em>
-      </p>
-    </div>
-  ) : (
+
+  const contents = (
     <div>
       <h2 className="small">Electricity price</h2>
       <VictoryChart
@@ -148,7 +167,7 @@ export function ElectricityPrice() {
           style={{
             data: {
               fill: ({ datum }) =>
-                datum.y >= dayAvg ? "#FF0046" : "rgb(0,255,121)",
+                datum.y >= data.dayAverage ? "#FF0046" : "rgb(0,255,121)",
               fillOpacity: 0.9,
               strokeWidth: ({ datum }) => {
                 return Date.parse(datum.x) === new Date().setMinutes(0, 0, 0)
@@ -171,66 +190,74 @@ export function ElectricityPrice() {
             },
             tickLabels: { fontSize: 30 },
           }}
-          tickFormat={(t) => new Date(Date.parse(t)).getHours()}
+          tickFormat={(t) => {
+            const dt = new Date(Date.parse(t));
+            if (dt.getMinutes() === 0) {
+              return dt.getHours();
+            } else {
+              return "";
+            }
+          }}
         />
-        <VictoryLine y={() => dayAvg} />
+        <VictoryLine y={() => data.dayAverage} />
       </VictoryChart>
+
       <Modal
-        style={{ maxWidth: "1000px", width: "100%" }}
-        funk={true}
+        style={{ maxWidth: "1440px", width: "95%" }}
         isOpen={modal}
         toggle={toggle}
       >
         <ModalHeader toggle={toggle}>Electricity Price</ModalHeader>
         <ModalBody>
-          <VictoryChart theme={chartTheme} domainPadding={22} height={200}>
+          <VictoryChart
+            theme={chartTheme}
+            domainPadding={22}
+            width={450}
+            height={200}
+            padding={{ top: 10, bottom: 30, left: 20, right: 20 }}
+          >
             <VictoryBar
-              data={data.map((item) => {
-                return { x: item.DateTime, y: item.Price };
-              })}
+              data={data.allPrices.map((item) => ({
+                x: item.DateTime,
+                y: item.Price,
+              }))}
               barRatio={0.5}
               style={{
                 data: {
                   fill: ({ datum }) =>
-                    datum.y >= dayAvg ? "#FF0046" : "rgb(0,255,121)",
+                    datum.y >= data.dayAverage ? "#FF0046" : "rgb(0,255,121)",
                   fillOpacity: 0.9,
-                  strokeWidth: ({ datum }) => {
-                    return Date.parse(datum.x) ===
-                      new Date().setMinutes(0, 0, 0)
-                      ? 1
-                      : 1;
-                  },
-                  stroke: ({ datum }) => {
-                    return Date.parse(datum.x) ===
-                      new Date().setMinutes(0, 0, 0)
+                  strokeWidth: 1,
+                  stroke: ({ datum }) =>
+                    Date.parse(datum.x) === new Date().setMinutes(0, 0, 0)
                       ? "rgb(255,255,255,0.9)"
-                      : "none";
-                  },
+                      : "none",
                 },
               }}
             />
             <VictoryAxis
               dependentAxis
               style={{
-                ticks: {
-                  fill: "transparent",
-                  size: 5,
-                },
-                tickLabels: { fontSize: 5 },
+                ticks: { fill: "transparent", size: 5 },
+                tickLabels: { fontSize: 7 },
               }}
             />
             <VictoryAxis
               style={{
-                ticks: {
-                  fill: "transparent",
-                  size: 5,
-                },
-                tickLabels: { fontSize: 5 },
+                ticks: { fill: "transparent", size: 5 },
+                tickLabels: { fontSize: 7 },
               }}
-              tickFormat={(t) => new Date(Date.parse(t)).getHours()}
+              tickFormat={(t) => {
+                const dt = new Date(Date.parse(t));
+                if (dt.getMinutes() === 0) {
+                  return dt.getHours();
+                } else {
+                  return "";
+                }
+              }}
             />
             <VictoryLine
-              y={() => dayAvg}
+              y={() => data.dayAverage}
               style={{
                 data: {
                   strokeWidth: 0.5,
@@ -244,7 +271,9 @@ export function ElectricityPrice() {
       </Modal>
       <p
         id="alert"
-        className={renderUpdatedClasses(Date.parse(data[0]?.time || ""))}
+        className={renderUpdatedClasses(
+          DateTime.fromISO(data.allPrices[0].DateTime).toJSDate().getTime()
+        )}
       >
         !
       </p>

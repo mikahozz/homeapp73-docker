@@ -1,5 +1,6 @@
 import { DateTime } from "luxon";
 import dummyBookings from "./components/dummy-bookings";
+import { PRICE_RELEASE_TIME } from "./hooks/useElectricityPrices";
 
 export function getMockData(path: string): object | undefined {
   // Route handlers
@@ -59,10 +60,26 @@ export function getMockData(path: string): object | undefined {
       const lowestPrice = 0;
       const highestPrice = 20;
       const prices = [];
-      for (let i = -5; i < 43; i++) {
-        const now = new Date();
+      const dateTimeNowEven = DateTime.now().set({
+        minute: 0,
+        second: 0,
+        millisecond: 0,
+      });
+      const lastPriceTime =
+        DateTime.now().hour >= PRICE_RELEASE_TIME.hour &&
+        DateTime.now().minute >= PRICE_RELEASE_TIME.minute
+          ? dateTimeNowEven.plus({ days: 1 })
+          : dateTimeNowEven.set({
+              hour: 23,
+            });
+
+      for (
+        let i = dateTimeNowEven.minus({ hours: 5 });
+        i <= lastPriceTime;
+        i = i.plus({ minutes: 15 })
+      ) {
         prices.push({
-          DateTime: new Date(now.setHours(now.getHours() + i, 0, 0, 0)),
+          DateTime: i.toISO(),
           Price: Math.random() * (highestPrice - lowestPrice) + lowestPrice,
         });
       }
