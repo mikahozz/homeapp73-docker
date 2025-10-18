@@ -26,12 +26,8 @@ export function Forecast() {
 
   useEffect(() => {
     populateForecastData();
-    // Refresh data every 1 hour
-    const intervalId = setInterval(populateForecastData, 10 * 1000);
-
-    if (document.getElementById("root")) {
-      document.getElementById("root")!.scrollTop = 0;
-    }
+    // Refresh data every 15 min
+    const intervalId = setInterval(populateForecastData, 15 * 60 * 1000);
 
     // Cleanup on unmount
     return () => clearInterval(intervalId);
