@@ -110,15 +110,6 @@ export function ElectricityPrice() {
     },
   };
 
-  const renderUpdatedClasses = (date: number) => {
-    const diff = Math.abs(new Date().getTime() - date);
-    let cssClass = "dateUpdated";
-    if (diff / (1000 * 60 * 60 * 12) > 1) {
-      cssClass += " updatedOver12h";
-    }
-    return cssClass;
-  };
-
   if (isLoading) {
     return (
       <div>
@@ -269,14 +260,6 @@ export function ElectricityPrice() {
           </VictoryChart>
         </ModalBody>
       </Modal>
-      <p
-        id="alert"
-        className={renderUpdatedClasses(
-          DateTime.fromISO(data.allPrices[0].DateTime).toJSDate().getTime()
-        )}
-      >
-        !
-      </p>
     </div>
   );
 
