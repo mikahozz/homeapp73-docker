@@ -1,0 +1,11 @@
+{
+  "name": "homeapp73",
+  "version": "1.0.0",
+  "description": "A home web application, which shows",
+  "scripts": {
+    "dev": "cd homeclient && npm run dev && cd ..",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT"
+}

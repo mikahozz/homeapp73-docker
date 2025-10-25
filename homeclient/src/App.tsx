@@ -1,6 +1,7 @@
 import { Layout } from "./components/Layout";
 import { Home } from "./components/Home";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useScrollToTop } from "./hooks/useScrollToTop";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -12,6 +13,7 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  useScrollToTop(60 * 1000);
   return (
     <QueryClientProvider client={queryClient}>
       <div>
