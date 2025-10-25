@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import { DateTime } from "luxon";
+import { useDayTime } from "../hooks/useDayTime";
 
 interface ForecastItem {
   datetime: string;
@@ -11,18 +12,10 @@ interface ForecastItem {
   rain: number;
 }
 
-interface SunItem {
-  date: string;
-  sunrise: string;
-  sunset: string;
-  first_light: string;
-  last_light: string;
-}
-
 export function Forecast() {
   const [forecastdata, setForecastdata] = useState<ForecastItem[]>([]);
-  const [sunData, setSunData] = useState<SunItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const { isDayTime } = useDayTime();
 
   useEffect(() => {
     populateForecastData();
@@ -35,33 +28,6 @@ export function Forecast() {
 
   const renderRotate = (degree: number) => {
     return { transform: `rotate(${degree}deg)` };
-  };
-  const isDayTime = (dateTime: Date) => {
-    const daySunData = sunData.find((item) => {
-      const itemDate = new Date(item.date);
-      return itemDate.toDateString() === dateTime.toDateString();
-    });
-    if (!daySunData) {
-      return false;
-    }
-
-    // Use Luxon to parse sunrise and sunset times
-    const parseSunTime = (timeStr: string, dateStr: string) => {
-      // Parse time like "6:20:17 AM" with date like "2025-03-09"
-      const fullDateTimeStr = `${dateStr} ${timeStr}`;
-      const dateTime = DateTime.fromFormat(
-        fullDateTimeStr,
-        "yyyy-MM-dd h:mm:ss a"
-      );
-
-      // Convert to JavaScript Date object for comparison
-      return dateTime.toJSDate();
-    };
-
-    const sunrise = parseSunTime(daySunData.sunrise, daySunData.date);
-    const sunset = parseSunTime(daySunData.sunset, daySunData.date);
-
-    return dateTime >= sunrise && dateTime <= sunset;
   };
 
   const renderWeatherContents = (forecastdata: ForecastItem[]) => {
@@ -152,14 +118,6 @@ export function Forecast() {
 
   const populateForecastData = async () => {
     try {
-      const sunResponse = await fetch(
-        `/api/sun?start=${DateTime.now().toISODate()}&end=${DateTime.now()
-          .plus({ days: 3 })
-          .toISODate()}`
-      );
-      const sunData = await sunResponse.json();
-      setSunData(sunData);
-
       const response = await fetch("/api/weatherfore");
       const data = await response.json();
       setForecastdata(data);

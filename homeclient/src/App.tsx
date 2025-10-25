@@ -14,13 +14,12 @@ const queryClient = new QueryClient({
 
 function App() {
   useScrollToTop(60 * 1000);
+
   return (
     <QueryClientProvider client={queryClient}>
-      <div>
-        <Layout>
-          <Home />
-        </Layout>
-      </div>
+      <Layout>
+        <Home />
+      </Layout>
     </QueryClientProvider>
   );
 }
