@@ -11,7 +11,7 @@ export function Solar() {
             response
               .json()
               .then((json) => {
-                console.log("Solar json: " + json);
+                console.log("Solar json: ", json);
                 console.log("Current solar: " + json.powerw);
                 setData({ currentPower: json.powerw });
               })

@@ -12,9 +12,10 @@ const images = Object.values(
   })
 ) as string[];
 
-function useBg(intervalMs: number = 8 * 60 * 60 * 1000) {
+function useBg(intervalMs: number = 1 * 60 * 60 * 1000) {
   const indexRef = useRef(0);
   const { isDayTime } = useDayTime();
+  const [bgPath, setBgPath] = useState<string | null>(null);
 
   useEffect(() => {
     if (images.length === 0) return;
@@ -29,18 +30,13 @@ function useBg(intervalMs: number = 8 * 60 * 60 * 1000) {
           return img.includes("night");
         }
       });
-    console.log("Filtered images:", filteredImages);
+    console.log(
+      "Filtered images:",
+      filteredImages.map((path) => path.split("/").at(-1))
+    );
     const setBg = () => {
-      const bgEl = document.querySelector(`.${styles.bg}`) as HTMLElement;
-      if (bgEl) {
-        console.log(
-          "Swapping background to:",
-          filteredImages[indexRef.current]
-        );
-        bgEl.style.backgroundImage = `url(${filteredImages[indexRef.current]})`;
-      } else {
-        console.warn("Background element not found", styles.bg);
-      }
+      console.log("Swapping background to:", filteredImages[indexRef.current]);
+      setBgPath(filteredImages[indexRef.current]);
     };
 
     setBg();
@@ -55,6 +51,8 @@ function useBg(intervalMs: number = 8 * 60 * 60 * 1000) {
       document.body.style.backgroundImage = "";
     };
   }, [intervalMs, isDayTime]);
+
+  return { bgPath };
 }
 
 interface BgProps {
@@ -62,7 +60,7 @@ interface BgProps {
 }
 
 export default function BgWrapper({ children }: BgProps) {
-  useBg();
+  const { bgPath } = useBg();
   const [dimmed, setDimmed] = useState(false);
   const bgReturnTimeout = 30000;
 
@@ -81,7 +79,11 @@ export default function BgWrapper({ children }: BgProps) {
 
   return (
     <>
-      <div className={styles.bg} onClick={handleBgClick}>
+      <div
+        className={styles.bg}
+        style={{ backgroundImage: `url(${bgPath})` }}
+        onClick={handleBgClick}
+      >
         <div className={styles.bgOverlay} onClick={handleBgClick}>
           <div
             className={styles.bgChildren}
