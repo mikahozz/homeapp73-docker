@@ -145,6 +145,34 @@ export function ElectricityPrice() {
   const contents = (
     <div>
       <h2 className="small">Electricity price</h2>
+      {/* Accessible data list for screen readers only */}
+      <dl
+        style={{
+          position: "absolute",
+          left: "-10000px",
+          top: "auto",
+          width: "1px",
+          height: "1px",
+          overflow: "hidden",
+        }}
+        role="list"
+        aria-label="Electricity prices"
+      >
+        {data.currentAndFuturePrices.map((p) => {
+          const dt = new Date(Date.parse(p.DateTime));
+          const hour = dt.getHours();
+          return (
+            <div key={p.DateTime}>
+              <dt data-testid={`elPriceHour_${hour}`}>{hour}</dt>
+              <dd data-testid={`elPriceValue_${hour}`}>{p.Price}</dd>
+            </div>
+          );
+        })}
+        <div>
+          <dt data-testid="elPriceDayAverageLabel">Day average</dt>
+          <dd data-testid="elPriceDayAverageValue">{data.dayAverage}</dd>
+        </div>
+      </dl>
       <VictoryChart
         theme={chartTheme}
         domain={{ y: [0, domainMax] }}

@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "test": "vitest run",
     "serve": "npm run build && bun dist/index.html",
     "lint": "eslint .",
     "preview": "vite preview --port 3000"
@@ -20,7 +21,8 @@
     "reactstrap": "^9.2.1",
     "recharts": "^2.15.1",
     "victory": "^37.3.6",
-    "zod": "^3.24.3"
+    "zod": "^3.24.3",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
@@ -37,6 +39,11 @@
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",
     "vite": "^6.2.0",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^1.6.1",
+    "@testing-library/react": "^14.2.1",
+    "@testing-library/dom": "^9.3.0",
+    "@testing-library/user-event": "^14.5.2",
+    "jsdom": "22.1.0"
   }
 }

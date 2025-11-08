@@ -5,8 +5,10 @@ import { ElectricityPrice, ElectricityPriceSchema } from "../types/electricity";
 import { useState } from "react";
 
 const ELECTRICITY_PRICES_KEY = "electricityPrices";
-const PREFETCH_INTERVAL = 1 * 60 * 1000; // 1 minutes in milliseconds
-export const PRICE_RELEASE_TIME = { hour: 18, minute: 48 };
+// Polling interval when waiting for tomorrow's prices after the daily release time.
+const PREFETCH_INTERVAL = 10 * 60 * 1000; // 10 minutes in milliseconds
+// Official Nord Pool day-ahead prices usually published ~14:00 local (Europe/Helsinki)
+export const PRICE_RELEASE_TIME = { hour: 14, minute: 0 };
 
 const fetchElectricityPrices = async (): Promise<ElectricityPrice[]> => {
   const start = DateTime.now()
@@ -66,30 +68,58 @@ const fetchElectricityPrices = async (): Promise<ElectricityPrice[]> => {
 export const useElectricityPrices = (firstTimeToShow: DateTime) => {
   const [tomorrowsPricesFetched, setTomorrowsPricesFetched] = useState(false);
 
+  const zone = "Europe/Helsinki";
+  const priceZone = "Europe/Stockholm";
+
+  // Compute next release (next 14:00 local time) for staleTime so the query becomes stale
+  // right when we expect new data.
+  const now = DateTime.now().setZone(zone);
+  const todayRelease = now.set({
+    hour: PRICE_RELEASE_TIME.hour,
+    minute: PRICE_RELEASE_TIME.minute,
+    second: 0,
+    millisecond: 0,
+  });
+  const nextRelease =
+    now < todayRelease ? todayRelease : todayRelease.plus({ days: 1 });
+  const staleTimeMs = Math.max(0, nextRelease.toMillis() - now.toMillis());
+
   const query = useQuery({
     queryKey: [ELECTRICITY_PRICES_KEY],
     queryFn: () =>
       fetchElectricityPrices().then((data) => {
-        if (
-          data &&
-          DateTime.fromISO(data[data.length - 1].DateTime) >=
-            DateTime.now()
-              .plus({ days: 1 })
-              .set({ hour: 1, minute: 0, second: 0, millisecond: 0 })
-        ) {
-          setTomorrowsPricesFetched(true);
-        } else {
-          setTomorrowsPricesFetched(false);
-        }
-        return data;
+        // Sort to be safe
+        const sorted = [...data].sort(
+          (a, b) =>
+            DateTime.fromISO(a.DateTime).toMillis() -
+            DateTime.fromISO(b.DateTime).toMillis()
+        );
+
+        // Detect if we have any price whose CET date is tomorrow
+        const tomorrowLocal = now
+          .setZone(priceZone)
+          .plus({ days: 1 })
+          .startOf("day");
+        const hasTomorrow = sorted.some((p) =>
+          DateTime.fromISO(p.DateTime)
+            .setZone(priceZone)
+            .hasSame(tomorrowLocal, "day")
+        );
+        setTomorrowsPricesFetched(hasTomorrow);
+        return sorted;
       }),
     refetchInterval: () => {
-      // Tomorrow's prices are published around 14 EET, so
-      // refetching every 10 mins until tomorrow's prices are available
-      const shouldRefetch =
-        !tomorrowsPricesFetched &&
-        DateTime.now().hour >= PRICE_RELEASE_TIME.hour &&
-        DateTime.now().minute >= PRICE_RELEASE_TIME.minute;
+      // Poll every 10 mins after release until tomorrow's prices appear.
+      const localNow = DateTime.now().setZone(zone);
+      const releasePassed =
+        localNow >=
+        localNow.set({
+          hour: PRICE_RELEASE_TIME.hour,
+          minute: PRICE_RELEASE_TIME.minute,
+          second: 0,
+          millisecond: 0,
+        });
+      const shouldRefetch = !tomorrowsPricesFetched && releasePassed;
       console.log(
         "tomorrowsPricesFetched",
         tomorrowsPricesFetched,
@@ -102,13 +132,8 @@ export const useElectricityPrices = (firstTimeToShow: DateTime) => {
       return false; // Do not refetch
     },
     gcTime: 1000 * 60 * 60 * 24, // 24 hours,
-    staleTime:
-      // Until tomorrow at 14 EET
-      DateTime.now()
-        .plus({ days: 1 })
-        .set({ hour: 14 })
-        .startOf("hour")
-        .toMillis() - DateTime.now().toMillis(),
+    staleTime: staleTimeMs,
+    refetchIntervalInBackground: true,
     select: (data) => {
       // Process the data to add computed fields or filter if needed
       return {
