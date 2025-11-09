@@ -8,6 +8,7 @@ import { FamilyCalendar } from "./FamilyCalendar";
 import { CabinBookings } from "./CabinBookings";
 import { ElectricityPrice } from "./ElectricityPrice";
 import { Solar } from "./Solar";
+import ConsoleLog from "./ConsoleLog";
 
 export function Home() {
   return (
@@ -32,6 +33,7 @@ export function Home() {
           </div>
           <div className="d-none d-sm-block col-sm-3 timeBox offset-md-1">
             <Time />
+            <ConsoleLog />
           </div>
         </div>
         <div className="row">

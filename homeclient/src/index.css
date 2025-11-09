@@ -10,6 +10,11 @@ body {
   font: 300 1em Ubuntu;
 }
 
+button {
+  border: none;
+  background-color: transparent;
+}
+
 h2 {
   font-size: 120%;
   color: rgb(206, 206, 206);
@@ -479,4 +484,72 @@ h2.small {
   vertical-align: top;
   font-size: 8px;
   color: rgb(179, 245, 252);
+}
+
+
+/* Dialog styles */
+.DialogOverlay {
+  background-color: rgba(0, 0, 0, 0.7);
+  
+  position: fixed;
+  inset: 0;
+  animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.DialogContent {
+  background-color: rgba(24, 31, 52, 0.8);
+  border-radius: 6px;
+  box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  height: 90vh;
+  overflow-y: scroll;
+  padding: 25px;
+  animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.DialogTitle {
+  margin: 0;
+  font-weight: 500;
+  font-size: 17px;
+}
+
+.DialogDescription {
+  margin: 10px 0 20px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+button[aria-label="Close"] {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+@keyframes overlayShow {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
 }
