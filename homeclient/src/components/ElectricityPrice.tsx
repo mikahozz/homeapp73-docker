@@ -23,19 +23,18 @@ export function ElectricityPrice() {
   const { data, isLoading, error } = useElectricityPrices(firstTimeToShow);
 
   useEffect(() => {
-    console.log("useEffect");
     const activateRefresh = () => {
       const timeoutId = setTimeout(() => {
         setFirstTimeToShow(thisHour());
         console.log(
-          "Setting first time firstTimeToShow to",
+          "El: Setting first time firstTimeToShow to",
           thisHour().toISO()
         );
 
         const intervalId = setInterval(() => {
           setFirstTimeToShow(thisHour());
           console.log(
-            `Setting firstTimeToShow to: ${thisHour()} with interval ${chartRefreshInterval}`
+            `El: Setting firstTimeToShow to: ${thisHour()} with interval ${chartRefreshInterval}`
           );
         }, chartRefreshInterval.toMillis());
 
@@ -50,17 +49,24 @@ export function ElectricityPrice() {
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
         setFirstTimeToShow(thisHour());
+        console.log(
+          "El: visibilityState to visible. setFirstTimeToShow to:",
+          thisHour().toISO()
+        );
         timeoutId = activateRefresh();
       } else {
+        console.log("El: visibilityState to hidden. Clearing timers.");
         clearInterval(timeoutId);
         clearTimeout(timeoutId);
       }
     };
 
+    console.log("El: Adding visibilitychange event listener.");
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
     // Cleanup function
     return () => {
+      console.log("El: Cleaning up timers and event listeners.");
       clearInterval(timeoutId);
       clearTimeout(timeoutId);
       document.removeEventListener("visibilitychange", handleVisibilityChange);

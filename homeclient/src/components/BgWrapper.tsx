@@ -18,6 +18,12 @@ function useBg(intervalMs: number = 1 * 60 * 60 * 1000) {
   const [bgPath, setBgPath] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log(
+      "Bg: useEffect called. isDayTime:",
+      isDayTime(new Date()),
+      " intervalMs:",
+      intervalMs
+    );
     if (images.length === 0) return;
     const filteredImages = images
       .filter((img) => img.includes(getTimeOfYear()))
@@ -31,22 +37,26 @@ function useBg(intervalMs: number = 1 * 60 * 60 * 1000) {
         }
       });
     console.log(
-      "Filtered images:",
+      "Bg: Filtered images:",
       filteredImages.map((path) => path.split("/").at(-1))
     );
     const setBg = () => {
-      console.log("Swapping background to:", filteredImages[indexRef.current]);
+      indexRef.current = Math.floor(Math.random() * filteredImages.length);
+      console.log(
+        "Bg: Swapping background to:",
+        filteredImages[indexRef.current]
+      );
       setBgPath(filteredImages[indexRef.current]);
     };
 
     setBg();
 
     const interval = setInterval(() => {
-      indexRef.current = Math.floor(Math.random() * filteredImages.length);
       setBg();
     }, intervalMs);
 
     return () => {
+      console.log("Bg: Clearing background image interval.");
       clearInterval(interval);
       document.body.style.backgroundImage = "";
     };
@@ -66,11 +76,11 @@ export default function BgWrapper({ children }: BgProps) {
 
   const handleBgClick = () => {
     const updatedDimmedVal = !dimmed;
-    console.log("Setting foreground dimmed to ", updatedDimmedVal);
+    console.log("Bg: Setting foreground dimmed to ", updatedDimmedVal);
     setDimmed(updatedDimmedVal);
     if (updatedDimmedVal) {
       const bringBack = setTimeout(() => {
-        console.log("Returning foreground to normal");
+        console.log("Bg: Returning foreground to normal");
         setDimmed(false);
       }, bgReturnTimeout);
       return () => clearTimeout(bringBack);
