@@ -16,6 +16,7 @@ export default function ConsoleLog() {
   const [entries, setEntries] = useState<LogEntry[]>([]);
   const nextId = useRef(1);
   const listRef = useRef<HTMLDivElement | null>(null);
+  const maxEntriesShown = 50;
 
   const onConsoleEvent = useCallback((e: CustomEvent) => {
     const detail = e.detail as {
@@ -24,13 +25,13 @@ export default function ConsoleLog() {
       time: number;
     };
     setEntries((prev) => [
-      ...prev,
       {
         id: nextId.current++,
         level: detail.level,
         args: detail.args,
         time: detail.time,
       },
+      ...prev,
     ]);
   }, []);
 
@@ -84,13 +85,14 @@ export default function ConsoleLog() {
               </button>
             </div>
             <div ref={listRef} className={styles.logScrollArea}>
-              {entries.map((entry) => (
-                <LogEntryView key={entry.id} entry={entry} />
-              ))}
-              {!entries.length && (
+              {!entries.length ? (
                 <div className={styles.empty}>
                   No messages yet. Open dev tools and generate logs!
                 </div>
+              ) : (
+                entries
+                  .slice(0, maxEntriesShown)
+                  .map((entry) => <LogEntryView key={entry.id} entry={entry} />)
               )}
             </div>
             <Dialog.Close asChild>
