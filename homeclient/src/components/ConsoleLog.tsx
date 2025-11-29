@@ -14,6 +14,7 @@ type LogEntry = {
 export default function ConsoleLog() {
   const [open, setOpen] = useState(false);
   const [entries, setEntries] = useState<LogEntry[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const nextId = useRef(1);
   const listRef = useRef<HTMLDivElement | null>(null);
   const maxEntriesShown = 50;
@@ -62,15 +63,23 @@ export default function ConsoleLog() {
         <Dialog.Portal>
           <Dialog.Overlay className="DialogOverlay" />
           <Dialog.Content className="DialogContent">
-            <Dialog.Title className={styles.title}>
-              Console Output
-              <button
-                onClick={clear}
-                className={styles.clearBtn}
-                disabled={!entries.length}
-              >
-                Clear ({entries.length})
-              </button>
+            <Dialog.Title asChild className={styles.title}>
+              <div>
+                <h2>Console Output</h2>
+                <button
+                  onClick={clear}
+                  className={styles.clearBtn}
+                  disabled={!entries.length}
+                >
+                  Clear ({entries.length})
+                </button>
+                <input
+                  type="text"
+                  placeholder="Search logs..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
             </Dialog.Title>
             <Dialog.Description
               className={styles.description}
@@ -91,6 +100,13 @@ export default function ConsoleLog() {
                 </div>
               ) : (
                 entries
+                  .filter((entry) =>
+                    entry.args.some((arg) =>
+                      String(arg)
+                        .toLowerCase()
+                        .includes(searchTerm.toLowerCase())
+                    )
+                  )
                   .slice(0, maxEntriesShown)
                   .map((entry) => <LogEntryView key={entry.id} entry={entry} />)
               )}
