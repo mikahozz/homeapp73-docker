@@ -1,49 +1,50 @@
-import { useState, useEffect } from "react";
-
-interface WeatherData {
-  temperature: number;
-  time: string;
-}
+import { useState } from "react";
+import useWeatherNow from "../hooks/useWeatherNow";
+import { Modal, ModalHeader, ModalBody } from "reactstrap";
 
 export function WeatherNow() {
-  const [weatherdata, setWeatherdata] = useState<WeatherData[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [modal, setModal] = useState(false);
+  const { data: weatherdata, isPending, error } = useWeatherNow();
 
-  useEffect(() => {
-    populateWeatherData();
-    // Refresh data every 1 hour
-    const intervalId = setInterval(populateWeatherData, 60 * 60 * 1000);
-
-    // Cleanup on unmount
-    return () => clearInterval(intervalId);
-  }, []);
-
-  const populateWeatherData = async () => {
-    try {
-      const response = await fetch("/api/weathernow");
-      const data = await response.json();
-      setWeatherdata(data);
-      setLoading(false);
-    } catch (error) {
-      console.error("Failed to fetch weather data:", error);
-    }
+  const toggle = () => {
+    setModal(!modal);
   };
 
-  const contents = loading ? (
-    <div>
-      <p className="temperatureNow">
-        <em>...</em>
-      </p>
-    </div>
-  ) : (
-    <div>
-      <p className="temperatureNow">
-        {weatherdata[weatherdata.length - 1].temperature}°
-      </p>
+  const content = isPending
+    ? "..."
+    : weatherdata
+    ? `${weatherdata[weatherdata.length - 1].temperature}°`
+    : "-";
+  const isOutdated = weatherdata
+    ? new Date().getTime() -
+        new Date(weatherdata[weatherdata.length - 1].datetime).getTime() >
+      1000 * 60 * 60
+    : true;
+
+  return (
+    <div id="weatherNow" onClick={toggle}>
+      <p className="temperatureNow">{content}</p>
+      <Modal funk={true} isOpen={modal} toggle={toggle}>
+        <ModalHeader toggle={toggle}>Weather now</ModalHeader>
+        <ModalBody>
+          <p>
+            Updated:{" "}
+            <span
+              className={isOutdated ? "dateUpdated outdated" : "dateUpdated"}
+            >
+              {(weatherdata &&
+                weatherdata.length &&
+                weatherdata[weatherdata.length - 1].datetime) ??
+                "-"}
+            </span>
+            <br />
+            {error instanceof Error ? `Error:${error.message}` : ""}
+          </p>
+        </ModalBody>
+      </Modal>
+      {isOutdated && <p className="alert">!</p>}
     </div>
   );
-
-  return <div id="weatherNow">{contents}</div>;
 }
 
 WeatherNow.displayName = "WeatherNow";

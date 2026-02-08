@@ -56,12 +56,16 @@ input, select {
 }
 
 #weatherNow {
-  width: 120px;
+  position: relative;
+  margin-top: 25px;
+  min-width: 120px;
+  text-align: center;
 }
 
 .temperatureNow {
   font-size: 400%;
-  margin-top: 49px;
+  line-height: 1.2em;
+  /* margin-top: 49px; */
 }
 
 
@@ -87,7 +91,7 @@ input, select {
   cursor: pointer;
 }
 
-#alert {
+.alert {
   position: absolute;
   right: -5px;
   top: -5px;
@@ -100,11 +104,6 @@ input, select {
   text-align: center;
   padding: 2px;
   border-radius: 50%;
-  visibility: hidden;
-}
-
-#alert.updatedOver12h {
-  visibility: visible;
 }
 
 .indoorTemp {
@@ -224,12 +223,7 @@ h2.small {
   color: rgba(151, 151, 151, 0.5);
 }
 
-.updatedOver24h {
-  color: #ff3e3e;
-  font-weight: bold;
-}
-
-.updatedOver12h {
+.outdated {
   color: #ff3e3e;
   font-weight: bold;
 }

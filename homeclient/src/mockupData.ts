@@ -23,7 +23,7 @@ export function getMockData(path: string): object | undefined {
       return [
         {
           datetime: "2022-01-31T18:40:05Z",
-          temperature: -5.5,
+          temperature: -15.5,
           humidity: 7.0,
         },
         {
@@ -33,17 +33,17 @@ export function getMockData(path: string): object | undefined {
         },
         {
           datetime: "2022-01-31T19:00:05Z",
-          temperature: -5.6,
+          temperature: -15.6,
           humidity: 7.0,
         },
         {
           datetime: "2022-01-31T19:10:05Z",
-          temperature: -5.6,
+          temperature: -15.6,
           humidity: 7.0,
         },
         {
-          datetime: "2022-01-31T19:20:05Z",
-          temperature: -5.7,
+          datetime: "2022-01-31T16:20:05Z",
+          temperature: -15.7,
           humidity: 7.0,
         },
       ];

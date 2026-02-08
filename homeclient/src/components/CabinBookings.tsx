@@ -177,7 +177,7 @@ export function CabinBookings() {
     const diff = Math.abs(new Date().getTime() - date);
     let cssClass = "bookingsUpdated";
     if (diff / (1000 * 60 * 60 * 24) > 1) {
-      cssClass += " updatedOver24h";
+      cssClass += " outdated";
     }
     return cssClass;
   };

@@ -35,11 +35,16 @@ export function Indoor() {
     }
   };
 
+  const oudatedTimeMs = 1000 * 60 * 60 * 12;
+  const isOutdated = indoordata
+    ? new Date().getTime() - new Date(indoordata.time).getTime() > oudatedTimeMs
+    : true;
+
   const renderUpdatedClasses = (date: number) => {
     const diff = Math.abs(new Date().getTime() - date);
     let cssClass = "dateUpdated";
-    if (diff / (1000 * 60 * 60 * 12) > 1) {
-      cssClass += " updatedOver12h";
+    if (diff / oudatedTimeMs > 1) {
+      cssClass += " outdated";
     }
     return cssClass;
   };
@@ -76,12 +81,7 @@ export function Indoor() {
           </p>
         </ModalBody>
       </Modal>
-      <p
-        id="alert"
-        className={renderUpdatedClasses(Date.parse(indoordata?.time || ""))}
-      >
-        !
-      </p>
+      {isOutdated && <p className="alert">!</p>}
     </div>
   );
 
