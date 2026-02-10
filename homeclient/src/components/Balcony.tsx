@@ -62,7 +62,7 @@ export function Balcony() {
   ) : (
     <div>
       <p className="balconyTemp">{_.round(indoordata?.temperature || 0, 1)}°</p>
-      <Modal funk={true} isOpen={modal} toggle={toggle}>
+      <Modal isOpen={modal} toggle={toggle}>
         <ModalHeader toggle={toggle}>Indoor temperature</ModalHeader>
         <ModalBody>
           <p>

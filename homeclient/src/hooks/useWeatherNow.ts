@@ -11,12 +11,18 @@ export default function useWeatherNow() {
     queryFn: async () => {
       console.log("Fetching weathernow...");
       const response = await fetch("/api/weathernow");
+      if (!response.ok) {
+        throw new Error(`Failed to fetch weather now: ${response.statusText}`);
+      }
       const data = await response.json();
+      if (response.ok) {
+        console.log("Weather now data fetched successfully with data:", data);
+      }
       return data;
     },
     staleTime: 60 * 60 * 1000, // 1 hour in ms
     refetchOnWindowFocus: true,
     refetchOnReconnect: true,
-    retry: 1,
+    retry: Infinity,
   });
 }

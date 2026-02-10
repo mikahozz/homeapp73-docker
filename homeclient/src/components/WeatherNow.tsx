@@ -4,16 +4,18 @@ import { Modal, ModalHeader, ModalBody } from "reactstrap";
 
 export function WeatherNow() {
   const [modal, setModal] = useState(false);
-  const { data: weatherdata, isPending, error } = useWeatherNow();
+  const { data: weatherdata, isPending, isError, error } = useWeatherNow();
 
   const toggle = () => {
     setModal(!modal);
   };
 
-  const content = isPending
-    ? "..."
-    : weatherdata
+  const content = weatherdata
     ? `${weatherdata[weatherdata.length - 1].temperature}°`
+    : isPending
+    ? "..."
+    : isError
+    ? `!`
     : "-";
   const isOutdated = weatherdata
     ? new Date().getTime() -
@@ -24,7 +26,7 @@ export function WeatherNow() {
   return (
     <div id="weatherNow" onClick={toggle}>
       <p className="temperatureNow">{content}</p>
-      <Modal funk={true} isOpen={modal} toggle={toggle}>
+      <Modal isOpen={modal} toggle={toggle}>
         <ModalHeader toggle={toggle}>Weather now</ModalHeader>
         <ModalBody>
           <p>
