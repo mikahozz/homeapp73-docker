@@ -80,15 +80,15 @@ services:
       - ./climateapi:/app
     ports:
       - 5011:5011
-  homeapp73:
-    container_name: homeapp73
-    image: homeapp73
-    restart: unless-stopped
-    build:
-      context: ./homeclient
-      dockerfile: ./Dockerfile
-    ports:
-      - 3000:3000
+  # homeapp73:
+  #   container_name: homeapp73
+  #   image: homeapp73
+  #   restart: unless-stopped
+  #   build:
+  #     context: ./homeclient
+  #     dockerfile: ./Dockerfile
+  #   ports:
+  #     - 3000:3000
   #airflow:
   #    image: airflow
   #    restart: always
