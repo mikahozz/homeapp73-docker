@@ -169,3 +169,9 @@ services:
       - 3010:3000
     volumes:
       - ./grafana/data:/var/lib/grafana
+
+networks:
+  homeapp73-docker_default:
+    external: true
+  villa73_default:
+    external: true
