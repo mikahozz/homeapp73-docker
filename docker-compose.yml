@@ -16,15 +16,15 @@ services:
     build:
       context: ./sofar_lsw3
       dockerfile: ./Dockerfile
-  nordpoolrust:
-    image: nordpoolrust
-    container_name: nordpoolrust
-    restart: unless-stopped
-    build:
-      context: ./nordpoolrust
-      dockerfile: ./Dockerfile
-    ports:
-      - 3014:3014
+  # nordpoolrust:
+  #   image: nordpoolrust
+  #   container_name: nordpoolrust
+  #   restart: unless-stopped
+  #   build:
+  #     context: ./nordpoolrust
+  #     dockerfile: ./Dockerfile
+  #   ports:
+  #     - 3014:3014
   cabinbookings:
     image: cabinbookings
     container_name: cabinbookings
