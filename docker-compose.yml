@@ -47,10 +47,7 @@ services:
       context: ./cabinbookings-refresh
       dockerfile: ./Dockerfile
   mariadb:
-    # On 32bit rasbian docker host, you might need to run these:
-    #   wget http://ftp.us.debian.org/debian/pool/main/libs/libseccomp/libseccomp2_2.4.4-1~bpo10+1_armhf.deb
-    #   sudo dpkg -i libseccomp2_2.4.4-1~bpo10+1_armhf.deb
-    image: linuxserver/mariadb:arm32v7-version-10.5.12-r0
+    image: mariadb:10.11
     container_name: mariadb
     env_file:
       - ./mariadb/docker.env
@@ -58,9 +55,9 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Helsinki
-    volumes:
-      - ./mariadb/config:/config
-    restart: unless-stopped
+  volumes:
+      - mariadb-data:/config
+  restart: unless-stopped
   # nginx:
   #   container_name: nginx
   #   image: nginx
@@ -128,12 +125,12 @@ services:
     ports:
       - 8086:8086
     volumes:
-      - $PWD/influxdb:/var/lib/influxdb
+      - influxdb-data:/var/lib/influxdb
     environment:
       - INFLUXDB_HTTP_FLUX_ENABLED=true
   zigbee2mqtt:
     container_name: zigbee2mqtt
-    image: koenkk/zigbee2mqtt:1.18.1
+    image: koenkk/zigbee2mqtt:2.11.0
     volumes:
       - ./zigbee2mqtt:/app/data
       - /run/udev:/run/udev:ro
@@ -163,12 +160,18 @@ services:
   #     - "--web.enable-lifecycle"
   grafana:
     container_name: grafana
-    image: grafana/grafana:8.2.5
+    image: grafana/grafana:11.6.15
     restart: always
     ports:
       - 3010:3000
     volumes:
       - ./grafana/data:/var/lib/grafana
+
+volumes:
+  influxdb-data:
+    external: true
+  mariadb-data:
+    external: true
 
 networks:
   homeapp73-docker_default:
