@@ -57,7 +57,7 @@ services:
       - TZ=Europe/Helsinki
     volumes:
         - mariadb-data:/config
-  restart: unless-stopped
+    restart: unless-stopped
   # nginx:
   #   container_name: nginx
   #   image: nginx
