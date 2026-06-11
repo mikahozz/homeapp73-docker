@@ -34,6 +34,8 @@ services:
     build:
       context: ./cabinbookings
       dockerfile: ./Dockerfile
+    env_file:
+      - .env
     ports:
       - 3011:3011
   cabinbookings-refresh:
@@ -43,6 +45,8 @@ services:
     volumes:
       - ./cabinbookings-refresh/data:/usr/src/app/data
       - ./cabinbookings-refresh/util.js:/usr/src/app/util.js
+    env_file:
+      - .env
     build:
       context: ./cabinbookings-refresh
       dockerfile: ./Dockerfile

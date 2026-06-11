@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker volume *)",
+      "Bash(docker run *)",
+      "Bash(docker exec *)",
+      "Read(//home/mikah0/restore/**)",
+      "Bash(grep -n \"^USE \\\\`\" /home/mikah0/restore/mariadb-backup-20260606.sql)",
+      "Bash(awk '/^USE `mysql`/{f=1} /^USE `cabok_db`/{f=0} f && /DROP TABLE IF EXISTS|DROP PROCEDURE IF EXISTS|DROP FUNCTION IF EXISTS/' /home/mikah0/restore/mariadb-backup-20260606.sql)",
+      "Bash(awk '/^-- Current Database: `mysql`/{c++} END{print \"Number of '\\\\''Current Database: mysql'\\\\'' sections:\", c}' /home/mikah0/restore/mariadb-backup-20260606.sql)",
+      "Bash(grep -n \"USE \\\\`\\\\|Current Database\\\\|DROP PROCEDURE\\\\|Dumping routines\")"
+    ]
+  }
+}
